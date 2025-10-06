@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "category": "Mindfulness",
+    "title": "5-Min Box Breathing",
+    "duration_minutes": 5,
+    "description": "Inhale 4s, hold 4s, exhale 4s, hold 4s — repeat for grounding.",
+    "tags": ["breathing", "focus"]
+  },
+  {
+    "id": 2,
+    "category": "Physical",
+    "title": "2-Min Desk Stretch",
+    "duration_minutes": 2,
+    "description": "Neck rolls, shoulder shrugs, and wrist stretches to relieve tension.",
+    "tags": ["stretch", "posture"]
+  },
+  {
+    "id": 3,
+    "category": "Study Tip",
+    "title": "Pomodoro Mini-Session (25/5)",
+    "duration_minutes": 25,
+    "description": "Focus for 25 minutes, then take a 5-minute break. Repeat 4x then take a longer break.",
+    "tags": ["pomodoro", "focus"]
+  },
+  {
+    "id": 4,
+    "category": "Mindfulness",
+    "title": "1-Min Mindful Check-in",
+    "duration_minutes": 1,
+    "description": "Quick self-rating of mood/stress on a 1-10 scale and one breath to reset.",
+    "tags": ["self-care", "awareness"]
+  },
+  {
+    "id": 5,
+    "category": "Physical",
+    "title": "Walk Break - 10 Minutes",
+    "duration_minutes": 10,
+    "description": "A short walk outside or around the building to increase circulation and mental clarity.",
+    "tags": ["movement", "energy"]
+  },
+  {
+    "id": 6,
+    "category": "Study Tip",
+    "title": "Active Recall Flashcard Burst",
+    "duration_minutes": 15,
+    "description": "Spend 15 minutes testing yourself with flashcards on one subtopic.",
+    "tags": ["active recall", "memory"]
+  },
+  {
+    "id": 7,
+    "category": "Mindfulness",
+    "title": "Progressive Muscle Relaxation",
+    "duration_minutes": 7,
+    "description": "Tense and relax muscle groups from feet to face to release tension.",
+    "tags": ["relaxation", "stress"]
+  },
+  {
+    "id": 8,
+    "category": "Physical",
+    "title": "Eye Break - 20/20/20",
+    "duration_minutes": 1,
+    "description": "Every 20 minutes, look at something 20 feet away for 20 seconds to reduce eye strain.",
+    "tags": ["eyes", "ergonomics"]
+  },
+  {
+    "id": 9,
+    "category": "Study Tip",
+    "title": "Interleaved Practice Session",
+    "duration_minutes": 30,
+    "description": "Mix problems from 2-3 related topics instead of doing one repetitively.",
+    "tags": ["practice", "learning"]
+  },
+  {
+    "id": 10,
+    "category": "Mindfulness",
+    "title": "1-Min Gratitude Pause",
+    "duration_minutes": 1,
+    "description": "Write down one thing that went well in your study session to boost morale.",
+    "tags": ["mood", "motivation"]
+  }
+]
