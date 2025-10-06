@@ -61,7 +61,6 @@ HealthCareAIassist/
 ├── README.md                    # Project documentation (this file)
 ├── learning_resources.json     # Curated healthcare learning materials
 ├── wellness_tips.json          # Wellness and break recommendations
-├── presentation_slides.md      # Hackathon pitch presentation
 ├── backend/                    # Backend API and logic (to be created)
 │   ├── app.py                 # Main Flask application
 │   ├── ai_logic.py            # Recommendation algorithms
