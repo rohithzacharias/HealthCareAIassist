@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "category": "Mindfulness",
+    "title": "5-Minute Deep Breathing",
+    "duration_minutes": 5,
+    "description": "Practice box breathing to reduce stress and improve focus during study sessions.",
+    "tags": ["stress relief", "focus", "breathing"]
+  },
+  {
+    "id": 2,
+    "category": "Physical",
+    "title": "Desk Stretches",
+    "duration_minutes": 3,
+    "description": "Simple stretches to relieve neck, shoulder, and back tension from studying.",
+    "tags": ["physical health", "stretching", "posture"]
+  },
+  {
+    "id": 3,
+    "category": "Study Tip",
+    "title": "Pomodoro Reminder",
+    "duration_minutes": 1,
+    "description": "Take a 5-minute break every 25 minutes to maintain peak concentration.",
+    "tags": ["productivity", "time management", "focus"]
+  },
+  {
+    "id": 4,
+    "category": "Mindfulness",
+    "title": "Progressive Muscle Relaxation",
+    "duration_minutes": 10,
+    "description": "Systematically tense and relax muscle groups to reduce physical stress.",
+    "tags": ["relaxation", "stress relief", "muscle tension"]
+  },
+  {
+    "id": 5,
+    "category": "Physical",
+    "title": "Hydration Check",
+    "duration_minutes": 1,
+    "description": "Drink a glass of water to maintain hydration and cognitive function.",
+    "tags": ["hydration", "health", "cognitive function"]
+  },
+  {
+    "id": 6,
+    "category": "Study Tip",
+    "title": "Active Recall Practice",
+    "duration_minutes": 5,
+    "description": "Quiz yourself on recently studied material without looking at notes.",
+    "tags": ["memory", "learning technique", "retention"]
+  },
+  {
+    "id": 7,
+    "category": "Physical",
+    "title": "Eye Rest Exercise",
+    "duration_minutes": 2,
+    "description": "Follow the 20-20-20 rule: look at something 20 feet away for 20 seconds.",
+    "tags": ["eye health", "screen time", "vision"]
+  },
+  {
+    "id": 8,
+    "category": "Mindfulness",
+    "title": "Gratitude Moment",
+    "duration_minutes": 3,
+    "description": "Reflect on three things you're grateful for to boost positive mindset.",
+    "tags": ["positivity", "mental health", "mindset"]
+  },
+  {
+    "id": 9,
+    "category": "Study Tip",
+    "title": "Environment Check",
+    "duration_minutes": 2,
+    "description": "Optimize lighting, temperature, and eliminate distractions in your study space.",
+    "tags": ["environment", "productivity", "concentration"]
+  },
+  {
+    "id": 10,
+    "category": "Physical",
+    "title": "Quick Walk",
+    "duration_minutes": 15,
+    "description": "Take a brief walk outside to boost circulation and clear your mind.",
+    "tags": ["exercise", "circulation", "mental clarity"]
+  }
+]
