@@ -1,0 +1,164 @@
+[
+  {
+    "user_id": 1,
+    "name": "Alex Johnson",
+    "email": "alex.johnson@medschool.edu",
+    "performance_data": {
+      "Cardiology": {
+        "ECG Basics": 45,
+        "Heart Anatomy": 72,
+        "Heart Murmurs": 38
+      },
+      "Respiratory System": {
+        "Lung Anatomy": 55,
+        "Breathing Mechanics": 42
+      },
+      "Nervous System": {
+        "Neuroanatomy": 58,
+        "Neuron Function": 34
+      },
+      "Pharmacology": {
+        "Drug Classifications": 51,
+        "Dosage Calculations": 68
+      },
+      "Anatomy": {
+        "Skeletal System": 59,
+        "Muscular System": 46
+      },
+      "Physiology": {
+        "Digestive System": 53,
+        "Endocrine System": 41
+      },
+      "Pathology": {
+        "Inflammation": 49,
+        "Cancer Biology": 33
+      },
+      "Microbiology": {
+        "Bacterial Infections": 57,
+        "Viral Diseases": 61
+      },
+      "Clinical Skills": {
+        "Vital Signs": 69,
+        "Patient Communication": 44
+      },
+      "Medical Ethics": {
+        "Healthcare Principles": 37
+      }
+    },
+    "study_preferences": {
+      "session_length_minutes": 25,
+      "break_length_minutes": 5,
+      "preferred_content_types": ["Video", "Quiz"],
+      "difficulty_preference": "Beginner"
+    },
+    "last_login": "2025-10-06T14:30:00Z"
+  },
+  {
+    "user_id": 2,
+    "name": "Maria Rodriguez",
+    "email": "maria.rodriguez@medschool.edu",
+    "performance_data": {
+      "Cardiology": {
+        "ECG Basics": 78,
+        "Heart Anatomy": 82,
+        "Heart Murmurs": 71
+      },
+      "Respiratory System": {
+        "Lung Anatomy": 85,
+        "Breathing Mechanics": 79
+      },
+      "Nervous System": {
+        "Neuroanatomy": 43,
+        "Neuron Function": 51
+      },
+      "Pharmacology": {
+        "Drug Classifications": 62,
+        "Dosage Calculations": 88
+      },
+      "Anatomy": {
+        "Skeletal System": 76,
+        "Muscular System": 73
+      },
+      "Physiology": {
+        "Digestive System": 68,
+        "Endocrine System": 45
+      },
+      "Pathology": {
+        "Inflammation": 58,
+        "Cancer Biology": 39
+      },
+      "Microbiology": {
+        "Bacterial Infections": 74,
+        "Viral Diseases": 81
+      },
+      "Clinical Skills": {
+        "Vital Signs": 92,
+        "Patient Communication": 48
+      },
+      "Medical Ethics": {
+        "Healthcare Principles": 42
+      }
+    },
+    "study_preferences": {
+      "session_length_minutes": 30,
+      "break_length_minutes": 10,
+      "preferred_content_types": ["Article", "Video"],
+      "difficulty_preference": "Intermediate"
+    },
+    "last_login": "2025-10-06T16:15:00Z"
+  },
+  {
+    "user_id": 3,
+    "name": "David Chen",
+    "email": "david.chen@medschool.edu", 
+    "performance_data": {
+      "Cardiology": {
+        "ECG Basics": 67,
+        "Heart Anatomy": 54,
+        "Heart Murmurs": 49
+      },
+      "Respiratory System": {
+        "Lung Anatomy": 71,
+        "Breathing Mechanics": 65
+      },
+      "Nervous System": {
+        "Neuroanatomy": 82,
+        "Neuron Function": 77
+      },
+      "Pharmacology": {
+        "Drug Classifications": 38,
+        "Dosage Calculations": 52
+      },
+      "Anatomy": {
+        "Skeletal System": 73,
+        "Muscular System": 69
+      },
+      "Physiology": {
+        "Digestive System": 79,
+        "Endocrine System": 66
+      },
+      "Pathology": {
+        "Inflammation": 44,
+        "Cancer Biology": 41
+      },
+      "Microbiology": {
+        "Bacterial Infections": 63,
+        "Viral Diseases": 58
+      },
+      "Clinical Skills": {
+        "Vital Signs": 86,
+        "Patient Communication": 39
+      },
+      "Medical Ethics": {
+        "Healthcare Principles": 48
+      }
+    },
+    "study_preferences": {
+      "session_length_minutes": 20,
+      "break_length_minutes": 5,
+      "preferred_content_types": ["Quiz", "Article"],
+      "difficulty_preference": "Intermediate"
+    },
+    "last_login": "2025-10-06T09:45:00Z"
+  }
+]

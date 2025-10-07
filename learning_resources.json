@@ -1,7 +1,8 @@
 [
   {
     "id": 1,
-    "topic": "Cardiology: ECG Basics",
+    "subject": "Cardiology",
+    "subtopic": "ECG Basics",
     "difficulty": "Beginner",
     "type": "Video",
     "title": "Understanding ECG Basics for Healthcare Students",
@@ -9,11 +10,14 @@
     "url": "https://www.example.com/cardiology/ecg-basics",
     "source": "FutureMed Academy",
     "length_minutes": 12,
-    "tags": ["Cardiology", "ECG", "Basics"]
+    "tags": ["Cardiology", "ECG", "Basics"],
+    "recommendation_threshold": 60,
+    "reasoning_template": "Your ECG interpretation score is below 60%. This video covers fundamental concepts you're struggling with."
   },
   {
     "id": 2,
-    "topic": "Cardiology: Cardiac Anatomy Overview",
+    "subject": "Cardiology", 
+    "subtopic": "Heart Anatomy",
     "difficulty": "Beginner",
     "type": "Article",
     "title": "Complete Guide to Cardiac Anatomy",
@@ -21,11 +25,14 @@
     "url": "https://www.example.com/cardiology/cardiac-anatomy",
     "source": "MedStudy Resources",
     "length_minutes": 20,
-    "tags": ["Cardiology", "Anatomy", "Heart"]
+    "tags": ["Cardiology", "Anatomy", "Heart"],
+    "recommendation_threshold": 65,
+    "reasoning_template": "Your cardiac anatomy knowledge needs reinforcement. This comprehensive guide addresses your weak areas."
   },
   {
     "id": 3,
-    "topic": "Cardiology: Heart Murmurs",
+    "subject": "Cardiology",
+    "subtopic": "Heart Murmurs", 
     "difficulty": "Intermediate",
     "type": "Quiz",
     "title": "Heart Murmur Classification Quiz",
@@ -33,23 +40,29 @@
     "url": "https://www.example.com/cardiology/heart-murmurs-quiz",
     "source": "CardioLearn Platform",
     "length_minutes": 15,
-    "tags": ["Cardiology", "Murmurs", "Assessment"]
+    "tags": ["Cardiology", "Murmurs", "Assessment"],
+    "recommendation_threshold": 55,
+    "reasoning_template": "Your murmur identification score is below 55%. Practice with this targeted quiz to improve."
   },
   {
     "id": 4,
-    "topic": "Respiratory System: Lung Anatomy",
-    "difficulty": "Beginner",
+    "subject": "Respiratory System",
+    "subtopic": "Lung Anatomy",
+    "difficulty": "Beginner", 
     "type": "Video",
     "title": "Respiratory System Anatomy Fundamentals",
     "description": "Visual exploration of lung structure, bronchial tree, alveoli, and gas exchange mechanisms.",
     "url": "https://www.example.com/respiratory/lung-anatomy",
     "source": "AnatomyPro",
     "length_minutes": 18,
-    "tags": ["Respiratory", "Anatomy", "Lungs"]
+    "tags": ["Respiratory", "Anatomy", "Lungs"],
+    "recommendation_threshold": 60,
+    "reasoning_template": "Your respiratory anatomy score indicates gaps in understanding. This video addresses fundamental concepts."
   },
   {
     "id": 5,
-    "topic": "Respiratory System: Breathing Mechanics",
+    "subject": "Respiratory System",
+    "subtopic": "Breathing Mechanics",
     "difficulty": "Intermediate",
     "type": "Article",
     "title": "Mechanics of Breathing and Ventilation",
@@ -57,35 +70,44 @@
     "url": "https://www.example.com/respiratory/breathing-mechanics",
     "source": "Physiology Today",
     "length_minutes": 25,
-    "tags": ["Respiratory", "Physiology", "Breathing"]
+    "tags": ["Respiratory", "Physiology", "Breathing"],
+    "recommendation_threshold": 50,
+    "reasoning_template": "Your breathing mechanics score is critically low. This detailed article will strengthen your foundation."
   },
   {
     "id": 6,
-    "topic": "Nervous System: Neuroanatomy Basics",
+    "subject": "Nervous System",
+    "subtopic": "Neuroanatomy",
     "difficulty": "Beginner",
-    "type": "Video",
+    "type": "Video", 
     "title": "Central Nervous System Overview",
     "description": "Introduction to brain and spinal cord anatomy, including major regions and their functions.",
     "url": "https://www.example.com/neuro/neuroanatomy-basics",
     "source": "NeuroEducate",
     "length_minutes": 22,
-    "tags": ["Neurology", "Anatomy", "CNS"]
+    "tags": ["Neurology", "Anatomy", "CNS"],
+    "recommendation_threshold": 60,
+    "reasoning_template": "Your neuroanatomy score is below 60%. This overview will help clarify brain structure concepts."
   },
   {
     "id": 7,
-    "topic": "Nervous System: Neuron Function",
+    "subject": "Nervous System",
+    "subtopic": "Neuron Function",
     "difficulty": "Intermediate",
     "type": "Quiz",
-    "title": "Action Potential and Synaptic Transmission Quiz",
+    "title": "Action Potential and Synaptic Transmission Quiz", 
     "description": "Test your understanding of neuron physiology, action potentials, and neurotransmitter function.",
     "url": "https://www.example.com/neuro/neuron-function-quiz",
     "source": "BrainLearn Interactive",
     "length_minutes": 20,
-    "tags": ["Neurology", "Physiology", "Neurons"]
+    "tags": ["Neurology", "Physiology", "Neurons"],
+    "recommendation_threshold": 55,
+    "reasoning_template": "Your neuron physiology performance suggests practice needed. This quiz targets your weak areas."
   },
   {
     "id": 8,
-    "topic": "Pharmacology: Drug Classifications",
+    "subject": "Pharmacology",
+    "subtopic": "Drug Classifications",
     "difficulty": "Intermediate",
     "type": "Article",
     "title": "Major Drug Classifications and Mechanisms",
@@ -93,11 +115,14 @@
     "url": "https://www.example.com/pharma/drug-classifications",
     "source": "PharmGuide",
     "length_minutes": 30,
-    "tags": ["Pharmacology", "Drugs", "Mechanisms"]
+    "tags": ["Pharmacology", "Drugs", "Mechanisms"],
+    "recommendation_threshold": 65,
+    "reasoning_template": "Your pharmacology classification score needs improvement. This guide covers essential drug categories."
   },
   {
     "id": 9,
-    "topic": "Pharmacology: Dosage Calculations",
+    "subject": "Pharmacology",
+    "subtopic": "Dosage Calculations",
     "difficulty": "Beginner",
     "type": "Video",
     "title": "Safe Medication Dosage Calculations",
@@ -105,11 +130,14 @@
     "url": "https://www.example.com/pharma/dosage-calculations",
     "source": "SafeMeds Training",
     "length_minutes": 16,
-    "tags": ["Pharmacology", "Dosage", "Safety"]
+    "tags": ["Pharmacology", "Dosage", "Safety"],
+    "recommendation_threshold": 70,
+    "reasoning_template": "Dosage calculation accuracy is critical. Your score suggests this foundational video is needed."
   },
   {
     "id": 10,
-    "topic": "Anatomy: Skeletal System",
+    "subject": "Anatomy",
+    "subtopic": "Skeletal System",
     "difficulty": "Beginner",
     "type": "Article",
     "title": "Human Skeletal System Fundamentals",
@@ -117,11 +145,14 @@
     "url": "https://www.example.com/anatomy/skeletal-system",
     "source": "AnatomyCore",
     "length_minutes": 24,
-    "tags": ["Anatomy", "Skeletal", "Bones"]
+    "tags": ["Anatomy", "Skeletal", "Bones"],
+    "recommendation_threshold": 60,
+    "reasoning_template": "Your skeletal system knowledge has gaps. This comprehensive article will build your foundation."
   },
   {
     "id": 11,
-    "topic": "Anatomy: Muscular System",
+    "subject": "Anatomy",
+    "subtopic": "Muscular System", 
     "difficulty": "Intermediate",
     "type": "Video",
     "title": "Muscle Types and Contraction Mechanisms",
@@ -129,11 +160,14 @@
     "url": "https://www.example.com/anatomy/muscular-system",
     "source": "MuscleLearn Pro",
     "length_minutes": 28,
-    "tags": ["Anatomy", "Muscles", "Physiology"]
+    "tags": ["Anatomy", "Muscles", "Physiology"],
+    "recommendation_threshold": 55,
+    "reasoning_template": "Your muscle physiology score indicates confusion about contraction mechanisms. This video clarifies key concepts."
   },
   {
     "id": 12,
-    "topic": "Physiology: Digestive System",
+    "subject": "Physiology",
+    "subtopic": "Digestive System",
     "difficulty": "Beginner",
     "type": "Quiz",
     "title": "Digestive Process and Organ Functions Quiz",
@@ -141,11 +175,14 @@
     "url": "https://www.example.com/physiology/digestive-quiz",
     "source": "DigestiveEd",
     "length_minutes": 18,
-    "tags": ["Physiology", "Digestive", "GI"]
+    "tags": ["Physiology", "Digestive", "GI"],
+    "recommendation_threshold": 60,
+    "reasoning_template": "Your digestive system understanding needs strengthening. This quiz targets your knowledge gaps."
   },
   {
     "id": 13,
-    "topic": "Physiology: Endocrine System",
+    "subject": "Physiology",
+    "subtopic": "Endocrine System",
     "difficulty": "Intermediate",
     "type": "Article",
     "title": "Hormones and Endocrine Regulation",
@@ -153,23 +190,29 @@
     "url": "https://www.example.com/physiology/endocrine-system",
     "source": "EndocrineStudy",
     "length_minutes": 35,
-    "tags": ["Physiology", "Endocrine", "Hormones"]
+    "tags": ["Physiology", "Endocrine", "Hormones"],
+    "recommendation_threshold": 50,
+    "reasoning_template": "Endocrine system complexity requires focused study. Your low score indicates this comprehensive resource is essential."
   },
   {
     "id": 14,
-    "topic": "Pathology: Inflammation",
+    "subject": "Pathology",
+    "subtopic": "Inflammation",
     "difficulty": "Intermediate",
     "type": "Video",
     "title": "Inflammatory Response and Pathophysiology",
     "description": "Understanding acute and chronic inflammation, cellular responses, and healing processes.",
     "url": "https://www.example.com/pathology/inflammation",
-    "source": "PathologyPro",
+    "source": "PathologyPro", 
     "length_minutes": 26,
-    "tags": ["Pathology", "Inflammation", "Disease"]
+    "tags": ["Pathology", "Inflammation", "Disease"],
+    "recommendation_threshold": 55,
+    "reasoning_template": "Your pathology score suggests difficulty with inflammatory processes. This video breaks down complex mechanisms."
   },
   {
     "id": 15,
-    "topic": "Pathology: Cancer Biology",
+    "subject": "Pathology",
+    "subtopic": "Cancer Biology",
     "difficulty": "Advanced",
     "type": "Article",
     "title": "Cellular Basis of Cancer Development",
@@ -177,11 +220,14 @@
     "url": "https://www.example.com/pathology/cancer-biology",
     "source": "OncologyEducate",
     "length_minutes": 40,
-    "tags": ["Pathology", "Cancer", "Oncology"]
+    "tags": ["Pathology", "Cancer", "Oncology"],
+    "recommendation_threshold": 45,
+    "reasoning_template": "Cancer biology is highly complex. Your score indicates need for this detailed foundational resource."
   },
   {
     "id": 16,
-    "topic": "Microbiology: Bacterial Infections",
+    "subject": "Microbiology",
+    "subtopic": "Bacterial Infections",
     "difficulty": "Intermediate",
     "type": "Quiz",
     "title": "Common Bacterial Pathogens Quiz",
@@ -189,11 +235,14 @@
     "url": "https://www.example.com/micro/bacterial-infections-quiz",
     "source": "MicroLearn",
     "length_minutes": 22,
-    "tags": ["Microbiology", "Bacteria", "Infections"]
+    "tags": ["Microbiology", "Bacteria", "Infections"],
+    "recommendation_threshold": 60,
+    "reasoning_template": "Your bacterial infection knowledge needs reinforcement. This targeted quiz will improve your understanding."
   },
   {
     "id": 17,
-    "topic": "Microbiology: Viral Diseases",
+    "subject": "Microbiology",
+    "subtopic": "Viral Diseases",
     "difficulty": "Beginner",
     "type": "Video",
     "title": "Introduction to Viral Pathogens",
@@ -201,11 +250,14 @@
     "url": "https://www.example.com/micro/viral-diseases",
     "source": "ViralStudy Center",
     "length_minutes": 19,
-    "tags": ["Microbiology", "Viruses", "Disease"]
+    "tags": ["Microbiology", "Viruses", "Disease"],
+    "recommendation_threshold": 65,
+    "reasoning_template": "Your virology foundation needs strengthening. This introductory video covers essential concepts."
   },
   {
     "id": 18,
-    "topic": "Clinical Skills: Vital Signs",
+    "subject": "Clinical Skills",
+    "subtopic": "Vital Signs",
     "difficulty": "Beginner",
     "type": "Article",
     "title": "Accurate Vital Sign Measurement Techniques",
@@ -213,11 +265,14 @@
     "url": "https://www.example.com/clinical/vital-signs",
     "source": "ClinicalSkills Hub",
     "length_minutes": 14,
-    "tags": ["Clinical", "Vital Signs", "Assessment"]
+    "tags": ["Clinical", "Vital Signs", "Assessment"],
+    "recommendation_threshold": 70,
+    "reasoning_template": "Vital sign accuracy is fundamental. Your assessment score suggests review of basic techniques is needed."
   },
   {
     "id": 19,
-    "topic": "Clinical Skills: Patient Communication",
+    "subject": "Clinical Skills",
+    "subtopic": "Patient Communication",
     "difficulty": "Intermediate",
     "type": "Video",
     "title": "Effective Patient Communication Strategies",
@@ -225,11 +280,14 @@
     "url": "https://www.example.com/clinical/patient-communication",
     "source": "CommunicateCare",
     "length_minutes": 32,
-    "tags": ["Clinical", "Communication", "Patient Care"]
+    "tags": ["Clinical", "Communication", "Patient Care"],
+    "recommendation_threshold": 50,
+    "reasoning_template": "Communication skills need development. Your interpersonal score indicates this training is essential."
   },
   {
     "id": 20,
-    "topic": "Medical Ethics: Healthcare Principles",
+    "subject": "Medical Ethics",
+    "subtopic": "Healthcare Principles",
     "difficulty": "Advanced",
     "type": "Quiz",
     "title": "Medical Ethics and Professional Conduct Quiz",
@@ -237,6 +295,8 @@
     "url": "https://www.example.com/ethics/healthcare-principles-quiz",
     "source": "EthicsInMedicine",
     "length_minutes": 25,
-    "tags": ["Ethics", "Professional", "Healthcare"]
+    "tags": ["Ethics", "Professional", "Healthcare"],
+    "recommendation_threshold": 40,
+    "reasoning_template": "Ethical reasoning is complex but crucial. Your score suggests intensive study of fundamental principles is needed."
   }
 ]
