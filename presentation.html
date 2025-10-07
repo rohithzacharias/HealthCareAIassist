@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/white.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: #2E8B57;
+        }
+        .reveal .slides section {
+            text-align: left;
+        }
+        .reveal .title-slide {
+            text-align: center;
+        }
+        .team-contact {
+            font-size: 0.8em;
+            color: #666;
+            text-align: center;
+        }
+        .demo-step {
+            background: #f0f8ff;
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #2E8B57;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Title Slide -->
+            <section class="title-slide">
+                <h1>🏥 MedAide AI</h1>
+                <h3>Healthcare Student's Personal Assistant</h3>
+                <p><strong>Team Futureinnovatees</strong></p>
+                <p><em>AI-Powered Study Assist Solution</em></p>
+            </section>
+
+            <!-- Problem Slide -->
+            <section>
+                <h2>🎯 The Problem</h2>
+                <ul>
+                    <li><strong>Scattered Resources:</strong> Healthcare students waste time finding relevant study materials</li>
+                    <li><strong>Poor Study Habits:</strong> No structured break scheduling or wellness integration</li>
+                    <li><strong>Generic Recommendations:</strong> Platforms don't consider individual weak topics or performance</li>
+                </ul>
+                <br>
+                <p style="color: #d32f2f; font-style: italic;">
+                    "Students need intelligent, rule-based recommendations that target their specific weaknesses"
+                </p>
+            </section>
+
+            <!-- Solution Slide -->
+            <section>
+                <h2>💡 MedAide AI - Rule-Based Assistant</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h3>🧠 Rule-Based AI Logic</h3>
+                        <ul>
+                            <li><strong>Performance tracking:</strong> Score < 60% → targeted resources</li>
+                            <li><strong>Smart matching:</strong> Weak subtopic → specific content</li>
+                            <li><strong>Reason explanations:</strong> "Why this resource?"</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>⏰ Integrated Scheduling</h3>
+                        <ul>
+                            <li><strong>Pomodoro/Custom:</strong> Study/break timeline</li>
+                            <li><strong>Wellness tips:</strong> Displayed during breaks</li>
+                            <li><strong>Session tracking:</strong> Progress monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <p><strong>MVP Core:</strong> Rule-based recommendations + Schedule generation + Wellness integration</p>
+            </section>
+
+            <!-- Demo Flow Slide -->
+            <section>
+                <h2>🖥️ User Flow & Demo</h2>
+                
+                <div class="demo-step">
+                    <strong>1. Login & Topic Selection:</strong> Student picks subject → system checks performance data
+                </div>
+                
+                <div class="demo-step">
+                    <strong>2. Rule-Based Recommendation:</strong> "Nervous System" score < 60% → targeted resources + reasoning
+                </div>
+                
+                <div class="demo-step">
+                    <strong>3. Schedule Generation:</strong> API returns Pomodoro timeline (25min study + 5min break blocks)
+                </div>
+                
+                <div class="demo-step">
+                    <strong>4. Wellness Integration:</strong> Break periods show curated wellness tips from JSON data
+                </div>
+                
+                <p style="text-align: center; margin-top: 20px; background: #fff3cd; padding: 10px; border-radius: 5px;">
+                    <strong>🎬 Live Demo: API calls → Resource recommendations → Schedule timeline → DB queries</strong>
+                </p>
+            </section>
+
+            <!-- Demo MVP Slide -->
+            <section>
+                <h2>�️ MVP Demo Components</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h3>� Live API Endpoints</h3>
+                        <ul>
+                            <li><code>/api/recommend</code> → Resource + reasoning</li>
+                            <li><code>/api/schedule</code> → Study/break timeline</li>
+                            <li><code>/api/wellness</code> → Break tips from JSON</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>💾 Data Foundation</h3>
+                        <ul>
+                            <li><strong>Dummy DB:</strong> Student performance scores</li>
+                            <li><strong>20+ Resources:</strong> Curated healthcare content</li>
+                            <li><strong>10+ Wellness tips:</strong> Break activities</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <br>
+                <div style="text-align: center; background: #e8f5e8; padding: 15px; border-radius: 10px;">
+                    <h3>🎬 Demo Format</h3>
+                    <p><strong>Postman/curl calls OR simple frontend mock showing rule logic in action</strong></p>
+                </div>
+                
+                <p style="text-align: center; margin-top: 15px; font-style: italic;">
+                    "Fast MVP implementation → Rule-based logic → No ML training required!"
+                </p>
+            </section>
+
+            <!-- Team Contact Slide -->
+            <section class="title-slide">
+                <h2>👥 Team Futureinnovatees</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0;">
+                    <div>Advaith<br><small>AI & Backend</small></div>
+                    <div>Adithyan<br><small>Frontend & UX</small></div>
+                    <div>Rohith<br><small>Data & Scheduler</small></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                    <div>Jinto<br><small>Content Curator</small></div>
+                    <div>Sivasanand<br><small>UI & QA</small></div>
+                </div>
+                
+                <br>
+                <p><strong>🏥 "Empowering Healthcare Students with Intelligent Learning"</strong></p>
+                <p class="team-contact">Thank you! Questions?</p>
+            </section>
+
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide'
+        });
+    </script>
+</body>
+</html>
