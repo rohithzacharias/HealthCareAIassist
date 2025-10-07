@@ -1,20 +1,23 @@
-# MedAide AI - Healthcare Student's Personal Assistant
+# Campus Wellness Analytics - Student Wellness Data Analytics System
 
-![MedAide AI Logo](https://via.placeholder.com/400x100/2E8B57/FFFFFF?text=MedAide+AI)
+![Campus Wellness Analytics](https://via.placeholder.com/400x100/2E8B57/FFFFFF?text=Campus+Wellness+Analytics)
 
 ## 🏥 Project Overview
 
-**MedAide AI** is an intelligent personal assistant designed specifically for healthcare students. Built during a one-day hackathon by Team **Futureinnovatees**, this application provides personalized learning resources, wellness tracking, and smart study break scheduling to enhance the learning experience for medical and healthcare students.
+**Campus Wellness Analytics** is a comprehensive data analytics system designed to collect anonymous wellness survey data from students and provide actionable insights to improve campus health services. Built during a one-day hackathon by Team **Futureinnovatees**, this system identifies trends and patterns to enhance student well-being through data-driven decision making.
 
 ### 🎯 Problem Statement
-Healthcare students face overwhelming amounts of complex information, high stress levels, and difficulty maintaining work-life balance during their studies. Traditional study methods often lack personalization and don't address student wellness needs.
+**Healthcare & Campus Experience - Student Wellness Data Analytics**
+
+Campus health services operate without comprehensive student wellness data, leading to reactive rather than proactive approaches to student health. Limited budgets aren't optimally distributed based on actual student needs, and wellness crises remain invisible until they escalate.
 
 ### 💡 Solution
-An AI-powered study assistant that:
-- Recommends personalized learning resources based on individual needs and difficulty levels
-- Tracks student wellness and mood
-- Schedules intelligent study breaks using evidence-based techniques
-- Provides actionable wellness tips and stress management strategies
+A data analytics platform that:
+- Collects anonymous wellness survey data across multiple categories (mental health, physical wellness, academic stress)
+- Analyzes trends and patterns to identify critical wellness issues
+- Generates prioritized, actionable insights with budget recommendations
+- Provides measurable success metrics for campus health service improvements
+- Enables proactive intervention rather than reactive crisis management
 
 ---
 
@@ -26,7 +29,7 @@ An AI-powered study assistant that:
 | **Rohith** | Data Infrastructure & Scheduler | Database setup, break scheduler logic, API endpoints |
 | **Adithyan** | Frontend Development & UX | UI design, main dashboard, user experience |
 | **Sivasanand** | UI/UX Support & QA | Frontend assistance, wireframes, quality assurance |
-| **Jinto** | Data & Content Curator | Learning resources, wellness content, presentation |
+| **Jinto** | Data Curator & Insights Analyst | Survey templates, wellness response data, campus health insights |
 
 ---
 

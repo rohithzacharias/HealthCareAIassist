@@ -1,0 +1,318 @@
+[
+  {
+    "survey_id": 1,
+    "category": "Mental Health",
+    "subcategory": "Stress Management",
+    "question": "How would you rate your current stress level?",
+    "question_type": "scale",
+    "scale_range": "1-10",
+    "scale_labels": {
+      "1": "No stress at all",
+      "5": "Moderate stress", 
+      "10": "Extremely stressed"
+    },
+    "frequency": "daily",
+    "priority": "high",
+    "campus_service_link": "Counseling Services"
+  },
+  {
+    "survey_id": 2,
+    "category": "Mental Health",
+    "subcategory": "Anxiety Levels",
+    "question": "How often have you felt anxious in the past week?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Never",
+      "1-2 days",
+      "3-4 days", 
+      "5-6 days",
+      "Every day"
+    ],
+    "frequency": "weekly",
+    "priority": "high",
+    "campus_service_link": "Mental Health Support"
+  },
+  {
+    "survey_id": 3,
+    "category": "Physical Health",
+    "subcategory": "Sleep Quality",
+    "question": "How would you rate your sleep quality in the past week?",
+    "question_type": "scale",
+    "scale_range": "1-5",
+    "scale_labels": {
+      "1": "Very poor",
+      "3": "Average",
+      "5": "Excellent"
+    },
+    "frequency": "weekly",
+    "priority": "medium",
+    "campus_service_link": "Health Center"
+  },
+  {
+    "survey_id": 4,
+    "category": "Physical Health",
+    "subcategory": "Exercise Frequency",
+    "question": "How many days did you exercise for at least 30 minutes this week?",
+    "question_type": "numeric",
+    "numeric_range": "0-7",
+    "unit": "days",
+    "frequency": "weekly",
+    "priority": "medium",
+    "campus_service_link": "Recreation Center"
+  },
+  {
+    "survey_id": 5,
+    "category": "Academic Wellness",
+    "subcategory": "Study-Life Balance",
+    "question": "How satisfied are you with your current study-life balance?",
+    "question_type": "scale",
+    "scale_range": "1-10",
+    "scale_labels": {
+      "1": "Very dissatisfied",
+      "5": "Neutral",
+      "10": "Very satisfied"
+    },
+    "frequency": "bi-weekly",
+    "priority": "medium",
+    "campus_service_link": "Academic Success Center"
+  },
+  {
+    "survey_id": 6,
+    "category": "Social Wellness",
+    "subcategory": "Social Connection",
+    "question": "How connected do you feel to your campus community?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Very disconnected",
+      "Somewhat disconnected", 
+      "Neutral",
+      "Somewhat connected",
+      "Very connected"
+    ],
+    "frequency": "monthly",
+    "priority": "medium",
+    "campus_service_link": "Student Activities"
+  },
+  {
+    "survey_id": 7,
+    "category": "Nutrition",
+    "subcategory": "Eating Habits",
+    "question": "How many balanced meals did you eat yesterday?",
+    "question_type": "numeric",
+    "numeric_range": "0-5",
+    "unit": "meals",
+    "frequency": "weekly",
+    "priority": "low",
+    "campus_service_link": "Dining Services"
+  },
+  {
+    "survey_id": 8,
+    "category": "Mental Health",
+    "subcategory": "Emotional Support",
+    "question": "Do you feel you have adequate emotional support when needed?",
+    "question_type": "yes_no_maybe",
+    "options": ["Yes", "No", "Sometimes"],
+    "frequency": "monthly",
+    "priority": "high",
+    "campus_service_link": "Counseling Services"
+  },
+  {
+    "survey_id": 9,
+    "category": "Physical Health", 
+    "subcategory": "Health Services Usage",
+    "question": "Have you used campus health services in the past semester?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Never",
+      "Once",
+      "2-3 times",
+      "4-5 times",
+      "More than 5 times"
+    ],
+    "frequency": "semester",
+    "priority": "low",
+    "campus_service_link": "Health Center"
+  },
+  {
+    "survey_id": 10,
+    "category": "Academic Wellness",
+    "subcategory": "Academic Stress",
+    "question": "What is your primary source of academic stress?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Workload volume",
+      "Time management",
+      "Financial pressure",
+      "Performance expectations",
+      "Career uncertainty",
+      "Social pressures"
+    ],
+    "frequency": "monthly",
+    "priority": "high",
+    "campus_service_link": "Academic Success Center"
+  },
+  {
+    "survey_id": 11,
+    "category": "Campus Environment",
+    "subcategory": "Safety Perception",
+    "question": "How safe do you feel on campus during evening hours?",
+    "question_type": "scale",
+    "scale_range": "1-5",
+    "scale_labels": {
+      "1": "Very unsafe",
+      "3": "Neutral", 
+      "5": "Very safe"
+    },
+    "frequency": "semester",
+    "priority": "high",
+    "campus_service_link": "Campus Security"
+  },
+  {
+    "survey_id": 12,
+    "category": "Financial Wellness",
+    "subcategory": "Financial Stress",
+    "question": "How often do financial concerns affect your daily life?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Never",
+      "Rarely",
+      "Sometimes",
+      "Often",
+      "Always"
+    ],
+    "frequency": "monthly",
+    "priority": "medium",
+    "campus_service_link": "Financial Aid Office"
+  },
+  {
+    "survey_id": 13,
+    "category": "Physical Health",
+    "subcategory": "Substance Use",
+    "question": "In the past month, how often did you consume alcohol?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Never",
+      "1-2 times",
+      "3-5 times",
+      "6-10 times",
+      "More than 10 times"
+    ],
+    "frequency": "monthly",
+    "priority": "medium",
+    "campus_service_link": "Health Education"
+  },
+  {
+    "survey_id": 14,
+    "category": "Academic Wellness",
+    "subcategory": "Study Environment",
+    "question": "How satisfied are you with available study spaces on campus?",
+    "question_type": "scale",
+    "scale_range": "1-10",
+    "scale_labels": {
+      "1": "Very dissatisfied",
+      "5": "Neutral",
+      "10": "Very satisfied"
+    },
+    "frequency": "semester",
+    "priority": "low",
+    "campus_service_link": "Library Services"
+  },
+  {
+    "survey_id": 15,
+    "category": "Social Wellness",
+    "subcategory": "Loneliness",
+    "question": "How often do you feel lonely on campus?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Never",
+      "Rarely",
+      "Sometimes", 
+      "Often",
+      "Always"
+    ],
+    "frequency": "bi-weekly",
+    "priority": "high",
+    "campus_service_link": "Student Activities"
+  },
+  {
+    "survey_id": 16,
+    "category": "Mental Health",
+    "subcategory": "Coping Strategies",
+    "question": "What is your primary method for managing stress?",
+    "question_type": "multiple_choice",
+    "options": [
+      "Exercise/Physical activity",
+      "Social support",
+      "Professional counseling",
+      "Meditation/Mindfulness",
+      "Hobbies/Creative activities",
+      "Sleep/Rest"
+    ],
+    "frequency": "monthly",
+    "priority": "medium",
+    "campus_service_link": "Wellness Programs"
+  },
+  {
+    "survey_id": 17,
+    "category": "Campus Services",
+    "subcategory": "Service Awareness",
+    "question": "Which campus wellness services are you aware of?",
+    "question_type": "multiple_select",
+    "options": [
+      "Counseling Services",
+      "Health Center",
+      "Recreation Center",
+      "Wellness Programs",
+      "Academic Success Center",
+      "Financial Aid",
+      "Career Services"
+    ],
+    "frequency": "semester",
+    "priority": "low",
+    "campus_service_link": "Student Services"
+  },
+  {
+    "survey_id": 18,
+    "category": "Digital Wellness",
+    "subcategory": "Screen Time",
+    "question": "How many hours per day do you spend on recreational screen time?",
+    "question_type": "numeric",
+    "numeric_range": "0-24",
+    "unit": "hours",
+    "frequency": "weekly",
+    "priority": "low",
+    "campus_service_link": "Health Education"
+  },
+  {
+    "survey_id": 19,
+    "category": "Physical Health",
+    "subcategory": "Healthcare Access",
+    "question": "How easy is it for you to access healthcare when needed?",
+    "question_type": "scale",
+    "scale_range": "1-5",
+    "scale_labels": {
+      "1": "Very difficult",
+      "3": "Moderate",
+      "5": "Very easy"
+    },
+    "frequency": "semester",
+    "priority": "high",
+    "campus_service_link": "Health Center"
+  },
+  {
+    "survey_id": 20,
+    "category": "Overall Wellness",
+    "subcategory": "Campus Satisfaction",
+    "question": "Overall, how would you rate your wellness experience on campus?",
+    "question_type": "scale",
+    "scale_range": "1-10",
+    "scale_labels": {
+      "1": "Very poor",
+      "5": "Average",
+      "10": "Excellent"
+    },
+    "frequency": "semester",
+    "priority": "high",
+    "campus_service_link": "Student Services"
+  }
+]

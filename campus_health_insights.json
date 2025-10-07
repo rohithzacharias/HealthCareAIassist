@@ -1,0 +1,262 @@
+[
+  {
+    "insight_id": 1,
+    "category": "Mental Health Crisis",
+    "priority": "CRITICAL",
+    "trend_identified": "High Stress & Anxiety Levels",
+    "data_source": "Weekly stress surveys, anxiety frequency reports",
+    "key_findings": {
+      "percentage_affected": "73%",
+      "primary_demographics": ["Freshmen", "Pre-med students", "On-campus residents"],
+      "trend_direction": "Increasing",
+      "severity_score": 8.2
+    },
+    "recommendation": {
+      "immediate_action": "Increase counseling staff availability during peak stress periods (midterms, finals)",
+      "resource_allocation": "Add 3 additional counselors, extend hours to include weekends",
+      "program_development": "Implement mandatory stress management workshops for high-risk demographics",
+      "budget_impact": "$75,000 annually"
+    },
+    "campus_services_involved": ["Counseling Services", "Mental Health Support", "Academic Success Center"],
+    "success_metrics": [
+      "Reduce average stress levels from 8.2 to 6.0",
+      "Increase counseling service usage by 40%",
+      "Decrease anxiety frequency reports by 30%"
+    ],
+    "implementation_timeline": "Immediate (within 2 weeks)"
+  },
+  {
+    "insight_id": 2,
+    "category": "Sleep & Physical Health",
+    "priority": "HIGH", 
+    "trend_identified": "Poor Sleep Quality & Low Exercise",
+    "data_source": "Sleep quality ratings, exercise frequency tracking",
+    "key_findings": {
+      "percentage_affected": "68%",
+      "primary_demographics": ["All year levels", "Healthcare programs"],
+      "trend_direction": "Stable but concerning",
+      "severity_score": 6.8
+    },
+    "recommendation": {
+      "immediate_action": "Launch 'Campus Sleep Hygiene' education campaign",
+      "resource_allocation": "Partner with Recreation Center for free fitness programs",
+      "program_development": "Create 24/7 quiet study spaces, install sleep pods in library",
+      "budget_impact": "$45,000 setup + $15,000 annually"
+    },
+    "campus_services_involved": ["Health Center", "Recreation Center", "Library Services"],
+    "success_metrics": [
+      "Improve average sleep quality from 2.3 to 3.5",
+      "Increase weekly exercise participation by 50%",
+      "Reduce health center visits for fatigue-related issues"
+    ],
+    "implementation_timeline": "Short-term (1-2 months)"
+  },
+  {
+    "insight_id": 3,
+    "category": "Social Isolation",
+    "priority": "HIGH",
+    "trend_identified": "Increasing Loneliness & Disconnection",
+    "data_source": "Social connection surveys, loneliness frequency reports",
+    "key_findings": {
+      "percentage_affected": "45%",
+      "primary_demographics": ["Freshmen", "Off-campus students", "International students"],
+      "trend_direction": "Increasing", 
+      "severity_score": 7.1
+    },
+    "recommendation": {
+      "immediate_action": "Expand peer mentorship programs and social events",
+      "resource_allocation": "Hire 2 full-time community building coordinators",
+      "program_development": "Create structured study groups, increase campus social events by 200%",
+      "budget_impact": "$60,000 annually"
+    },
+    "campus_services_involved": ["Student Activities", "Residence Life", "International Student Services"],
+    "success_metrics": [
+      "Reduce 'always lonely' responses from 25% to 10%",
+      "Increase 'very connected' responses by 40%",
+      "Double participation in social events"
+    ],
+    "implementation_timeline": "Medium-term (2-3 months)"
+  },
+  {
+    "insight_id": 4,
+    "category": "Academic Support", 
+    "priority": "MEDIUM",
+    "trend_identified": "Study-Life Balance Struggles",
+    "data_source": "Study-life balance ratings, academic stress sources",
+    "key_findings": {
+      "percentage_affected": "61%",
+      "primary_demographics": ["Pre-med students", "Nursing students", "Junior/Senior levels"],
+      "trend_direction": "Stable",
+      "severity_score": 5.4
+    },
+    "recommendation": {
+      "immediate_action": "Redesign study spaces for better collaboration and quiet zones",
+      "resource_allocation": "Upgrade library infrastructure, add group study rooms",
+      "program_development": "Time management workshops, academic coaching programs",
+      "budget_impact": "$85,000 renovation + $25,000 annually"
+    },
+    "campus_services_involved": ["Academic Success Center", "Library Services", "Student Support"],
+    "success_metrics": [
+      "Improve study-life balance ratings from 4.2 to 6.0",
+      "Increase study space satisfaction by 60%",
+      "Reduce time management stress by 35%"
+    ],
+    "implementation_timeline": "Long-term (4-6 months)"
+  },
+  {
+    "insight_id": 5,
+    "category": "Financial Wellness",
+    "priority": "MEDIUM",
+    "trend_identified": "Financial Stress Affecting Daily Life",
+    "data_source": "Financial stress frequency, service usage patterns",
+    "key_findings": {
+      "percentage_affected": "52%",
+      "primary_demographics": ["Freshmen", "Sophomores", "Healthcare programs"],
+      "trend_direction": "Increasing",
+      "severity_score": 6.2
+    },
+    "recommendation": {
+      "immediate_action": "Increase financial literacy programming and emergency aid availability",
+      "resource_allocation": "Expand financial aid office hours, hire financial counselor",
+      "program_development": "Emergency grant program, part-time job placement assistance",
+      "budget_impact": "$40,000 emergency fund + $35,000 staffing"
+    },
+    "campus_services_involved": ["Financial Aid Office", "Career Services", "Student Support"],
+    "success_metrics": [
+      "Reduce 'always stressed' financial responses from 20% to 8%",
+      "Increase financial aid office satisfaction by 45%",
+      "Double emergency aid utilization"
+    ],
+    "implementation_timeline": "Short-term (1-2 months)"
+  },
+  {
+    "insight_id": 6,
+    "category": "Healthcare Access",
+    "priority": "MEDIUM",
+    "trend_identified": "Barriers to Campus Health Services",
+    "data_source": "Healthcare access difficulty ratings, service usage patterns",
+    "key_findings": {
+      "percentage_affected": "38%",
+      "primary_demographics": ["Off-campus students", "Graduate students", "Evening program students"],
+      "trend_direction": "Stable",
+      "severity_score": 4.8
+    },
+    "recommendation": {
+      "immediate_action": "Extend health center hours, implement telehealth options",
+      "resource_allocation": "Add evening clinic hours, telehealth platform subscription",
+      "program_development": "Mobile health services, online appointment system",
+      "budget_impact": "$30,000 technology + $20,000 annually"
+    },
+    "campus_services_involved": ["Health Center", "IT Services", "Student Services"],
+    "success_metrics": [
+      "Improve healthcare access rating from 3.2 to 4.2",
+      "Increase health service usage by 25%", 
+      "Reduce 'never used services' responses by 50%"
+    ],
+    "implementation_timeline": "Medium-term (2-4 months)"
+  },
+  {
+    "insight_id": 7,
+    "category": "Substance Use Monitoring",
+    "priority": "LOW",
+    "trend_identified": "Concerning Alcohol Consumption Patterns",
+    "data_source": "Monthly alcohol consumption surveys",
+    "key_findings": {
+      "percentage_affected": "32%",
+      "primary_demographics": ["Sophomores", "Juniors", "On-campus residents"],
+      "trend_direction": "Stable",
+      "severity_score": 4.1
+    },
+    "recommendation": {
+      "immediate_action": "Enhance alcohol education and alternative social programming",
+      "resource_allocation": "Expand health education staff, increase substance-free events",
+      "program_development": "Peer education programs, alternative weekend activities",
+      "budget_impact": "$25,000 programming annually"
+    },
+    "campus_services_involved": ["Health Education", "Student Activities", "Residence Life"],
+    "success_metrics": [
+      "Increase 'never drink' responses by 15%",
+      "Reduce high-frequency drinking by 30%",
+      "Double participation in substance-free events"
+    ],
+    "implementation_timeline": "Long-term (ongoing)"
+  },
+  {
+    "insight_id": 8,
+    "category": "Digital Wellness",
+    "priority": "LOW",
+    "trend_identified": "Excessive Recreational Screen Time",
+    "data_source": "Daily screen time tracking surveys",
+    "key_findings": {
+      "percentage_affected": "71%",
+      "primary_demographics": ["All demographics", "Particularly freshmen"],
+      "trend_direction": "Increasing",
+      "severity_score": 3.9
+    },
+    "recommendation": {
+      "immediate_action": "Launch digital wellness awareness campaign",
+      "resource_allocation": "Partner with IT for screen time tracking tools",
+      "program_development": "Digital detox programs, mindful technology use workshops",
+      "budget_impact": "$15,000 programming annually"
+    },
+    "campus_services_involved": ["Health Education", "IT Services", "Wellness Programs"],
+    "success_metrics": [
+      "Reduce average recreational screen time from 7.2 to 5.0 hours",
+      "Increase awareness of digital wellness by 80%",
+      "Launch 3 digital detox events per semester"
+    ],
+    "implementation_timeline": "Short-term (1-2 months)"
+  },
+  {
+    "insight_id": 9,
+    "category": "Service Awareness Gap",
+    "priority": "MEDIUM",
+    "trend_identified": "Low Awareness of Available Campus Services",
+    "data_source": "Service awareness surveys, utilization data",
+    "key_findings": {
+      "percentage_affected": "64%",
+      "primary_demographics": ["Freshmen", "Transfer students", "Off-campus students"],
+      "trend_direction": "Stable but concerning",
+      "severity_score": 5.7
+    },
+    "recommendation": {
+      "immediate_action": "Redesign campus service marketing and outreach strategy",
+      "resource_allocation": "Hire marketing coordinator, develop mobile app for services",
+      "program_development": "Campus service fair, peer ambassador program",
+      "budget_impact": "$40,000 setup + $20,000 annually"
+    },
+    "campus_services_involved": ["Student Services", "Marketing", "All service departments"],
+    "success_metrics": [
+      "Increase service awareness from 35% to 70%",
+      "Double service utilization across all departments",
+      "Reduce 'unaware of services' responses by 60%"
+    ],
+    "implementation_timeline": "Medium-term (2-3 months)"
+  },
+  {
+    "insight_id": 10,
+    "category": "Campus Safety Perception",
+    "priority": "MEDIUM",
+    "trend_identified": "Mixed Safety Perceptions, Room for Improvement",
+    "data_source": "Campus safety perception surveys, security incident reports",
+    "key_findings": {
+      "percentage_affected": "41%",
+      "primary_demographics": ["Female students", "Evening program students", "Off-campus commuters"],
+      "trend_direction": "Stable",
+      "severity_score": 4.2
+    },
+    "recommendation": {
+      "immediate_action": "Enhance lighting and increase security patrols during evening hours",
+      "resource_allocation": "Install additional emergency call boxes, hire 2 security officers",
+      "program_development": "Safety escort service, self-defense classes",
+      "budget_impact": "$55,000 infrastructure + $30,000 annually"
+    },
+    "campus_services_involved": ["Campus Security", "Facilities Management", "Student Services"],
+    "success_metrics": [
+      "Improve evening safety perception from 3.8 to 4.5",
+      "Reduce safety-related incidents by 25%",
+      "Increase safety service usage by 100%"
+    ],
+    "implementation_timeline": "Short-term (1-3 months)"
+  }
+]
