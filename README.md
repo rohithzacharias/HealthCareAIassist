@@ -1,379 +1,192 @@
-# Campus Wellness Analytics - Student Wellness Data Analytics System
+# MedAide AI - AI-Powered Study Assistant
 
-![Campus Wellness Analytics](https://via.placeholder.com/400x100/2E8B57/FFFFFF?text=Campus+Wellness+Analytics)
+![MedAide AI](https://via.placeholder.com/400x100/2E8B57/FFFFFF?text=MedAide+AI)
 
-## 🏥 Project Overview
+## 🎯 Project Overview
 
-**Campus Wellness Analytics** is a comprehensive data analytics system designed to collect anonymous wellness survey data from students and provide actionable insights to improve campus health services. Built during a one-day hackathon by Team **Futureinnovatees**, this system identifies trends and patterns to enhance student well-being through data-driven decision making.
+**Problem Statement:** Healthcare & Campus Experience - AI-Powered Study Assistant
 
-### 🎯 Problem Statement
-**Healthcare & Campus Experience - Student Wellness Data Analytics**
+MedAide AI is a personal digital assistant that recommends learning resources, schedules study breaks, and supports overall student wellness. It creates personalized learning paths based on individual student needs and performance.
 
-Campus health services operate without comprehensive student wellness data, leading to reactive rather than proactive approaches to student health. Limited budgets aren't optimally distributed based on actual student needs, and wellness crises remain invisible until they escalate.
+## ✨ Core Features
 
-### 💡 Solution
-A data analytics platform that:
-- Collects anonymous wellness survey data across multiple categories (mental health, physical wellness, academic stress)
-- Analyzes trends and patterns to identify critical wellness issues
-- Generates prioritized, actionable insights with budget recommendations
-- Provides measurable success metrics for campus health service improvements
-- Enables proactive intervention rather than reactive crisis management
+### 🧠 Intelligent Resource Recommendations
+- **Rule-based AI logic** analyzes student performance scores
+- **Personalized suggestions** based on weak subjects and difficulty preferences
+- **Reasoning explanations** for every recommendation
+- **25+ curated healthcare learning resources** across all medical subjects
 
----
+### ⏰ Smart Study Scheduling
+- **Pomodoro timer integration** with customizable session lengths
+- **Break scheduling** based on student preferences (25/45/60 minute sessions)
+- **Wellness tip integration** during break periods
+- **Adaptive scheduling** based on study patterns
 
-## 🏆 Team Futureinnovatees
+### 🧘 Student Wellness Support
+- **10 targeted wellness activities** for study breaks
+- **Category-based tips:** Mindfulness, Physical, Study Techniques
+- **Duration-optimized:** 1-15 minute activities perfectly timed for breaks
+- **Stress management** and focus enhancement tools
 
-| Name | Role | Key Responsibilities |
-|------|------|---------------------|
-| **Advaith** | AI Logic & Backend Lead | System architecture, recommendation algorithms, API development |
-| **Rohith** | Data Infrastructure & Scheduler | Database setup, break scheduler logic, API endpoints |
-| **Adithyan** | Frontend Development & UX | UI design, main dashboard, user experience |
-| **Sivasanand** | UI/UX Support & QA | Frontend assistance, wireframes, quality assurance |
-| **Jinto** | Data Curator & Insights Analyst | Survey templates, wellness response data, campus health insights |
+## 🏗️ System Architecture
 
----
+### Rule-Based AI Logic
+```
+IF student_score < recommendation_threshold:
+    RECOMMEND targeted_resource
+    PROVIDE reasoning_explanation
+    SCHEDULE personalized_study_session
+```
 
-## 🛠 Technology Stack
-
-### Frontend
-- **HTML/CSS/JavaScript** - Rapid prototyping and responsive design
-- **Framework**: React/Vue.js (optional for enhanced interactivity)
-- **Styling**: Modern CSS with healthcare-themed design
-
-### Backend
-- **Python Flask/Django** - Lightweight web framework for API development
-- **Rule-Based AI System** - Simple recommendation engine for MVP
-- **RESTful APIs** - Clean endpoints for frontend integration
-
-### Data Storage
-- **JSON Files** - Local data storage for rapid development
-- **Python Dictionaries** - In-memory data processing
-- **Future**: SQLite/MongoDB for production scaling
-
-### Development Tools
-- **Git/GitHub** - Version control and collaboration
-- **VS Code** - Primary development environment
-- **Terminal/Bash** - Command line operations
-
----
+### Personalization Engine
+- **Performance tracking:** Subject-specific scores and weak areas
+- **Learning preferences:** Content type, difficulty, session length
+- **Adaptive recommendations:** Improves based on student patterns
 
 ## 📁 Project Structure
 
 ```
-HealthCareAIassist/
-├── README.md                    # Project documentation (this file)
-├── learning_resources.json     # Curated healthcare learning materials
-├── wellness_tips.json          # Wellness and break recommendations
-├── backend/                    # Backend API and logic (to be created)
-│   ├── app.py                 # Main Flask application
-│   ├── ai_logic.py            # Recommendation algorithms
-│   └── scheduler.py           # Break scheduling logic
-├── frontend/                   # User interface (to be created)
-│   ├── index.html             # Main dashboard
-│   ├── styles.css             # Application styling
-│   └── script.js              # Frontend JavaScript
-└── docs/                      # Additional documentation
-    └── api_documentation.md   # API endpoint documentation
+MedAide AI/
+├── README.md                      # 📚 Complete project documentation
+├── learning_resources.json        # 🧠 25 healthcare learning materials
+├── wellness_tips.json            # 🧘 10 wellness activities for breaks
+├── student_performance_data.json  # 👥 3 sample student profiles
+├── presentation.html              # 🎬 Professional hackathon presentation
+└── api_examples.md               # 🔌 Backend/frontend integration guide
 ```
 
----
+## 🎯 Data Files Overview
 
-## 🚀 Features (MVP)
+### 📖 `learning_resources.json`
+- **25 curated resources** across Cardiology, Neurology, Respiratory, Pharmacology
+- **Structured format:** Topic, difficulty, type, recommendation thresholds
+- **AI-ready:** Includes reasoning templates for recommendations
+- **Multiple formats:** Videos, articles, quizzes, interactive content
 
-### 1. Personalized Learning Resources
-- **20+ curated resources** covering major healthcare topics
-- **Difficulty levels**: Beginner, Intermediate, Advanced
-- **Content types**: Videos, Articles, Quizzes
-- **Topics covered**: Cardiology, Respiratory, Neurology, Pharmacology, Anatomy, and more
+### 🧘 `wellness_tips.json` 
+- **10 wellness activities** optimized for study breaks
+- **Categories:** Mindfulness (breathing, relaxation), Physical (stretches, movement), Study Tips
+- **Time-based:** 1-15 minute activities for different break lengths
+- **Integration ready:** Perfect for Pomodoro timer incorporation
 
-### 2. Wellness Tracking & Tips
-- **Mood tracking** with simple input interface
-- **10+ wellness tips** covering mindfulness, physical activities, and study strategies
-- **Categorized recommendations**: Mindfulness, Physical, Study Tips
-- **Timed activities**: 5-30 minute wellness breaks
+### 👥 `student_performance_data.json`
+- **3 sample student profiles** with realistic performance scores  
+- **Comprehensive tracking:** 9 medical subjects per student
+- **Study preferences:** Session length, content types, difficulty levels
+- **Demo ready:** Triggers recommendations based on low scores
 
-### 3. Smart Study Scheduler
-- **Pomodoro technique** integration
-- **Break reminders** based on study duration
-- **Personalized scheduling** based on user preferences and performance
+## 🚀 How It Works
 
----
-
-## 📊 Data Structure
-
-### Learning Resources (`learning_resources.json`)
+### 1. Student Assessment
 ```json
+Student Performance Example:
 {
-  "id": 1,
-  "topic": "Cardiology: ECG Basics",
-  "difficulty": "Beginner",
-  "type": "Video",
-  "title": "Understanding ECG Basics for Healthcare Students",
-  "description": "Comprehensive introduction to electrocardiogram interpretation...",
-  "url": "https://www.example.com/cardiology/ecg-basics",
-  "source": "FutureMed Academy",
-  "length_minutes": 12,
-  "tags": ["Cardiology", "ECG", "Basics"]
+  "student_id": "S001",
+  "performance": {
+    "Cardiac Anatomy": 45,    // Below 60% threshold
+    "ECG Interpretation": 52, // Below 55% threshold  
+    "Neuroanatomy": 55       // Needs reinforcement
+  }
 }
 ```
 
-### Wellness Tips (`wellness_tips.json`)
+### 2. AI Recommendation Engine
 ```json
+Recommendation Output:
 {
-  "id": 1,
-  "category": "Mindfulness",
-  "title": "5-Minute Box Breathing Exercise",
-  "description": "Simple breathing technique to reduce stress and improve focus...",
-  "duration_minutes": 5,
-  "instructions": ["Find a comfortable position...", "Inhale for 4 counts..."],
-  "benefits": ["Reduces stress", "Improves focus", "Lowers heart rate"]
+  "recommended_resource": {
+    "title": "Understanding Heart Structure for Healthcare Students",
+    "type": "Video", 
+    "difficulty": "Beginner",
+    "reasoning": "Your cardiac anatomy score indicates you need foundational review..."
+  }
 }
 ```
 
----
+### 3. Study Session Creation
+```json
+Study Schedule:
+{
+  "session_blocks": [
+    {"type": "Study", "duration": 25, "subject": "Cardiac Anatomy"},
+    {"type": "Break", "duration": 5, "activity": "5-Minute Deep Breathing"},
+    {"type": "Study", "duration": 25, "subject": "ECG Interpretation"},
+    {"type": "Break", "duration": 15, "activity": "Desk Stretches + Hydration"}
+  ]
+}
+```
 
-## ⚡ Quick Start Guide
+## 👥 Team Futureinnovatees
 
-### Prerequisites
-- Python 3.8+
-- Git
-- Modern web browser
-- Text editor (VS Code recommended)
+| Team Member | Role | Key Responsibilities |
+|-------------|------|---------------------|
+| **Advaith** | Backend/AI Lead | Rule-based recommendation logic, API development |
+| **Rohith** | Data Infrastructure | Database setup, scheduler implementation |
+| **Adithyan** | Frontend/UX | User interface, dashboard, API integration |
+| **Sivasanand** | UI/QA | Testing, quality assurance, user experience |
+| **Jinto** | Data & Content Curator | Learning resources, wellness content, presentation |
 
-### Setup Instructions
+## 🛠️ Tech Stack
 
-1. **Clone the Repository**
+- **Backend:** Python/Flask for rule-based AI logic
+- **Frontend:** React/Vue.js or HTML/CSS/JavaScript
+- **Data Storage:** JSON files for MVP (easily scalable to database)
+- **AI Logic:** Rule-based recommendation system
+- **Integration:** RESTful APIs for frontend-backend communication
+
+## 🎯 MVP Demo Features
+
+### Live Demo Flow (5 minutes):
+1. **Student Login** → Select student profile (Alex, Maria, David)
+2. **Performance Review** → Show low scores triggering recommendations  
+3. **AI Recommendations** → Display personalized resources with reasoning
+4. **Study Session Start** → Create Pomodoro schedule with wellness breaks
+5. **Wellness Integration** → Show break activities and tips
+
+### Expected Outcomes:
+- **Personalized Learning:** Students receive targeted resources for weak subjects
+- **Improved Focus:** Scheduled breaks with wellness activities maintain concentration
+- **Better Performance:** Structured study sessions with AI guidance enhance learning
+- **Wellness Support:** Integrated self-care prevents burnout and stress
+
+## 🔧 Getting Started
+
+1. **Clone Repository:**
    ```bash
-   git clone https://github.com/rohithzacharias/HealthCareAIassist.git
+   git clone <repository-url>
    cd HealthCareAIassist
    ```
 
-2. **Install Dependencies**
-   ```bash
-   pip install flask flask-cors requests
-   ```
+2. **Backend Setup (Advaith/Rohith):**
+   - Load JSON data files for recommendation logic
+   - Implement rule-based AI algorithms
+   - Create API endpoints for frontend integration
 
-3. **Run the Application** (once backend is implemented)
-   ```bash
-   python backend/app.py
-   ```
+3. **Frontend Setup (Adithyan/Sivasanand):**
+   - Build user dashboard and resource display
+   - Integrate study timer and break scheduler
+   - Connect to backend APIs for data retrieval
 
-4. **Open Frontend**
-   ```bash
-   # Open index.html in your browser or use live server
-   open frontend/index.html
-   ```
+4. **Demo Preparation:**
+   - Use `presentation.html` for hackathon pitch
+   - Test with sample student data for live demo
+   - Prepare API examples for technical demonstration
 
-### Development Workflow
-1. Each team member works on their designated branch
-2. Regular commits with descriptive messages
-3. Integration testing before merging to main
-4. Final deployment preparation for demo
+## 🏆 Success Metrics
 
----
+- **Resource Relevance:** 90%+ accuracy in recommending appropriate difficulty levels
+- **Study Efficiency:** Structured sessions improve retention by 25%+
+- **Wellness Integration:** 80%+ students report better focus with scheduled breaks
+- **User Engagement:** Personalized paths increase study session completion rates
 
-## 🎯 API Endpoints (Planned)
+## 📱 Future Enhancements
 
-### Learning Resources
-- `GET /api/resources` - Get all learning resources
-- `GET /api/resources/{topic}` - Get resources by topic
-- `GET /api/recommend/{user_id}` - Get personalized recommendations
-
-### Wellness & Scheduling
-- `POST /api/wellness/mood` - Log user mood
-- `GET /api/wellness/tips` - Get wellness recommendations
-- `POST /api/schedule/break` - Schedule a study break
-- `GET /api/schedule/status` - Get current schedule status
-
-### User Management
-- `POST /api/user/profile` - Create/update user profile
-- `GET /api/user/progress` - Get learning progress
-- `POST /api/user/preferences` - Update learning preferences
+- **Machine Learning:** Upgrade from rule-based to ML recommendation engine
+- **Progress Tracking:** Visual analytics showing improvement over time
+- **Social Features:** Study groups and peer collaboration tools  
+- **Mobile App:** Native iOS/Android applications
+- **Integration:** LMS connectivity and grade synchronization
 
 ---
 
-## 🧪 Testing Strategy
-
-### Manual Testing Checklist
-- [ ] All JSON files load correctly
-- [ ] Resource recommendations work by topic and difficulty
-- [ ] Wellness tips display properly
-- [ ] Break scheduler functions correctly
-- [ ] UI is responsive and user-friendly
-- [ ] API endpoints return expected data
-- [ ] Error handling works for invalid inputs
-
-### Quality Assurance
-- **Sivasanand leads QA** with comprehensive testing
-- **Cross-browser compatibility** testing
-- **Mobile responsiveness** verification
-- **API integration** testing
-- **User experience** evaluation
-
----
-
-## 🎨 Design Guidelines
-
-### Visual Theme
-- **Color Palette**: Medical blues, greens, and clean whites
-- **Typography**: Clear, readable fonts (Roboto/Open Sans)
-- **Icons**: Healthcare and education themed icons
-- **Layout**: Clean, minimalist design with clear navigation
-
-### User Experience Principles
-- **Simplicity**: Easy-to-use interface for stressed students
-- **Accessibility**: Clear contrast, readable text sizes
-- **Responsiveness**: Works on desktop, tablet, and mobile
-- **Intuitive Navigation**: Logical flow between features
-
----
-
-## 📈 Future Enhancements
-
-### Technical Improvements
-- **Machine Learning Integration**: Advanced recommendation algorithms
-- **Real Database**: PostgreSQL/MongoDB for production
-- **User Authentication**: Secure login and profile management
-- **Mobile App**: React Native or Flutter implementation
-- **Analytics Dashboard**: Learning progress and wellness insights
-
-### Feature Expansions
-- **Collaborative Study**: Study group formation and management
-- **Expert Q&A**: Connect with healthcare professionals
-- **Progress Tracking**: Detailed analytics and goal setting
-- **Integration**: Calendar apps, LMS systems, hospital databases
-- **Multilingual Support**: Content in multiple languages
-
-### Wellness Features
-- **Stress Monitoring**: Integration with wearable devices
-- **Mental Health Resources**: Professional counseling connections
-- **Peer Support**: Student wellness communities
-- **Gamification**: Achievements and progress rewards
-
----
-
-## 🚦 Hackathon Timeline
-
-### Morning (9:00 AM - 12:00 PM)
-- **Team Huddle**: Finalize scope and requirements
-- **Backend Setup**: Advaith & Rohith start system architecture
-- **Frontend Planning**: Adithyan & Sivasanand create wireframes
-- **Data Preparation**: Jinto structures learning resources and wellness content
-
-### Afternoon (1:00 PM - 5:00 PM)
-- **Core Development**: AI logic and scheduling implementation
-- **UI Development**: Build main dashboard and components
-- **API Integration**: Connect frontend to backend services
-- **Content Finalization**: Complete data files and presentation prep
-
-### Evening (6:00 PM - 8:00 PM)
-- **Integration & Testing**: Connect all components
-- **Quality Assurance**: Comprehensive testing and bug fixes
-- **Polish & Refinement**: UI improvements and performance optimization
-
-### Final Hour (8:00 PM - 9:00 PM)
-- **Demo Preparation**: Final testing and presentation setup
-- **Team Rehearsal**: Practice pitch and demo flow
-- **Deployment**: Ensure everything works for presentation
-
----
-
-## 📋 Contribution Guidelines
-
-### Code Standards
-- **Python**: PEP 8 compliance, clear variable names
-- **JavaScript**: ES6+ features, consistent formatting
-- **HTML/CSS**: Semantic markup, responsive design
-- **Comments**: Clear documentation for complex logic
-
-### Git Workflow
-```bash
-# Create feature branch
-git checkout -b feature/your-feature-name
-
-# Make changes and commit
-git add .
-git commit -m "FEAT(scope): Clear description of changes"
-
-# Push to your branch
-git push origin feature/your-feature-name
-
-# Create pull request for review
-```
-
-### Commit Message Format
-- `FEAT(scope): Add new feature`
-- `FIX(scope): Bug fix description`
-- `DOCS(scope): Documentation updates`
-- `STYLE(scope): Code formatting changes`
-
----
-
-## 🏅 Demo Preparation
-
-### Live Demo Script
-1. **Problem Introduction** (30 seconds) - Jinto presents the challenge
-2. **Solution Overview** (45 seconds) - Team overview of MedAide AI
-3. **Core Features Demo** (2 minutes) - Live application walkthrough
-   - Personalized resource recommendations
-   - Wellness tracking and tips
-   - Smart break scheduling
-4. **Future Vision** (30 seconds) - Expansion possibilities
-5. **Q&A** (1 minute) - Team answers questions
-
-### Technical Requirements
-- **Stable Internet**: Backup mobile hotspot ready
-- **Demo Environment**: Local server running reliably
-- **Backup Plan**: Screenshots/video if live demo fails
-- **Team Coordination**: Clear speaking roles assigned
-
----
-
-## 📞 Contact & Support
-
-### Team Communication
-- **Primary**: WhatsApp group for instant updates
-- **Code Issues**: GitHub Issues for bug reports
-- **Documentation**: This README for reference
-
-### Emergency Contacts
-- **Technical Issues**: Advaith (Backend/AI)
-- **UI Problems**: Adithyan (Frontend)
-- **Data Issues**: Jinto (Content)
-- **Testing Bugs**: Sivasanand (QA)
-
----
-
-## 📄 License
-
-This project is developed for educational purposes during a hackathon event. All code and content are available for learning and non-commercial use.
-
----
-
-## 🙏 Acknowledgments
-
-- **Hackathon Organizers** for the opportunity and problem statement
-- **Healthcare Education Community** for inspiration and use case validation
-- **Open Source Libraries** that make rapid development possible
-- **Team Futureinnovatees** for dedication and collaborative effort
-
----
-
-**Built with ❤️ by Team Futureinnovatees during the Healthcare AI Hackathon**
-
-*"Empowering the next generation of healthcare professionals through intelligent, personalized learning assistance."*
-
----
-
-### 📊 Project Statistics
-- **Development Time**: 1 Day (Hackathon)
-- **Team Size**: 5 Members
-- **Lines of Code**: ~500+ (estimated)
-- **Learning Resources**: 20+ Curated Items
-- **Wellness Tips**: 10+ Professional Recommendations
-- **Target Users**: Healthcare Students Worldwide
-
----
-
-*Last Updated: October 6, 2025*
-*Version: 1.0.0 (MVP)*
+**MedAide AI: Transforming healthcare education through personalized, AI-powered study assistance.** 🎓✨
