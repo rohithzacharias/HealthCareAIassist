@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedAide AI - Healthcare Student Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-stethoscope"></i>
+                <span>MedAide AI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="#study" class="nav-link" data-section="study">
+                    <i class="fas fa-book"></i> Study
+                </a>
+                <a href="#wellness" class="nav-link" data-section="wellness">
+                    <i class="fas fa-heart"></i> Wellness
+                </a>
+                <a href="#progress" class="nav-link" data-section="progress">
+                    <i class="fas fa-chart-line"></i> Progress
+                </a>
+            </div>
+             <div class="nav-profile">
+                 <div class="profile-avatar">
+                     <img src="https://via.placeholder.com/40x40/2563eb/ffffff?text=A" alt="Profile" id="profileAvatar">
+                 </div>
+                 <span class="profile-name" id="navUserName">Student</span>
+                 <button class="profile-menu-btn" onclick="toggleProfileMenu()">
+                     <i class="fas fa-chevron-down"></i>
+                 </button>
+             </div>
+             
+             <!-- Profile Dropdown Menu -->
+             <div class="profile-dropdown" id="profileDropdown">
+                 <div class="profile-info">
+                     <div class="profile-avatar-large">
+                         <img src="https://via.placeholder.com/60x60/2563eb/ffffff?text=A" alt="Profile" id="profileAvatarLarge">
+                     </div>
+                     <div class="profile-details">
+                         <h3 id="profileName">Student Name</h3>
+                         <p id="profileYear">Year & Specialty</p>
+                     </div>
+                 </div>
+                 <div class="profile-menu-items">
+                     <a href="#" onclick="editProfile()">
+                         <i class="fas fa-user-edit"></i> Edit Profile
+                     </a>
+                     <a href="#" onclick="viewSettings()">
+                         <i class="fas fa-cog"></i> Settings
+                     </a>
+                     <a href="#" onclick="exportData()">
+                         <i class="fas fa-download"></i> Export Data
+                     </a>
+                     <hr>
+                     <a href="#" onclick="resetApp()" class="danger-link">
+                         <i class="fas fa-redo"></i> Reset App
+                     </a>
+                 </div>
+             </div>
+        </div>
+  </nav>
+
+    <!-- User Onboarding Modal -->
+    <div id="onboardingModal" class="onboarding-modal">
+        <div class="onboarding-content">
+            <div class="onboarding-header">
+                <h1>🏥 Welcome to MedAide AI</h1>
+                <p>Let's personalize your study assistant experience</p>
+            </div>
+            
+            <div class="onboarding-steps">
+                <!-- Step 1: Basic Info -->
+                <div class="onboarding-step active" id="step1">
+                    <h2>Tell us about yourself</h2>
+                    <div class="form-group">
+                        <label for="userName">What's your name?</label>
+                        <input type="text" id="userName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userYear">What year are you in?</label>
+                        <select id="userYear" required>
+                            <option value="">Select your year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Resident">Resident</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userSpecialty">What's your specialty/field?</label>
+                        <select id="userSpecialty" required>
+                            <option value="">Select your specialty</option>
+                            <option value="General Medicine">General Medicine</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Emergency Medicine">Emergency Medicine</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 2: Subject Marks -->
+                <div class="onboarding-step" id="step2">
+                    <h2>Enter your recent marks</h2>
+                    <p>This helps us personalize your learning recommendations</p>
+                    
+                    <div class="subjects-grid">
+                        <div class="subject-input">
+                            <label for="cardiologyMarks">Cardiology</label>
+                            <input type="number" id="cardiologyMarks" min="0" max="100" placeholder="Enter marks (0-100)">
+                        </div>
+                        <div class="subject-input">
+                            <label for="respiratoryMarks">Respiratory Medicine</label>
+                            <input type="number" id="respiratoryMarks" min="0" max="100" placeholder="Enter marks (0-100)">
+                        </div>
+                        <div class="subject-input">
+                            <label for="neurologyMarks">Neurology</label>
+                            <input type="number" id="neurologyMarks" min="0" max="100" placeholder="Enter marks (0-100)">
+                        </div>
+                        <div class="subject-input">
+                            <label for="pharmacologyMarks">Pharmacology</label>
+                            <input type="number" id="pharmacologyMarks" min="0" max="100" placeholder="Enter marks (0-100)">
+                        </div>
+                        <div class="subject-input">
+                            <label for="anatomyMarks">Anatomy</label>
+                            <input type="number" id="anatomyMarks" min="0" max="100" placeholder="Enter marks (0-100)">
+                        </div>
+                        <div class="subject-input">
+                            <label for="clinicalMarks">Clinical Skills</label>
+                            <input type="number" id="clinicalMarks" min="0" max="100" placeholder="Enter marks (0-100)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="skipMarks"> I don't have recent marks yet
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 3: Study Preferences -->
+                <div class="onboarding-step" id="step3">
+                    <h2>Study preferences</h2>
+                    <div class="form-group">
+                        <label>How long are your typical study sessions?</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="sessionLength" value="25"> 25 minutes (Pomodoro)</label>
+                            <label><input type="radio" name="sessionLength" value="45"> 45 minutes</label>
+                            <label><input type="radio" name="sessionLength" value="90"> 90 minutes</label>
+                            <label><input type="radio" name="sessionLength" value="custom"> Custom</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What type of content do you prefer?</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="contentType" value="video" checked> Videos</label>
+                            <label><input type="checkbox" name="contentType" value="article" checked> Articles</label>
+                            <label><input type="checkbox" name="contentType" value="quiz" checked> Quizzes</label>
+                            <label><input type="checkbox" name="contentType" value="interactive"> Interactive Content</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What's your current stress level?</label>
+                        <div class="stress-slider">
+                            <input type="range" id="stressLevel" min="1" max="10" value="5">
+                            <div class="stress-labels">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="onboarding-navigation">
+                <button id="prevBtn" class="btn-secondary" onclick="changeStep(-1)" disabled>Previous</button>
+                <div class="step-indicators">
+                    <span class="step-dot active" data-step="1"></span>
+                    <span class="step-dot" data-step="2"></span>
+                    <span class="step-dot" data-step="3"></span>
+                </div>
+                <button id="nextBtn" class="btn-primary" onclick="changeStep(1)">Next</button>
+                <button id="completeBtn" class="btn-primary" onclick="completeOnboarding()" style="display: none;">Complete Setup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="container">
+                <div class="welcome-header">
+                    <h1 id="welcomeMessage">Welcome back, <span id="userDisplayName">Student</span>! 👋</h1>
+                    <p id="welcomeSubtext">Ready to continue your healthcare journey?</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Study Hours</h3>
+                            <p class="stat-number">24.5</p>
+                            <span class="stat-change positive">+2.3h this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Streak</h3>
+                            <p class="stat-number">7 days</p>
+                            <span class="stat-change positive">Keep it up!</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Focus Score</h3>
+                            <p class="stat-number">85%</p>
+                            <span class="stat-change positive">Excellent!</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Wellness</h3>
+                            <p class="stat-number">Good</p>
+                            <span class="stat-change neutral">Stable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-btn primary" onclick="startStudySession()">
+                            <i class="fas fa-play"></i>
+                            <span>Start Study Session</span>
+                        </button>
+                        <button class="action-btn secondary" onclick="takeBreak()">
+                            <i class="fas fa-coffee"></i>
+                            <span>Take a Break</span>
+                        </button>
+                        <button class="action-btn secondary" onclick="checkRecommendations()">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Get Recommendations</span>
+                        </button>
+                        <button class="action-btn secondary" onclick="logMood()">
+                            <i class="fas fa-smile"></i>
+                            <span>Log Mood</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Completed: Cardiac Anatomy Video</h4>
+                                <p>2 hours ago • Cardiology</p>
+                            </div>
+                            <div class="activity-score">
+                                <span class="score-badge good">85%</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-quiz"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Quiz: ECG Interpretation</h4>
+                                <p>5 hours ago • Cardiology</p>
+                            </div>
+                            <div class="activity-score">
+                                <span class="score-badge needs-work">62%</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Wellness Check-in</h4>
+                                <p>1 day ago • Mood: Good</p>
+                            </div>
+                            <div class="activity-score">
+                                <span class="score-badge wellness">😊</span>
+                            </div>
+                        </div>
+                    </div>
+  </div>
+  </div>
+</section>
+
+        <!-- Study Section -->
+        <section id="study" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Study Hub</h1>
+                    <p>Personalized learning resources based on your performance</p>
+                </div>
+
+                <!-- Subject Performance Overview -->
+                <div class="performance-overview">
+                    <h2>Your Performance Overview</h2>
+                    <div class="subject-cards">
+                        <div class="subject-card">
+                            <div class="subject-header">
+                                <h3>Cardiology</h3>
+                                <span class="subject-score" id="cardiologyScore">--%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="cardiologyProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="subject-topics" id="cardiologyTopics">
+                                <span class="topic-tag">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="subject-card">
+                            <div class="subject-header">
+                                <h3>Respiratory</h3>
+                                <span class="subject-score" id="respiratoryScore">--%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="respiratoryProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="subject-topics" id="respiratoryTopics">
+                                <span class="topic-tag">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="subject-card">
+                            <div class="subject-header">
+                                <h3>Neurology</h3>
+                                <span class="subject-score" id="neurologyScore">--%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="neurologyProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="subject-topics" id="neurologyTopics">
+                                <span class="topic-tag">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Recommendations -->
+                <div class="recommendations-section">
+                    <h2>🎯 AI Recommendations</h2>
+                    <div class="recommendations-grid">
+                        <div class="recommendation-card priority-high">
+                            <div class="recommendation-header">
+                                <span class="priority-badge high">HIGH PRIORITY</span>
+                                <span class="difficulty-badge beginner">Beginner</span>
+                            </div>
+                            <h3>Neuron Function Fundamentals</h3>
+                            <p>Your neuron physiology score (34%) indicates you need foundational review. This video covers essential concepts.</p>
+                            <div class="recommendation-meta">
+                                <span><i class="fas fa-video"></i> Video</span>
+                                <span><i class="fas fa-clock"></i> 18 min</span>
+                                <span><i class="fas fa-brain"></i> Neurology</span>
+                            </div>
+                            <button class="btn-primary">Start Learning</button>
+                        </div>
+                        <div class="recommendation-card priority-medium">
+                            <div class="recommendation-header">
+                                <span class="priority-badge medium">MEDIUM PRIORITY</span>
+                                <span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h3>Heart Murmur Classification</h3>
+                            <p>Your murmur identification accuracy (58%) suggests targeted practice would be beneficial.</p>
+                            <div class="recommendation-meta">
+                                <span><i class="fas fa-quiz"></i> Quiz</span>
+                                <span><i class="fas fa-clock"></i> 15 min</span>
+                                <span><i class="fas fa-heart"></i> Cardiology</span>
+                            </div>
+                            <button class="btn-primary">Take Quiz</button>
+                        </div>
+                        <div class="recommendation-card priority-medium">
+                            <div class="recommendation-header">
+                                <span class="priority-badge medium">MEDIUM PRIORITY</span>
+                                <span class="difficulty-badge beginner">Beginner</span>
+                            </div>
+                            <h3>Respiratory System Overview</h3>
+                            <p>Your breathing mechanics understanding (48%) needs reinforcement with basic concepts.</p>
+                            <div class="recommendation-meta">
+                                <span><i class="fas fa-file-alt"></i> Article</span>
+                                <span><i class="fas fa-clock"></i> 25 min</span>
+                                <span><i class="fas fa-lungs"></i> Respiratory</span>
+                            </div>
+                            <button class="btn-primary">Read Article</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Study Timer -->
+                <div class="study-timer-section">
+                    <h2>⏰ Study Session Timer</h2>
+                    <div class="timer-container">
+                        <div class="timer-display">
+                            <div class="timer-circle">
+                                <svg class="timer-svg" viewBox="0 0 100 100">
+                                    <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                                    <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress"></circle>
+                                </svg>
+                                <div class="timer-text">
+                                    <span id="timerMinutes">25</span>
+                                    <span class="timer-separator">:</span>
+                                    <span id="timerSeconds">00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="timer-btn" id="startTimer" onclick="startTimer()">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="timer-btn" id="pauseTimer" onclick="pauseTimer()" disabled>
+                                <i class="fas fa-pause"></i> Pause
+                            </button>
+                            <button class="timer-btn" id="resetTimer" onclick="resetTimer()">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                        <div class="timer-presets">
+                            <button class="preset-btn" onclick="setTimer(25)">Pomodoro (25m)</button>
+                            <button class="preset-btn" onclick="setTimer(45)">Deep Focus (45m)</button>
+                            <button class="preset-btn" onclick="setTimer(90)">Long Session (90m)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+        <!-- Wellness Section -->
+        <section id="wellness" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Wellness Center</h1>
+                    <p>Track your mental and physical well-being</p>
+                </div>
+
+                <!-- Mood Tracker -->
+                <div class="mood-tracker">
+                    <h2>😊 How are you feeling today?</h2>
+                    <div class="mood-selector">
+                        <button class="mood-btn" data-mood="excellent" onclick="logMood('excellent')">
+                            <span class="mood-emoji">😄</span>
+                            <span class="mood-label">Excellent</span>
+                        </button>
+                        <button class="mood-btn" data-mood="good" onclick="logMood('good')">
+                            <span class="mood-emoji">😊</span>
+                            <span class="mood-label">Good</span>
+                        </button>
+                        <button class="mood-btn" data-mood="okay" onclick="logMood('okay')">
+                            <span class="mood-emoji">😐</span>
+                            <span class="mood-label">Okay</span>
+                        </button>
+                        <button class="mood-btn" data-mood="tired" onclick="logMood('tired')">
+                            <span class="mood-emoji">😴</span>
+                            <span class="mood-label">Tired</span>
+                        </button>
+                        <button class="mood-btn" data-mood="stressed" onclick="logMood('stressed')">
+                            <span class="mood-emoji">😰</span>
+                            <span class="mood-label">Stressed</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Wellness Tips -->
+                <div class="wellness-tips">
+                    <h2>💡 Personalized Wellness Tips</h2>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-lungs"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h3>5-Minute Box Breathing</h3>
+                                <p>Calm your mind with guided breathing exercises. Perfect for study breaks.</p>
+                                <div class="tip-meta">
+                                    <span><i class="fas fa-clock"></i> 5 min</span>
+                                    <span><i class="fas fa-heart"></i> Mindfulness</span>
+                                </div>
+                                <button class="btn-secondary">Start Exercise</button>
+                            </div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h3>Desk Stretches</h3>
+                                <p>Simple stretches to relieve tension from long study sessions.</p>
+                                <div class="tip-meta">
+                                    <span><i class="fas fa-clock"></i> 3 min</span>
+                                    <span><i class="fas fa-dumbbell"></i> Physical</span>
+                                </div>
+                                <button class="btn-secondary">Start Stretching</button>
+                            </div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h3>Focus Meditation</h3>
+                                <p>Short meditation to improve concentration and reduce study anxiety.</p>
+                                <div class="tip-meta">
+                                    <span><i class="fas fa-clock"></i> 10 min</span>
+                                    <span><i class="fas fa-leaf"></i> Mindfulness</span>
+                                </div>
+                                <button class="btn-secondary">Start Meditation</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wellness Analytics -->
+                <div class="wellness-analytics">
+                    <h2>📊 Wellness Trends</h2>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>Mood Trend (7 days)</h3>
+                            <div class="mood-chart">
+                                <div class="chart-bar" style="height: 80%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                                <div class="chart-bar" style="height: 85%"></div>
+                                <div class="chart-bar" style="height: 60%"></div>
+                                <div class="chart-bar" style="height: 90%"></div>
+                                <div class="chart-bar" style="height: 75%"></div>
+                                <div class="chart-bar" style="height: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Stress Level</h3>
+                            <div class="stress-meter">
+                                <div class="meter-fill" style="width: 35%"></div>
+                            </div>
+                            <p class="stress-level">Moderate</p>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Sleep Quality</h3>
+                            <div class="sleep-score">
+                                <span class="score-number">7.5</span>
+                                <span class="score-label">/ 10</span>
+                            </div>
+                            <p class="sleep-note">Good sleep pattern maintained</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+        <!-- Progress Section -->
+        <section id="progress" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Progress Tracking</h1>
+                    <p>Monitor your learning journey and achievements</p>
+                </div>
+
+                <!-- Achievement Badges -->
+                <div class="achievements">
+                    <h2>🏆 Achievements</h2>
+                    <div class="badges-grid">
+                        <div class="badge earned">
+                            <i class="fas fa-fire"></i>
+                            <h3>7-Day Streak</h3>
+                            <p>Studied for 7 consecutive days</p>
+                        </div>
+                        <div class="badge earned">
+                            <i class="fas fa-brain"></i>
+                            <h3>Quick Learner</h3>
+                            <p>Completed 5 resources in one day</p>
+                        </div>
+                        <div class="badge earned">
+                            <i class="fas fa-heart"></i>
+                            <h3>Wellness Warrior</h3>
+                            <p>Logged mood for 5 days</p>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fas fa-trophy"></i>
+                            <h3>Master Student</h3>
+                            <p>Complete 50 study sessions</p>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fas fa-star"></i>
+                            <h3>Perfect Score</h3>
+                            <p>Get 100% on any quiz</p>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fas fa-medal"></i>
+                            <h3>Subject Master</h3>
+                            <p>Master all topics in one subject</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Path -->
+                <div class="learning-path">
+                    <h2>🎯 Learning Path</h2>
+                    <div class="path-container">
+                        <div class="path-step completed">
+                            <div class="step-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Cardiac Anatomy Basics</h3>
+                                <p>Understanding heart structure and function</p>
+                                <span class="step-score">85%</span>
+                            </div>
+                        </div>
+                        <div class="path-step completed">
+                            <div class="step-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>ECG Fundamentals</h3>
+                                <p>Basic electrocardiogram interpretation</p>
+                                <span class="step-score">78%</span>
+                            </div>
+                        </div>
+                        <div class="path-step current">
+                            <div class="step-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Heart Murmurs</h3>
+                                <p>Identifying and classifying heart sounds</p>
+                                <span class="step-progress">In Progress</span>
+                            </div>
+                        </div>
+                        <div class="path-step locked">
+                            <div class="step-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Advanced Cardiology</h3>
+                                <p>Complex cardiac conditions and treatments</p>
+                                <span class="step-status">Locked</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Charts -->
+                <div class="performance-charts">
+                    <h2>📈 Performance Analytics</h2>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Subject Performance</h3>
+                            <div class="radar-chart">
+                                <canvas id="performanceChart" width="300" height="300"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Study Time Distribution</h3>
+                            <div class="pie-chart">
+                                <canvas id="timeChart" width="300" height="300"></canvas>
+                            </div>
+                        </div>
+    </div>
+  </div>
+  </div>
+</section>
+</main>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab" id="mainFab" onclick="toggleFabMenu()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-menu" id="fabMenu">
+            <button class="fab-item" onclick="quickStudy()">
+                <i class="fas fa-book"></i>
+                <span>Quick Study</span>
+            </button>
+            <button class="fab-item" onclick="quickBreak()">
+                <i class="fas fa-coffee"></i>
+                <span>Quick Break</span>
+            </button>
+            <button class="fab-item" onclick="quickMood()">
+                <i class="fas fa-smile"></i>
+                <span>Log Mood</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
