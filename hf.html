@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💡 MedAide AI | Study Assistant</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1e3a8a; /* Blue-900 */
+            --color-secondary: #3b82f6; /* Blue-500 */
+            --color-bg: #f8fafc; /* Slate-50 */
+            --color-card: #ffffff;
+            --color-text: #0f172a; /* Slate-900 */
+        }
+        .dark {
+            --color-primary: #93c5fd; /* Blue-300 */
+            --color-secondary: #3b82f6; /* Blue-500 */
+            --color-bg: #1e293b; /* Slate-800 */
+            --color-card: #334155; /* Slate-700 */
+            --color-text: #f1f5f9; /* Slate-100 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            background-color: var(--color-card);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--color-secondary); border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: var(--color-card); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="p-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i data-lucide="brain-circuit" class="w-6 h-6 text-blue-500"></i>
+            <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100">MedAide <span class="text-blue-500">AI</span></h1>
+        </div>
+        <nav class="hidden md:flex space-x-4">
+            <a href="#" class="nav-link text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-500 transition duration-150 active-link" data-target="dashboard">Dashboard</a>
+            <a href="#" class="nav-link text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-500 transition duration-150" data-target="recommendations">Recommendations</a>
+            <a href="#" class="nav-link text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-500 transition duration-150" data-target="scheduler">Scheduler</a>
+            <a href="#" class="nav-link text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-500 transition duration-150" data-target="wellness">Wellness</a>
+        </nav>
+        <button id="darkToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition duration-300">
+            <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+        </button>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8">
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="page-content active-content">
+            <h2 class="text-3xl font-bold mb-4">Welcome Back, Future Innovator!</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg transition duration-300">
+                    <div class="flex items-center justify-between">
+                        <i data-lucide="gauge" class="w-8 h-8 text-blue-500"></i>
+                        <span class="text-4xl font-extrabold text-gray-900 dark:text-gray-100">72%</span>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Average Performance Score</p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg transition duration-300">
+                    <div class="flex items-center justify-between">
+                        <i data-lucide="clock" class="w-8 h-8 text-green-500"></i>
+                        <span class="text-4xl font-extrabold text-gray-900 dark:text-gray-100">2:15</span>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Study Time Today (h:m)</p>
+                </div>
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg transition duration-300">
+                    <div class="flex items-center justify-between">
+                        <i data-lucide="heart-handshake" class="w-8 h-8 text-red-500"></i>
+                        <span class="text-4xl font-extrabold text-gray-900 dark:text-gray-100">😊</span>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Current Mood</p>
+                </div>
+            </div>
+
+            <!-- Weak Topic Card -->
+            <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-xl transition duration-300">
+                <h3 class="text-xl font-semibold text-red-500 flex items-center mb-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i> Targeted Focus Needed
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Your performance on **ECG Interpretation** is below the critical threshold.
+                    Let's simulate personalized recommendations now!
+                </p>
+                <button onclick="showSection('recommendations')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                    <i data-lucide="zap" class="w-5 h-5 mr-2"></i> Get Personalized Study Plan
+                </button>
+            </div>
+        </section>
+
+        <!-- Recommendations -->
+        <section id="recommendations" class="page-content hidden">
+            <h2 class="text-3xl font-bold mb-6">AI-Powered Recommendations 🧠</h2>
+
+            <!-- Input Card -->
+            <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-xl mb-6">
+                <h3 class="text-xl font-semibold mb-4">Simulate Performance Data Input</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input type="text" id="topicInput" placeholder="Weak Topic (e.g., ECG Interpretation)" class="p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                    <input type="number" id="scoreInput" placeholder="Your Score (%)" min="0" max="100" class="p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                </div>
+                <button onclick="getRecommendations()" class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                    <i data-lucide="search" class="w-5 h-5 mr-2"></i> Find My AI Resources
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div id="recommendationResults" class="space-y-4">
+                <p class="text-gray-500 dark:text-gray-400 text-center p-4" id="recommendationMessage">
+                    Enter your weak topic and score above to see personalized study recommendations and the AI's reasoning.
+                </p>
+            </div>
+        </section>
+
+        <!-- Scheduler -->
+        <section id="scheduler" class="page-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Study Break Scheduler ⏰</h2>
+            <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-xl flex flex-col items-center">
+                <div class="text-6xl font-extrabold text-blue-600 dark:text-blue-400 mb-4" id="timerDisplay">25:00</div>
+                <p class="text-lg font-medium mb-4" id="timerStatus">Status: Ready to Study (Pomodoro)</p>
+                
+                <!-- Wellness Integration Display -->
+                <div id="breakTipContainer" class="hidden bg-blue-100 dark:bg-blue-900 p-4 rounded-lg text-center mt-3 w-full max-w-sm">
+                    <p class="text-blue-800 dark:text-blue-200 font-semibold flex items-center justify-center">
+                        <i data-lucide="coffee" class="w-5 h-5 mr-2"></i> Break Tip: <span id="breakTipTitle" class="ml-1"></span>
+                    </p>
+                    <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">Duration: <span id="breakTipDuration"></span> min</p>
+                </div>
+                
+                <div class="flex space-x-4 mt-6">
+                    <button id="startBtn" class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200 flex items-center">
+                        <i data-lucide="play" class="w-5 h-5 mr-2"></i> Start
+                    </button>
+                    <button id="stopBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-3 px-6 rounded-lg rounded-lg transition duration-200 flex items-center" disabled>
+                        <i data-lucide="pause" class="w-5 h-5 mr-2"></i> Pause
+                    </button>
+                    <button id="resetBtn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg rounded-lg transition duration-200 flex items-center">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5 mr-2"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wellness -->
+        <section id="wellness" class="page-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Wellness & Mind Care 🧘</h2>
+
+            <!-- Mood Tracker -->
+            <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-xl mb-6">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <i data-lucide="smile" class="w-5 h-5 mr-2 text-yellow-500"></i> How are you feeling today?
+                </h3>
+                <div class="flex justify-between space-x-2">
+                    <button data-mood="happy" class="mood-btn flex-1 p-3 text-2xl rounded-lg border-2 border-gray-300 hover:scale-[1.05] transition duration-150">😊</button>
+                    <button data-mood="neutral" class="mood-btn flex-1 p-3 text-2xl rounded-lg border-2 border-gray-300 hover:scale-[1.05] transition duration-150">😐</button>
+                    <button data-mood="sad" class="mood-btn flex-1 p-3 text-2xl rounded-lg border-2 border-gray-300 hover:scale-[1.05] transition duration-150">😔</button>
+                    <button data-mood="stressed" class="mood-btn flex-1 p-3 text-2xl rounded-lg border-2 border-gray-300 hover:scale-[1.05] transition duration-150">😩</button>
+                </div>
+                <p id="moodMessage" class="mt-4 text-center text-gray-600 dark:text-gray-300 italic"></p>
+            </div>
+
+            <!-- Proactive Wellness Tools -->
+            <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-xl">
+                <h3 class="text-xl font-semibold mb-4 flex items-center">
+                    <i data-lucide="dumbbell" class="w-5 h-5 mr-2 text-indigo-500"></i> Proactive Wellness Tools
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="remindHydration()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                        <i data-lucide="droplet" class="w-5 h-5 mr-2"></i> Hydration Check
+                    </button>
+                    <button onclick="getWellnessTip()" class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                        <i data-lucide="activity" class="w-5 h-5 mr-2"></i> Quick Tip
+                    </button>
+                </div>
+                <div id="wellnessActionMessage" class="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-300 text-sm">
+                    Click a tool above to get instant support!
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-4 text-sm text-gray-500 dark:text-gray-400">
+        Team Futureinnovatees (Google Hackathon Project)
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- Core UI Functions ---
+
+        /**
+         * Switches the active content tab.
+         */
+        function showSection(id) {
+            document.querySelectorAll('.page-content').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active-link', 'text-blue-500'));
+            const activeLink = document.querySelector(`.nav-link[data-target='${id}']`);
+            if (activeLink) {
+                activeLink.classList.add('active-link', 'text-blue-500');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * Dark Mode Toggle
+         */
+        document.getElementById('darkToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            // Store preference locally (optional)
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Initialize theme based on preference
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark');
+        }
+
+        // --- Mock API Backend ---
+        
+        /**
+         * Simulates a fetch call to the backend API, returning structured JSON.
+         * This function is crucial for demonstrating AI integration in the frontend.
+         */
+        async function mockFetchAPI(endpoint, data = {}) {
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network latency
+
+            const topic = data.topic || "ECG Interpretation";
+            const score = data.score || 55;
+
+            switch (endpoint) {
+                case '/api/recommend':
+                    const threshold = 60; // Example threshold from JSON
+                    const isWeak = score < threshold;
+
+                    const mockResource = {
+                        title: isWeak ? "ECG Basics: Reading and Interpreting Electrocardiograms" : "Advanced Clinical Scenarios for ECG",
+                        type: isWeak ? "Article" : "Video",
+                        difficulty: isWeak ? "Intermediate" : "Advanced",
+                        reason: isWeak
+                            ? `Your performance score (${score}%) is below the critical threshold of ${threshold}%. Recommended for **immediate foundational review** of the core concepts.`
+                            : `Excellent work! Your score (${score}%) is high. We recommend this advanced resource to challenge your **clinical application skills**.`
+                    };
+
+                    return {
+                        status: "success",
+                        recommended_resources: [mockResource]
+                    };
+
+                case '/api/schedule':
+                    return {
+                        status: "success",
+                        schedule_blocks: [
+                            {"type": "Study", "duration": 25},
+                            {"type": "Break", "duration": 5, "tip": "5-Minute Box Breathing"},
+                            {"type": "Study", "duration": 25},
+                            {"type": "Break", "duration": 5, "tip": "Stretch Break"}
+                        ]
+                    };
+
+                case '/api/wellness_tip':
+                    const tips = [
+                        {"title": "Take 3 Deep Breaths", "category": "Mindfulness", "duration_minutes": 1, "description": "Inhale slowly for four counts, hold for four, exhale for six."},
+                        {"title": "20/20/20 Rule", "category": "Eye Strain", "duration_minutes": 1, "description": "Every 20 minutes, look at something 20 feet away for 20 seconds."},
+                        {"title": "Light Walk", "category": "Physical", "duration_minutes": 5, "description": "Step away from your desk and walk for five minutes to reactivate your body."}
+                    ];
+                    return tips[Math.floor(Math.random() * tips.length)];
+
+                default:
+                    return { status: "error", message: "Endpoint not found" };
+            }
+        }
+
+        // --- Recommendation Logic (AI Feature) ---
+
+        /**
+         * Fetches and displays personalized recommendations based on user input.
+         * This demonstrates the core 'AI' feature of the app.
+         */
+        async function getRecommendations() {
+            const topic = document.getElementById('topicInput').value || 'ECG Interpretation';
+            const score = parseInt(document.getElementById('scoreInput').value) || 55;
+            const resultsEl = document.getElementById('recommendationResults');
+            const msgEl = document.getElementById('recommendationMessage');
+
+            if (!topic || isNaN(score) || score < 0 || score > 100) {
+                msgEl.textContent = "Please enter a valid topic and score (0-100).";
+                msgEl.className = "text-red-500 text-center p-4";
+                resultsEl.innerHTML = '';
+                resultsEl.appendChild(msgEl);
+                return;
+            }
+
+            msgEl.textContent = "Analyzing performance and fetching personalized resources...";
+            msgEl.className = "text-blue-500 text-center p-4 flex items-center justify-center";
+            resultsEl.innerHTML = `<p class="text-blue-500 text-center p-4"><i data-lucide="loader-circle" class="w-5 h-5 animate-spin mr-2 inline-block"></i> Analyzing...</p>`;
+            lucide.createIcons();
+
+
+            try {
+                const response = await mockFetchAPI('/api/recommend', { topic, score });
+
+                if (response.status === 'success' && response.recommended_resources.length > 0) {
+                    const resource = response.recommended_resources[0];
+                    resultsEl.innerHTML = `
+                        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-2xl border-l-4 border-blue-500 animate-in fade-in zoom-in">
+                            <h3 class="text-2xl font-bold mb-2">${resource.title}</h3>
+                            <p class="text-gray-500 dark:text-gray-300 text-sm mb-4">
+                                <span class="font-semibold text-red-500">${resource.difficulty} ${resource.type}</span> on ${topic}
+                            </p>
+                            
+                            <!-- AI REASONING (Impressive Feature) -->
+                            <div class="p-3 bg-blue-50 dark:bg-gray-800 rounded-lg mb-4 border border-blue-200 dark:border-blue-800">
+                                <div class="flex items-center font-semibold text-blue-600 dark:text-blue-400 mb-1">
+                                    <i data-lucide="cpu" class="w-4 h-4 mr-2"></i> AI Reasoning:
+                                </div>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 italic">${resource.reason}</p>
+                            </div>
+                            
+                            <a href="#" class="inline-flex items-center text-blue-500 hover:text-blue-700 font-medium transition duration-150">
+                                Start Studying Now <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    resultsEl.innerHTML = `<p class="text-green-500 text-center p-4">You're doing great! No immediate high-priority recommendations needed for ${topic}.</p>`;
+                }
+            } catch (error) {
+                resultsEl.innerHTML = `<p class="text-red-500 text-center p-4">Error fetching data: ${error.message}</p>`;
+            }
+            lucide.createIcons();
+        }
+
+        // --- Scheduler (Pomodoro & Break Integration) ---
+
+        let totalSeconds = 25 * 60; // Start with 25 minutes Study
+        let timerInterval = null;
+        let isStudyMode = true;
+        let scheduleBlocks = [];
+        let currentBlockIndex = 0;
+
+        const timerEl = document.getElementById('timerDisplay');
+        const statusEl = document.getElementById('timerStatus');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const tipContainer = document.getElementById('breakTipContainer');
+        const tipTitleEl = document.getElementById('breakTipTitle');
+        const tipDurationEl = document.getElementById('breakTipDuration');
+
+        function formatTime(secs) {
+            const m = String(Math.floor(secs / 60)).padStart(2, '0');
+            const s = String(secs % 60).padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function updateTimerDisplay() {
+            timerEl.textContent = formatTime(totalSeconds);
+        }
+
+        async function loadSchedule() {
+            const response = await mockFetchAPI('/api/schedule');
+            scheduleBlocks = response.schedule_blocks;
+            currentBlockIndex = 0;
+        }
+
+        async function startTimer() {
+            if (timerInterval) return;
+
+            // Load schedule if not loaded or if starting fresh
+            if (scheduleBlocks.length === 0) {
+                await loadSchedule();
+            }
+            if (scheduleBlocks.length === 0) {
+                statusEl.textContent = "Error loading schedule.";
+                return;
+            }
+
+            // Set initial state from current block
+            const currentBlock = scheduleBlocks[currentBlockIndex];
+            isStudyMode = currentBlock.type === 'Study';
+            totalSeconds = currentBlock.duration * 60;
+            updateTimerDisplay();
+            updateStatus(currentBlock);
+
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            resetBtn.disabled = false;
+
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    
+                    // Move to next block
+                    currentBlockIndex = (currentBlockIndex + 1) % scheduleBlocks.length;
+                    const nextBlock = scheduleBlocks[currentBlockIndex];
+                    
+                    if (currentBlockIndex === 0) {
+                        // End of cycle - reset to initial Study Block
+                        statusEl.textContent = "Cycle Complete! Press Start to begin again.";
+                        startBtn.disabled = false;
+                        resetBtn.disabled = false;
+                        stopBtn.disabled = true;
+                        tipContainer.classList.add('hidden');
+                        totalSeconds = scheduleBlocks[0].duration * 60;
+                        updateTimerDisplay();
+                        return;
+                    }
+
+                    // Alert the user (using a custom box instead of alert)
+                    showCustomMessage(`Time for a ${nextBlock.type}!`, nextBlock.type === 'Break' ? nextBlock.tip : 'Time to get back to work!', nextBlock.type === 'Break' ? 'bg-green-500' : 'bg-red-500');
+
+                    // Restart timer for the next block
+                    startTimer();
+                } else {
+                    totalSeconds--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateStatus(block) {
+            const type = block.type;
+            const tip = block.tip;
+
+            if (type === 'Study') {
+                statusEl.textContent = `Status: Focus Time! 💡`;
+                timerEl.classList.remove('text-green-600');
+                timerEl.classList.add('text-blue-600');
+                tipContainer.classList.add('hidden');
+            } else {
+                statusEl.textContent = `Status: Break Time! ☕`;
+                timerEl.classList.remove('text-blue-600');
+                timerEl.classList.add('text-green-600');
+                
+                // Show Wellness Tip integration
+                tipContainer.classList.remove('hidden');
+                tipTitleEl.textContent = tip;
+                tipDurationEl.textContent = block.duration;
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                statusEl.textContent = 'Status: Paused';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        function resetTimer() {
+            stopTimer();
+            scheduleBlocks = [];
+            currentBlockIndex = 0;
+            totalSeconds = 25 * 60;
+            updateTimerDisplay();
+            statusEl.textContent = 'Status: Ready to Study (Pomodoro)';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            tipContainer.classList.add('hidden');
+        }
+
+        startBtn.onclick = startTimer;
+        stopBtn.onclick = stopTimer;
+        resetBtn.onclick = resetTimer;
+
+        // --- Wellness Functions ---
+
+        document.querySelectorAll('.mood-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const mood = e.currentTarget.dataset.mood;
+                const msgEl = document.getElementById('moodMessage');
+                
+                document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('border-blue-500', 'shadow-lg'));
+                e.currentTarget.classList.add('border-blue-500', 'shadow-lg');
+
+                let message = "Mood logged successfully!";
+                if (mood === 'happy') message = 'Awesome! Keep that positive energy going 💪';
+                if (mood === 'neutral') message = 'It\'s okay. Try a 5-minute Light Walk.';
+                if (mood === 'sad' || mood === 'stressed') message = 'Hang in there. Take a 5-Minute Box Breathing break now.';
+                
+                msgEl.textContent = message;
+                // In a real app, this would send data to /api/log_mood
+            });
+        });
+
+        function remindHydration() {
+            const msgEl = document.getElementById('wellnessActionMessage');
+            msgEl.innerHTML = `<i data-lucide="cup-water" class="w-4 h-4 mr-1 inline-block"></i> 💧 Drink a glass of water to boost focus and hydration.`;
+            lucide.createIcons();
+        }
+
+        async function getWellnessTip() {
+            const msgEl = document.getElementById('wellnessActionMessage');
+            msgEl.innerHTML = `<i data-lucide="loader-circle" class="w-4 h-4 animate-spin mr-1 inline-block"></i> Fetching Quick Tip...`;
+            lucide.createIcons();
+            
+            try {
+                const tip = await mockFetchAPI('/api/wellness_tip');
+                msgEl.innerHTML = `
+                    <p class="font-semibold text-blue-600 dark:text-blue-400">${tip.title} (${tip.duration_minutes} min)</p>
+                    <p class="text-xs mt-1">${tip.description}</p>
+                `;
+            } catch (error) {
+                msgEl.textContent = "Could not fetch tip.";
+            }
+            lucide.createIcons();
+        }
+
+        /**
+         * Custom Message Box (to replace alert())
+         */
+        function showCustomMessage(title, message, colorClass) {
+            const existingModal = document.getElementById('customModal');
+            if (existingModal) existingModal.remove();
+
+            const modal = document.createElement('div');
+            modal.id = 'customModal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all scale-100 animate-in fade-in zoom-in">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-2 rounded-full ${colorClass} text-white">
+                             <i data-lucide="${colorClass.includes('green') ? 'bell' : 'alarm-clock'}" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100">${title}</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">${message}</p>
+                    <button onclick="document.getElementById('customModal').remove()" class="w-full ${colorClass} hover:opacity-90 text-white font-medium py-2 rounded-lg transition duration-150">
+                        Acknowledge
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
