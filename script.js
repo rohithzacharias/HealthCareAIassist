@@ -9,11 +9,9 @@ let isTimerRunning = false;
 let currentMood = null;
 let studyStreak = 7;
 let totalStudyHours = 24.5;
-let currentUserId = 1; // Default user ID for demo
 
 // User Data
 let userData = {
-    id: 1,
     name: '',
     year: '',
     specialty: '',
@@ -33,112 +31,35 @@ let userData = {
     isOnboarded: false
 };
 
-// API Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
-
 // Onboarding state
 let currentOnboardingStep = 1;
 const totalOnboardingSteps = 3;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    // Force clear any existing data to ensure fresh user input
-    clearAllData();
-    
     initializeApp();
     setupEventListeners();
     loadUserData();
     updateDashboard();
     initializeCharts();
-});
-
-// Function to clear all stored data
-function clearAllData() {
-    localStorage.removeItem('medAideUserData');
-    localStorage.removeItem('moodHistory');
     
-    // Reset user data to empty state
-    userData = {
-        id: 1,
-        name: '',
-        year: '',
-        specialty: '',
-        marks: {
-            cardiology: 0,
-            respiratory: 0,
-            neurology: 0,
-            pharmacology: 0,
-            anatomy: 0,
-            clinical: 0
-        },
-        preferences: {
-            sessionLength: 25,
-            contentType: ['video', 'article', 'quiz'],
-            stressLevel: 5
-        },
-        isOnboarded: false
-    };
-}
-
-// API Helper Functions
-async function apiRequest(endpoint, method = 'GET', data = null) {
-    try {
-        const options = {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        };
-        
-        if (data) {
-            options.body = JSON.stringify(data);
-        }
-        
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-        
-        if (!response.ok) {
-            throw new Error(`API request failed: ${response.status}`);
-        }
-        
-        return await response.json();
-    } catch (error) {
-        console.error('API request error:', error);
-        // Fallback to local data for demo purposes
-        return null;
-    }
-}
-
-async function loadResources(topic = null) {
-    const endpoint = topic ? `/resources?topic=${topic}` : '/resources';
-    return await apiRequest(endpoint);
-}
-
-async function getRecommendations(topic) {
-    return await apiRequest('/recommendations', 'GET', null, { topic });
-}
-
-async function logStudySession(topic, struggleArea, duration, mood) {
-    return await apiRequest('/log-study', 'POST', {
-        user_id: currentUserId,
-        topic: topic,
-        struggle_area: struggleArea,
-        duration: duration,
-        mood: mood
-    });
-}
-
-async function getWellnessTips() {
-    return await apiRequest('/wellness');
-}
-
-async function getWellnessScore() {
-    return await apiRequest(`/wellness-score/${currentUserId}`);
-}
+    // Make recommendation buttons functional
+    setTimeout(() => {
+        makeRecommendationButtonsFunctional();
+    }, 1000);
+});
 
 // Initialize app components
 function initializeApp() {
     // Check if user is onboarded
     loadUserData();
+    
+    if (!userData.isOnboarded) {
+        showOnboarding();
+    } else {
+        hideOnboarding();
+        updateUserInterface();
+    }
     
     // Set initial timer display
     updateTimerDisplay();
@@ -330,7 +251,7 @@ function updateTimerDisplay() {
     document.getElementById('timerProgress').style.strokeDashoffset = 283 - progress;
 }
 
-async function timerComplete() {
+function timerComplete() {
     isTimerRunning = false;
     clearInterval(timer);
     
@@ -341,24 +262,6 @@ async function timerComplete() {
     
     // Show completion notification
     showToast('🎉 Study session complete! Time for a well-deserved break.', 'success');
-    
-    // Log study session to backend
-    try {
-        const studyDuration = timerDuration / 60; // Convert to minutes
-        const moodValue = currentMood === 'excellent' ? 5 : 
-                         currentMood === 'good' ? 4 :
-                         currentMood === 'okay' ? 3 :
-                         currentMood === 'tired' ? 2 : 1;
-        
-        await logStudySession(
-            'General Study', // Topic
-            'Focus Session', // Struggle area
-            studyDuration,   // Duration in minutes
-            moodValue        // Mood (1-5)
-        );
-    } catch (error) {
-        console.error('Error logging study session:', error);
-    }
     
     // Update stats
     totalStudyHours += timerDuration / 3600;
@@ -382,7 +285,7 @@ function setTimer(minutes) {
 }
 
 // Mood tracking functions
-async function logMood(mood) {
+function logMood(mood) {
     currentMood = mood;
     
     // Update UI
@@ -391,25 +294,8 @@ async function logMood(mood) {
     });
     document.querySelector(`[data-mood="${mood}"]`).classList.add('selected');
     
-    // Save mood data locally
+    // Save mood data
     saveMoodData(mood);
-    
-    // Log mood to backend
-    try {
-        const moodValue = mood === 'excellent' ? 5 : 
-                         mood === 'good' ? 4 :
-                         mood === 'okay' ? 3 :
-                         mood === 'tired' ? 2 : 1;
-        
-        await logStudySession(
-            'Mood Check', // Topic
-            'Wellness',   // Struggle area
-            0,            // Duration (0 for mood check)
-            moodValue     // Mood (1-5)
-        );
-    } catch (error) {
-        console.error('Error logging mood:', error);
-    }
     
     // Show personalized response
     const responses = {
@@ -816,54 +702,11 @@ function loadSavedData() {
     }
 }
 
-async function loadUserData() {
-    try {
-        // Always show onboarding for fresh start
-        showOnboarding();
+function loadUserData() {
+    // Simulate loading user data
+    setTimeout(() => {
         updateDashboard();
-    } catch (error) {
-        console.error('Error loading user data:', error);
-        showOnboarding();
-    }
-}
-
-async function loadDemoData() {
-    try {
-        // Load student performance data
-        const response = await fetch('./student_performance_data.json');
-        const studentData = await response.json();
-        
-        if (studentData.length > 0) {
-            const demoStudent = studentData[0]; // Use first student as demo
-            userData.name = demoStudent.name;
-            userData.year = '3rd Year';
-            userData.specialty = demoStudent.current_subject;
-            
-            // Map performance data to our marks structure
-            const performanceMap = {
-                'Cardiac Anatomy': 'cardiology',
-                'Respiratory Anatomy': 'respiratory', 
-                'Neuroanatomy': 'neurology',
-                'Drug Classifications': 'pharmacology',
-                'Skeletal System': 'anatomy',
-                'Vital Signs Assessment': 'clinical'
-            };
-            
-            Object.entries(demoStudent.performance).forEach(([subject, score]) => {
-                const mappedSubject = performanceMap[subject];
-                if (mappedSubject) {
-                    userData.marks[mappedSubject] = score;
-                }
-            });
-            
-            // Set preferences from demo data
-            userData.preferences.sessionLength = demoStudent.study_preferences.preferred_session_length;
-            userData.preferences.contentType = demoStudent.study_preferences.preferred_content_types.map(type => type.toLowerCase());
-            userData.preferences.stressLevel = 5; // Default stress level
-        }
-    } catch (error) {
-        console.error('Error loading demo data:', error);
-    }
+    }, 1000);
 }
 
 // Keyboard shortcuts
@@ -902,9 +745,20 @@ function handleKeyboardShortcuts(e) {
 function setupPWA() {
     // Register service worker
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
             .then(registration => {
                 console.log('SW registered: ', registration);
+                
+                // Check for updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New content is available, notify user
+                            showUpdateAvailable();
+                        }
+                    });
+                });
             })
             .catch(registrationError => {
                 console.log('SW registration failed: ', registrationError);
@@ -918,6 +772,19 @@ function setupPWA() {
         deferredPrompt = e;
         showInstallPrompt();
     });
+    
+    // Handle successful installation
+    window.addEventListener('appinstalled', (evt) => {
+        console.log('App was installed successfully');
+        showToast('MedAide AI installed successfully!', 'success');
+    });
+    
+    // Check if app is running as PWA
+    if (window.matchMedia('(display-mode: standalone)').matches || 
+        window.navigator.standalone === true) {
+        console.log('Running as PWA');
+        document.body.classList.add('pwa-mode');
+    }
 }
 
 function showInstallPrompt() {
@@ -1015,6 +882,120 @@ function installApp() {
     }
 }
 
+function showUpdateAvailable() {
+    const updateBanner = document.createElement('div');
+    updateBanner.className = 'update-banner';
+    updateBanner.innerHTML = `
+        <div class="update-content">
+            <div class="update-icon">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <div class="update-text">
+                <h4>Update Available</h4>
+                <p>New features and improvements are ready!</p>
+            </div>
+            <div class="update-actions">
+                <button class="btn-primary" onclick="updateApp()">Update Now</button>
+                <button class="btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Later</button>
+            </div>
+        </div>
+    `;
+    
+    // Add styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .update-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideInUp 0.3s ease-in-out;
+        }
+        .update-content {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            gap: 1rem;
+        }
+        .update-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            animation: spin 2s linear infinite;
+        }
+        .update-text {
+            flex: 1;
+        }
+        .update-text h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .update-text p {
+            margin: 0;
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        .update-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .update-actions button {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .update-actions .btn-primary {
+            background: white;
+            color: #10b981;
+        }
+        .update-actions .btn-secondary {
+            background: transparent;
+            color: white;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(updateBanner);
+    
+    // Auto-hide after 15 seconds
+    setTimeout(() => {
+        if (updateBanner.parentNode) {
+            updateBanner.remove();
+        }
+    }, 15000);
+}
+
+function updateApp() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(registration => {
+            if (registration && registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                window.location.reload();
+            }
+        });
+    }
+    
+    const updateBanner = document.querySelector('.update-banner');
+    if (updateBanner) {
+        updateBanner.remove();
+    }
+}
+
 // Online/Offline handling
 function handleOnlineStatus() {
     showToast('Connection restored! All features available.', 'success');
@@ -1057,56 +1038,10 @@ function initializeStudySection() {
     animateProgressBars();
 }
 
-async function initializeWellnessSection() {
+function initializeWellnessSection() {
     // Initialize wellness-specific features
     updateWellnessAnalytics();
     loadMoodHistory();
-    await loadWellnessTips();
-}
-
-async function loadWellnessTips() {
-    try {
-        const response = await fetch('./wellness_tips.json');
-        const wellnessData = await response.json();
-        
-        if (wellnessData && wellnessData.length > 0) {
-            updateWellnessTipsCards(wellnessData);
-        }
-    } catch (error) {
-        console.error('Error loading wellness tips:', error);
-    }
-}
-
-function updateWellnessTipsCards(tips) {
-    const tipCards = document.querySelectorAll('.tip-card');
-    
-    tips.forEach((tip, index) => {
-        if (index < tipCards.length) {
-            const card = tipCards[index];
-            const title = card.querySelector('h3');
-            const description = card.querySelector('p');
-            const meta = card.querySelector('.tip-meta');
-            const button = card.querySelector('.btn-secondary');
-            
-            if (title && description && meta && button) {
-                title.textContent = tip.title;
-                description.textContent = tip.description;
-                
-                meta.innerHTML = `
-                    <span><i class="fas fa-clock"></i> ${tip.duration_minutes} min</span>
-                    <span><i class="fas fa-tag"></i> ${tip.category}</span>
-                `;
-                
-                button.textContent = 'Start Exercise';
-                button.onclick = () => startWellnessActivity(tip);
-            }
-        }
-    });
-}
-
-function startWellnessActivity(tip) {
-    showToast(`Starting ${tip.title}... Take your time!`, 'success');
-    console.log('Starting wellness activity:', tip);
 }
 
 function initializeProgressSection() {
@@ -1272,22 +1207,14 @@ function validateCurrentStep() {
     }
 }
 
-async function completeOnboarding() {
+function completeOnboarding() {
     if (!validateCurrentStep()) return;
     
     // Collect all user data
     collectUserData();
     
-    // Save user data locally
+    // Save user data
     saveUserData();
-    
-    // Register user with backend (optional for demo)
-    try {
-        await registerUser();
-    } catch (error) {
-        console.error('Error registering user:', error);
-        // Continue with local data if backend fails
-    }
     
     // Hide onboarding
     hideOnboarding();
@@ -1300,30 +1227,6 @@ async function completeOnboarding() {
     
     // Analytics
     trackOnboardingComplete();
-}
-
-async function registerUser() {
-    try {
-        const response = await apiRequest('/register', 'POST', {
-            name: userData.name,
-            email: `${userData.name.toLowerCase().replace(' ', '.')}@example.com`,
-            password: 'demo123',
-            topics: Object.keys(userData.marks).filter(subject => userData.marks[subject] > 0),
-            difficulty: userData.preferences.sessionLength <= 25 ? 'beginner' : 'intermediate',
-            wellness_goals: ['stress management', 'focus improvement']
-        });
-        
-        if (response && response.user_id) {
-            currentUserId = response.user_id;
-            userData.id = response.user_id;
-            console.log('User registered with ID:', response.user_id);
-        }
-    } catch (error) {
-        console.error('Registration failed:', error);
-        // Use default user ID for demo
-        currentUserId = 1;
-        userData.id = 1;
-    }
 }
 
 function collectUserData() {
@@ -1361,16 +1264,15 @@ function collectUserData() {
 
 function updateUserInterface() {
     // Update navigation
-    document.getElementById('navUserName').textContent = userData.name || 'Student';
-    document.getElementById('profileName').textContent = userData.name || 'Student Name';
-    document.getElementById('profileYear').textContent = `${userData.year || 'Year'} • ${userData.specialty || 'Specialty'}`;
+    document.getElementById('navUserName').textContent = userData.name;
+    document.getElementById('profileName').textContent = userData.name;
+    document.getElementById('profileYear').textContent = `${userData.year} • ${userData.specialty}`;
     
     // Update welcome message
-    document.getElementById('userDisplayName').textContent = userData.name || 'Student';
+    document.getElementById('userDisplayName').textContent = userData.name;
     
     // Update profile avatars with initials
-    const name = userData.name || 'Student';
-    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+    const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
     const avatarUrl = `https://via.placeholder.com/40x40/2563eb/ffffff?text=${initials}`;
     document.getElementById('profileAvatar').src = avatarUrl;
     document.getElementById('profileAvatarLarge').src = avatarUrl.replace('40x40', '60x60');
@@ -1443,743 +1345,41 @@ function generateTopicTags(subject, score) {
     }));
 }
 
-async function updateRecommendations() {
-    try {
-        // Load learning resources
-        const resourcesResponse = await fetch('./learning_resources.json');
-        const resourcesData = await resourcesResponse.json();
-        
-        if (!resourcesData.learning_resources) {
-            console.error('No learning resources found');
-            return;
-        }
-        
-        // Find subjects with low scores
-        const lowScoreSubjects = Object.entries(userData.marks)
-            .filter(([subject, score]) => score < 60 && score > 0)
-            .sort((a, b) => a[1] - b[1]); // Sort by lowest score first
-        
-        // Update recommendation cards based on low scores
-        const recommendationCards = document.querySelectorAll('.recommendation-card');
-        
-        lowScoreSubjects.forEach(([subject, score], index) => {
-            if (index < recommendationCards.length) {
-                const card = recommendationCards[index];
-                const title = card.querySelector('h3');
-                const description = card.querySelector('p');
-                const meta = card.querySelector('.recommendation-meta');
-                
-                if (title && description && meta) {
-                    // Find matching resource from learning_resources.json
-                    const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
-                    const matchingResource = resourcesData.learning_resources.find(resource => 
-                        resource.topic.toLowerCase().includes(subject.toLowerCase()) ||
-                        resource.tags.some(tag => tag.toLowerCase().includes(subject.toLowerCase()))
-                    );
-                    
-                    if (matchingResource) {
-                        title.textContent = matchingResource.title;
-                        description.textContent = matchingResource.description;
-                        
-                        // Update meta based on resource type
-                        const typeIcon = matchingResource.type === 'Video' ? 'fas fa-video' : 
-                                       matchingResource.type === 'Article' ? 'fas fa-file-alt' : 'fas fa-quiz';
-                        
-                        meta.innerHTML = `
-                            <span><i class="${typeIcon}"></i> ${matchingResource.type}</span>
-                            <span><i class="fas fa-clock"></i> ${matchingResource.duration_minutes} min</span>
-                            <span><i class="fas fa-tag"></i> ${matchingResource.tags[0]}</span>
-                        `;
-                        
-                        // Add click handler based on resource type
-                        const button = card.querySelector('.btn-primary');
-                        if (button) {
-                            if (matchingResource.type === 'Video') {
-                                button.textContent = 'Start Learning';
-                                button.onclick = () => startLearning(matchingResource);
-                            } else if (matchingResource.type === 'Quiz') {
-                                button.textContent = 'Take Quiz';
-                                button.onclick = () => startQuiz(matchingResource);
-                            } else if (matchingResource.type === 'Article') {
-                                button.textContent = 'Read Article';
-                                button.onclick = () => readArticle(matchingResource);
-                            } else {
-                                button.onclick = () => openResource(matchingResource);
-                            }
-                        }
-                    } else {
-                        // Fallback to generic recommendation
-                        title.textContent = `${subjectName} Fundamentals`;
-                        description.textContent = `Your ${subjectName.toLowerCase()} score (${score}%) indicates you need foundational review. This resource covers essential concepts.`;
-                        
-                        const preferredType = userData.preferences.contentType[0] || 'video';
-                        const typeIcon = preferredType === 'video' ? 'fas fa-video' : 
-                                       preferredType === 'article' ? 'fas fa-file-alt' : 'fas fa-quiz';
-                        const typeText = preferredType.charAt(0).toUpperCase() + preferredType.slice(1);
-                        
-                        meta.innerHTML = `
-                            <span><i class="${typeIcon}"></i> ${typeText}</span>
-                            <span><i class="fas fa-clock"></i> ${userData.preferences.sessionLength} min</span>
-                            <span><i class="fas fa-heart"></i> ${subjectName}</span>
-                        `;
-                    }
-                }
-            }
-        });
-        
-        // If no low scores, show general recommendations
-        if (lowScoreSubjects.length === 0) {
-            const generalResources = resourcesData.learning_resources.slice(0, 3);
-            const recommendationCards = document.querySelectorAll('.recommendation-card');
+function updateRecommendations() {
+    // Find subjects with low scores
+    const lowScoreSubjects = Object.entries(userData.marks)
+        .filter(([subject, score]) => score < 60 && score > 0)
+        .sort((a, b) => a[1] - b[1]); // Sort by lowest score first
+    
+    // Update recommendation cards based on low scores
+    const recommendationCards = document.querySelectorAll('.recommendation-card');
+    
+    lowScoreSubjects.forEach(([subject, score], index) => {
+        if (index < recommendationCards.length) {
+            const card = recommendationCards[index];
+            const title = card.querySelector('h3');
+            const description = card.querySelector('p');
+            const meta = card.querySelector('.recommendation-meta');
             
-            generalResources.forEach((resource, index) => {
-                if (index < recommendationCards.length) {
-                    const card = recommendationCards[index];
-                    const title = card.querySelector('h3');
-                    const description = card.querySelector('p');
-                    const meta = card.querySelector('.recommendation-meta');
-                    
-                    if (title && description && meta) {
-                        title.textContent = resource.title;
-                        description.textContent = resource.description;
-                        
-                        const typeIcon = resource.type === 'Video' ? 'fas fa-video' : 
-                                       resource.type === 'Article' ? 'fas fa-file-alt' : 'fas fa-quiz';
-                        
-                        meta.innerHTML = `
-                            <span><i class="${typeIcon}"></i> ${resource.type}</span>
-                            <span><i class="fas fa-clock"></i> ${resource.duration_minutes} min</span>
-                            <span><i class="fas fa-tag"></i> ${resource.tags[0]}</span>
-                        `;
-                        
-                        const button = card.querySelector('.btn-primary');
-                        if (button) {
-                            if (resource.type === 'Video') {
-                                button.textContent = 'Start Learning';
-                                button.onclick = () => startLearning(resource);
-                            } else if (resource.type === 'Quiz') {
-                                button.textContent = 'Take Quiz';
-                                button.onclick = () => startQuiz(resource);
-                            } else if (resource.type === 'Article') {
-                                button.textContent = 'Read Article';
-                                button.onclick = () => readArticle(resource);
-                            } else {
-                                button.onclick = () => openResource(resource);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    } catch (error) {
-        console.error('Error updating recommendations:', error);
-    }
-}
-
-// Learning Functions
-function startLearning(resource) {
-    showToast(`Starting learning session: ${resource.title}`, 'success');
-    
-    // Create learning modal
-    const modal = createLearningModal(resource);
-    document.body.appendChild(modal);
-    
-    // Start timer for learning session
-    const duration = resource.duration_minutes || 25;
-    setTimer(duration);
-    
-    // Track learning session
-    trackLearningSession(resource, 'video');
-}
-
-function startQuiz(resource) {
-    showToast(`Starting quiz: ${resource.title}`, 'success');
-    
-    // Create quiz modal
-    const modal = createQuizModal(resource);
-    document.body.appendChild(modal);
-    
-    // Track quiz session
-    trackLearningSession(resource, 'quiz');
-}
-
-function readArticle(resource) {
-    showToast(`Opening article: ${resource.title}`, 'success');
-    
-    // Create article modal
-    const modal = createArticleModal(resource);
-    document.body.appendChild(modal);
-    
-    // Track reading session
-    trackLearningSession(resource, 'article');
-}
-
-function openResource(resource) {
-    // In a real app, this would open the resource URL
-    showToast(`Opening ${resource.title}...`, 'info');
-    console.log('Opening resource:', resource);
-}
-
-// Modal Creation Functions
-function createLearningModal(resource) {
-    const modal = document.createElement('div');
-    modal.className = 'learning-modal';
-    modal.innerHTML = `
-        <div class="learning-modal-content">
-            <div class="learning-modal-header">
-                <h3>🎥 ${resource.title}</h3>
-                <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
-            </div>
-            <div class="learning-modal-body">
-                <div class="video-placeholder">
-                    <div class="video-icon">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                    <p>Video Player Placeholder</p>
-                    <p class="video-info">Duration: ${resource.duration_minutes} minutes</p>
-                </div>
-                <div class="learning-content">
-                    <h4>Description</h4>
-                    <p>${resource.description}</p>
-                    <div class="learning-meta">
-                        <span><i class="fas fa-tag"></i> ${resource.tags.join(', ')}</span>
-                        <span><i class="fas fa-clock"></i> ${resource.duration_minutes} min</span>
-                        <span><i class="fas fa-signal"></i> ${resource.difficulty}</span>
-                    </div>
-                </div>
-                <div class="learning-actions">
-                    <button class="btn-primary" onclick="completeLearning('${resource.title}')">Mark as Complete</button>
-                    <button class="btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    addModalStyles();
-    return modal;
-}
-
-function createQuizModal(resource) {
-    const quizQuestions = generateQuizQuestions(resource);
-    const modal = document.createElement('div');
-    modal.className = 'quiz-modal';
-    modal.innerHTML = `
-        <div class="quiz-modal-content">
-            <div class="quiz-modal-header">
-                <h3>📝 ${resource.title} - Quiz</h3>
-                <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
-            </div>
-            <div class="quiz-modal-body">
-                <div class="quiz-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="quizProgress" style="width: 0%"></div>
-                    </div>
-                    <span id="quizCounter">Question 1 of 5</span>
-                </div>
-                <div class="quiz-content" id="quizContent">
-                    ${generateQuizHTML(quizQuestions, 0)}
-                </div>
-                <div class="quiz-actions">
-                    <button class="btn-primary" id="nextQuestion" onclick="nextQuizQuestion()" style="display: none;">Next Question</button>
-                    <button class="btn-primary" id="submitQuiz" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    addModalStyles();
-    return modal;
-}
-
-function createArticleModal(resource) {
-    const modal = document.createElement('div');
-    modal.className = 'article-modal';
-    modal.innerHTML = `
-        <div class="article-modal-content">
-            <div class="article-modal-header">
-                <h3>📖 ${resource.title}</h3>
-                <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
-            </div>
-            <div class="article-modal-body">
-                <div class="article-content">
-                    <div class="article-meta">
-                        <span><i class="fas fa-clock"></i> ${resource.duration_minutes} min read</span>
-                        <span><i class="fas fa-signal"></i> ${resource.difficulty}</span>
-                        <span><i class="fas fa-tag"></i> ${resource.tags.join(', ')}</span>
-                    </div>
-                    <div class="article-text">
-                        <h4>Introduction</h4>
-                        <p>${resource.description}</p>
-                        
-                        <h4>Key Concepts</h4>
-                        <p>This article covers essential concepts in ${resource.tags[0]}. You'll learn about fundamental principles, practical applications, and clinical relevance.</p>
-                        
-                        <h4>Learning Objectives</h4>
-                        <ul>
-                            <li>Understand the basic principles</li>
-                            <li>Identify key components and functions</li>
-                            <li>Apply knowledge to clinical scenarios</li>
-                            <li>Recognize common patterns and variations</li>
-                        </ul>
-                        
-                        <h4>Detailed Content</h4>
-                        <p>This comprehensive article provides in-depth coverage of ${resource.title.toLowerCase()}. The content is structured to build your understanding progressively, starting with foundational concepts and advancing to more complex applications.</p>
-                        
-                        <p>Key topics covered include:</p>
-                        <ul>
-                            <li>Anatomical structures and their relationships</li>
-                            <li>Physiological processes and mechanisms</li>
-                            <li>Clinical correlations and applications</li>
-                            <li>Common variations and abnormalities</li>
-                        </ul>
-                        
-                        <h4>Summary</h4>
-                        <p>This article has provided a comprehensive overview of ${resource.title.toLowerCase()}. Understanding these concepts is crucial for your healthcare education and future clinical practice.</p>
-                    </div>
-                </div>
-                <div class="article-actions">
-                    <button class="btn-primary" onclick="completeReading('${resource.title}')">Mark as Read</button>
-                    <button class="btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    addModalStyles();
-    return modal;
-}
-
-// Quiz Functions
-let currentQuizData = {
-    questions: [],
-    currentQuestion: 0,
-    answers: [],
-    score: 0
-};
-
-function generateQuizQuestions(resource) {
-    const topic = resource.topic.toLowerCase();
-    const questions = [];
-    
-    // Generate 5 questions based on the topic
-    const questionTemplates = {
-        'cardiac anatomy': [
-            {
-                question: "What is the main function of the heart?",
-                options: ["Pump blood throughout the body", "Filter toxins", "Produce hormones", "Store nutrients"],
-                correct: 0
-            },
-            {
-                question: "How many chambers does the human heart have?",
-                options: ["2", "3", "4", "5"],
-                correct: 2
-            },
-            {
-                question: "Which valve separates the left atrium from the left ventricle?",
-                options: ["Tricuspid", "Mitral", "Pulmonary", "Aortic"],
-                correct: 1
-            },
-            {
-                question: "What is the largest artery in the body?",
-                options: ["Pulmonary artery", "Aorta", "Carotid artery", "Femoral artery"],
-                correct: 1
-            },
-            {
-                question: "Which side of the heart pumps oxygenated blood?",
-                options: ["Right side", "Left side", "Both sides", "Neither side"],
-                correct: 1
+            if (title && description && meta) {
+                const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
+                title.textContent = `${subjectName} Fundamentals`;
+                description.textContent = `Your ${subjectName.toLowerCase()} score (${score}%) indicates you need foundational review. This resource covers essential concepts.`;
+                
+                // Update meta based on content type preference
+                const preferredType = userData.preferences.contentType[0] || 'video';
+                const typeIcon = preferredType === 'video' ? 'fas fa-video' : 
+                               preferredType === 'article' ? 'fas fa-file-alt' : 'fas fa-quiz';
+                const typeText = preferredType.charAt(0).toUpperCase() + preferredType.slice(1);
+                
+                meta.innerHTML = `
+                    <span><i class="${typeIcon}"></i> ${typeText}</span>
+                    <span><i class="fas fa-clock"></i> ${userData.preferences.sessionLength} min</span>
+                    <span><i class="fas fa-heart"></i> ${subjectName}</span>
+                `;
             }
-        ],
-        'respiratory': [
-            {
-                question: "What is the primary function of the respiratory system?",
-                options: ["Digestion", "Gas exchange", "Circulation", "Excretion"],
-                correct: 1
-            },
-            {
-                question: "Where does gas exchange occur in the lungs?",
-                options: ["Bronchi", "Alveoli", "Trachea", "Pharynx"],
-                correct: 1
-            },
-            {
-                question: "What muscle is primarily responsible for breathing?",
-                options: ["Biceps", "Diaphragm", "Quadriceps", "Hamstrings"],
-                correct: 1
-            },
-            {
-                question: "How many lobes does the right lung have?",
-                options: ["2", "3", "4", "5"],
-                correct: 1
-            },
-            {
-                question: "What is the normal respiratory rate for adults?",
-                options: ["8-12 breaths/min", "12-20 breaths/min", "20-30 breaths/min", "30-40 breaths/min"],
-                correct: 1
-            }
-        ],
-        'neurology': [
-            {
-                question: "What is the basic unit of the nervous system?",
-                options: ["Synapse", "Neuron", "Dendrite", "Axon"],
-                correct: 1
-            },
-            {
-                question: "Which part of the brain controls balance and coordination?",
-                options: ["Cerebrum", "Cerebellum", "Brainstem", "Hypothalamus"],
-                correct: 1
-            },
-            {
-                question: "What is the function of myelin sheath?",
-                options: ["Protection", "Speed up nerve impulses", "Store nutrients", "Produce hormones"],
-                correct: 1
-            },
-            {
-                question: "Which neurotransmitter is associated with pleasure and reward?",
-                options: ["Serotonin", "Dopamine", "Acetylcholine", "GABA"],
-                correct: 1
-            },
-            {
-                question: "What is the largest part of the brain?",
-                options: ["Cerebellum", "Cerebrum", "Brainstem", "Thalamus"],
-                correct: 1
-            }
-        ]
-    };
-    
-    // Find matching topic or use default
-    let selectedQuestions = questionTemplates['cardiac anatomy']; // Default
-    for (const [key, questions] of Object.entries(questionTemplates)) {
-        if (topic.includes(key) || resource.tags.some(tag => tag.toLowerCase().includes(key))) {
-            selectedQuestions = questions;
-            break;
         }
-    }
-    
-    return selectedQuestions;
-}
-
-function generateQuizHTML(questions, questionIndex) {
-    const question = questions[questionIndex];
-    return `
-        <div class="question-container">
-            <h4>Question ${questionIndex + 1}</h4>
-            <p class="question-text">${question.question}</p>
-            <div class="options-container">
-                ${question.options.map((option, index) => `
-                    <label class="option-label">
-                        <input type="radio" name="quizAnswer" value="${index}" onchange="selectAnswer(${index})">
-                        <span class="option-text">${option}</span>
-                    </label>
-                `).join('')}
-            </div>
-        </div>
-    `;
-}
-
-function selectAnswer(answerIndex) {
-    currentQuizData.answers[currentQuizData.currentQuestion] = answerIndex;
-    const nextBtn = document.getElementById('nextQuestion');
-    const submitBtn = document.getElementById('submitQuiz');
-    
-    if (nextBtn) nextBtn.style.display = 'block';
-    if (currentQuizData.currentQuestion === 4) {
-        if (nextBtn) nextBtn.style.display = 'none';
-        if (submitBtn) submitBtn.style.display = 'block';
-    }
-}
-
-function nextQuizQuestion() {
-    if (currentQuizData.currentQuestion < 4) {
-        currentQuizData.currentQuestion++;
-        updateQuizDisplay();
-    }
-}
-
-function updateQuizDisplay() {
-    const progress = ((currentQuizData.currentQuestion + 1) / 5) * 100;
-    document.getElementById('quizProgress').style.width = `${progress}%`;
-    document.getElementById('quizCounter').textContent = `Question ${currentQuizData.currentQuestion + 1} of 5`;
-    
-    const questions = generateQuizQuestions({ topic: 'cardiac anatomy' }); // Default for now
-    document.getElementById('quizContent').innerHTML = generateQuizHTML(questions, currentQuizData.currentQuestion);
-    
-    const nextBtn = document.getElementById('nextQuestion');
-    const submitBtn = document.getElementById('submitQuiz');
-    
-    if (nextBtn) nextBtn.style.display = 'none';
-    if (submitBtn) submitBtn.style.display = 'none';
-}
-
-function submitQuiz() {
-    // Calculate score
-    const questions = generateQuizQuestions({ topic: 'cardiac anatomy' }); // Default for now
-    let score = 0;
-    
-    for (let i = 0; i < 5; i++) {
-        if (currentQuizData.answers[i] === questions[i].correct) {
-            score++;
-        }
-    }
-    
-    const percentage = (score / 5) * 100;
-    
-    // Show results
-    const modal = document.querySelector('.quiz-modal');
-    if (modal) {
-        modal.innerHTML = `
-            <div class="quiz-modal-content">
-                <div class="quiz-modal-header">
-                    <h3>📊 Quiz Results</h3>
-                    <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
-                </div>
-                <div class="quiz-modal-body">
-                    <div class="quiz-results">
-                        <div class="score-circle">
-                            <span class="score-number">${score}/5</span>
-                            <span class="score-percentage">${percentage}%</span>
-                        </div>
-                        <h4>${percentage >= 80 ? 'Excellent!' : percentage >= 60 ? 'Good job!' : 'Keep studying!'}</h4>
-                        <p>You answered ${score} out of 5 questions correctly.</p>
-                        <div class="quiz-actions">
-                            <button class="btn-primary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-    
-    showToast(`Quiz completed! Score: ${score}/5 (${percentage}%)`, 'success');
-}
-
-// Completion Functions
-function completeLearning(title) {
-    showToast(`🎉 Learning completed: ${title}`, 'success');
-    const modal = document.querySelector('.learning-modal');
-    if (modal) modal.remove();
-    
-    // Update user progress
-    updateUserProgress(title, 'video');
-}
-
-function completeReading(title) {
-    showToast(`📖 Reading completed: ${title}`, 'success');
-    const modal = document.querySelector('.article-modal');
-    if (modal) modal.remove();
-    
-    // Update user progress
-    updateUserProgress(title, 'article');
-}
-
-function updateUserProgress(title, type) {
-    console.log(`Progress updated: ${type} - ${title}`);
-    // In a real app, this would update the user's progress in the database
-}
-
-// Modal Styles
-function addModalStyles() {
-    if (document.getElementById('modal-styles')) return;
-    
-    const style = document.createElement('style');
-    style.id = 'modal-styles';
-    style.textContent = `
-        .learning-modal, .quiz-modal, .article-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        .learning-modal-content, .quiz-modal-content, .article-modal-content {
-            background: white;
-            border-radius: 1rem;
-            max-width: 800px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            animation: slideInUp 0.3s ease-in-out;
-        }
-        
-        .learning-modal-header, .quiz-modal-header, .article-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6b7280;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-        }
-        
-        .close-btn:hover {
-            background-color: #f3f4f6;
-        }
-        
-        .learning-modal-body, .quiz-modal-body, .article-modal-body {
-            padding: 1.5rem;
-        }
-        
-        .video-placeholder {
-            background: #f3f4f6;
-            border-radius: 0.75rem;
-            padding: 3rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .video-icon {
-            font-size: 4rem;
-            color: #2563eb;
-            margin-bottom: 1rem;
-        }
-        
-        .learning-meta, .article-meta {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-        
-        .learning-meta span, .article-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        
-        .learning-actions, .quiz-actions, .article-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-        
-        .quiz-progress {
-            margin-bottom: 1.5rem;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background-color: #e5e7eb;
-            border-radius: 0.375rem;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #2563eb, #1d4ed8);
-            border-radius: 0.375rem;
-            transition: width 0.3s ease-in-out;
-        }
-        
-        .question-container {
-            margin-bottom: 1.5rem;
-        }
-        
-        .question-text {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #1f2937;
-        }
-        
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
-        
-        .option-label:hover {
-            border-color: #2563eb;
-            background-color: #eff6ff;
-        }
-        
-        .option-label input[type="radio"]:checked + .option-text {
-            color: #2563eb;
-            font-weight: 600;
-        }
-        
-        .option-label:has(input[type="radio"]:checked) {
-            border-color: #2563eb;
-            background-color: #eff6ff;
-        }
-        
-        .quiz-results {
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .score-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            color: white;
-        }
-        
-        .score-number {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .score-percentage {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-        
-        .article-text {
-            line-height: 1.7;
-            color: #374151;
-        }
-        
-        .article-text h4 {
-            color: #1f2937;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .article-text ul {
-            margin: 0.75rem 0;
-            padding-left: 1.5rem;
-        }
-        
-        .article-text li {
-            margin-bottom: 0.5rem;
-        }
-    `;
-    document.head.appendChild(style);
+    });
 }
 
 // Profile Management Functions
@@ -2241,7 +1441,6 @@ function resetApp() {
         
         // Reset user data
         userData = {
-            id: 1,
             name: '',
             year: '',
             specialty: '',
@@ -2292,6 +1491,1079 @@ function trackOnboardingComplete() {
     // In a real app, this would send data to analytics service
 }
 
+// Learning Content System
+const learningContent = {
+    // YouTube video content based on subjects
+    videos: {
+        'Cardiology': {
+            'Cardiac Anatomy': 'https://www.youtube.com/embed/mdC6fd6tLbI',
+            'ECG Basics': 'https://www.youtube.com/embed/pyI4Kz01ZR4',
+            'Heart Murmurs': 'https://www.youtube.com/embed/dBwr2GZCmQM'
+        },
+        'Respiratory': {
+            'Lung Anatomy': 'https://www.youtube.com/embed/v_j-LD2YEqg',
+            'Breathing Mechanics': 'https://www.youtube.com/embed/dXHkCDohf70',
+            'Gas Exchange': 'https://www.youtube.com/embed/6qnSsV2syUE'
+        },
+        'Neurology': {
+            'Neuroanatomy': 'https://www.youtube.com/embed/qPix_X-9t7E',
+            'Neuron Function': 'https://www.youtube.com/embed/OZG8M_ldA1M',
+            'Synaptic Transmission': 'https://www.youtube.com/embed/WhowH0kb7n0'
+        },
+        'Pharmacology': {
+            'Drug Classifications': 'https://www.youtube.com/embed/LctWbEcvPKw',
+            'Dosage Calculations': 'https://www.youtube.com/embed/hnzZKY8SGbE',
+            'Medication Safety': 'https://www.youtube.com/embed/MWUM7LIXDeA'
+        },
+        'Anatomy': {
+            'Skeletal System': 'https://www.youtube.com/embed/RW46rQKWa-g',
+            'Muscular System': 'https://www.youtube.com/embed/jqy0i1KXUO4',
+            'Nervous System': 'https://www.youtube.com/embed/9fxm85Fy4sQ'
+        },
+        'Clinical': {
+            'Vital Signs': 'https://www.youtube.com/embed/DN4E4VunBAo',
+            'Patient Communication': 'https://www.youtube.com/embed/UxLBXCjD-yM',
+            'Infection Control': 'https://www.youtube.com/embed/0joUKUK8ZBU'
+        }
+    },
+
+    // Article content
+    articles: {
+        'Cardiology': {
+            'Cardiac Anatomy': {
+                title: 'Understanding Heart Structure for Healthcare Students',
+                content: `
+                    <h2>Introduction to Cardiac Anatomy</h2>
+                    <p>The human heart is a remarkable organ that serves as the central pump of the cardiovascular system. Understanding its structure is fundamental for any healthcare student.</p>
+                    
+                    <h3>Heart Chambers</h3>
+                    <p>The heart consists of four chambers:</p>
+                    <ul>
+                        <li><strong>Right Atrium:</strong> Receives deoxygenated blood from the body</li>
+                        <li><strong>Right Ventricle:</strong> Pumps blood to the lungs for oxygenation</li>
+                        <li><strong>Left Atrium:</strong> Receives oxygenated blood from the lungs</li>
+                        <li><strong>Left Ventricle:</strong> Pumps oxygenated blood to the entire body</li>
+                    </ul>
+                    
+                    <h3>Heart Valves</h3>
+                    <p>Four valves ensure unidirectional blood flow:</p>
+                    <ul>
+                        <li><strong>Tricuspid Valve:</strong> Between right atrium and ventricle</li>
+                        <li><strong>Pulmonary Valve:</strong> Between right ventricle and pulmonary artery</li>
+                        <li><strong>Mitral Valve:</strong> Between left atrium and ventricle</li>
+                        <li><strong>Aortic Valve:</strong> Between left ventricle and aorta</li>
+                    </ul>
+                    
+                    <h3>Blood Flow Pathway</h3>
+                    <p>The heart follows a specific pathway:</p>
+                    <ol>
+                        <li>Deoxygenated blood enters right atrium via vena cava</li>
+                        <li>Flows through tricuspid valve to right ventricle</li>
+                        <li>Pumped through pulmonary valve to lungs</li>
+                        <li>Oxygenated blood returns to left atrium</li>
+                        <li>Flows through mitral valve to left ventricle</li>
+                        <li>Pumped through aortic valve to systemic circulation</li>
+                    </ol>
+                    
+                    <h3>Clinical Significance</h3>
+                    <p>Understanding cardiac anatomy is crucial for:</p>
+                    <ul>
+                        <li>Interpreting ECGs and imaging studies</li>
+                        <li>Understanding heart murmurs and valve disorders</li>
+                        <li>Performing cardiac procedures</li>
+                        <li>Recognizing congenital heart defects</li>
+                    </ul>
+                `
+            },
+            'ECG Basics': {
+                title: 'ECG Interpretation Fundamentals',
+                content: `
+                    <h2>Introduction to Electrocardiography</h2>
+                    <p>An electrocardiogram (ECG) is a graphical representation of the heart's electrical activity, essential for diagnosing cardiac conditions.</p>
+                    
+                    <h3>ECG Components</h3>
+                    <ul>
+                        <li><strong>P Wave:</strong> Atrial depolarization</li>
+                        <li><strong>QRS Complex:</strong> Ventricular depolarization</li>
+                        <li><strong>T Wave:</strong> Ventricular repolarization</li>
+                        <li><strong>PR Interval:</strong> Atrial to ventricular conduction</li>
+                        <li><strong>QT Interval:</strong> Ventricular electrical activity</li>
+                    </ul>
+                    
+                    <h3>Lead Systems</h3>
+                    <p>Standard 12-lead ECG provides comprehensive view:</p>
+                    <ul>
+                        <li><strong>Limb Leads:</strong> I, II, III, aVR, aVL, aVF</li>
+                        <li><strong>Chest Leads:</strong> V1-V6</li>
+                    </ul>
+                    
+                    <h3>Normal Values</h3>
+                    <ul>
+                        <li>Heart Rate: 60-100 bpm</li>
+                        <li>PR Interval: 0.12-0.20 seconds</li>
+                        <li>QRS Duration: <0.12 seconds</li>
+                        <li>QT Interval: 0.36-0.44 seconds</li>
+                    </ul>
+                `
+            }
+        },
+        'Respiratory': {
+            'Lung Anatomy': {
+                title: 'Respiratory System Structure and Function',
+                content: `
+                    <h2>Introduction to Respiratory Anatomy</h2>
+                    <p>The respiratory system is responsible for gas exchange, providing oxygen to the body and removing carbon dioxide.</p>
+                    
+                    <h3>Upper Respiratory Tract</h3>
+                    <ul>
+                        <li><strong>Nose:</strong> Filters, warms, and humidifies air</li>
+                        <li><strong>Pharynx:</strong> Common pathway for air and food</li>
+                        <li><strong>Larynx:</strong> Voice production and airway protection</li>
+                    </ul>
+                    
+                    <h3>Lower Respiratory Tract</h3>
+                    <ul>
+                        <li><strong>Trachea:</strong> Main airway, divides into bronchi</li>
+                        <li><strong>Bronchi:</strong> Branch into bronchioles</li>
+                        <li><strong>Bronchioles:</strong> Terminal branches leading to alveoli</li>
+                        <li><strong>Alveoli:</strong> Site of gas exchange</li>
+                    </ul>
+                    
+                    <h3>Lung Structure</h3>
+                    <ul>
+                        <li><strong>Right Lung:</strong> 3 lobes (upper, middle, lower)</li>
+                        <li><strong>Left Lung:</strong> 2 lobes (upper, lower)</li>
+                        <li><strong>Pleura:</strong> Protective membrane covering lungs</li>
+                    </ul>
+                `
+            }
+        },
+        'Neurology': {
+            'Neuroanatomy': {
+                title: 'Central Nervous System Overview',
+                content: `
+                    <h2>Introduction to Neuroanatomy</h2>
+                    <p>The nervous system coordinates all body functions through electrical and chemical signals.</p>
+                    
+                    <h3>Central Nervous System</h3>
+                    <ul>
+                        <li><strong>Brain:</strong> Control center for all functions</li>
+                        <li><strong>Spinal Cord:</strong> Pathway between brain and body</li>
+                    </ul>
+                    
+                    <h3>Brain Regions</h3>
+                    <ul>
+                        <li><strong>Cerebrum:</strong> Higher cognitive functions</li>
+                        <li><strong>Cerebellum:</strong> Coordination and balance</li>
+                        <li><strong>Brainstem:</strong> Vital functions (breathing, heart rate)</li>
+                    </ul>
+                `
+            }
+        }
+    },
+
+    // Quiz content
+    quizzes: {
+        'Cardiology': {
+            'Cardiac Anatomy': [
+                {
+                    question: "How many chambers does the human heart have?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 2,
+                    explanation: "The human heart has 4 chambers: 2 atria and 2 ventricles."
+                },
+                {
+                    question: "Which valve is located between the left atrium and left ventricle?",
+                    options: ["Tricuspid", "Mitral", "Pulmonary", "Aortic"],
+                    correct: 1,
+                    explanation: "The mitral valve (also called bicuspid valve) is located between the left atrium and left ventricle."
+                },
+                {
+                    question: "What is the function of the right ventricle?",
+                    options: ["Pump blood to the body", "Pump blood to the lungs", "Receive blood from the body", "Receive blood from the lungs"],
+                    correct: 1,
+                    explanation: "The right ventricle pumps deoxygenated blood to the lungs for oxygenation."
+                }
+            ],
+            'ECG Basics': [
+                {
+                    question: "What does the P wave represent on an ECG?",
+                    options: ["Ventricular depolarization", "Atrial depolarization", "Ventricular repolarization", "Atrial repolarization"],
+                    correct: 1,
+                    explanation: "The P wave represents atrial depolarization (atrial contraction)."
+                },
+                {
+                    question: "What is the normal range for heart rate?",
+                    options: ["40-60 bpm", "60-100 bpm", "100-140 bpm", "140-180 bpm"],
+                    correct: 1,
+                    explanation: "The normal resting heart rate is 60-100 beats per minute."
+                }
+            ]
+        },
+        'Respiratory': {
+            'Lung Anatomy': [
+                {
+                    question: "How many lobes does the right lung have?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 1,
+                    explanation: "The right lung has 3 lobes: upper, middle, and lower."
+                },
+                {
+                    question: "Where does gas exchange occur in the lungs?",
+                    options: ["Bronchi", "Bronchioles", "Alveoli", "Trachea"],
+                    correct: 2,
+                    explanation: "Gas exchange occurs in the alveoli, the tiny air sacs at the end of the respiratory tree."
+                }
+            ]
+        },
+        'Neurology': {
+            'Neuroanatomy': [
+                {
+                    question: "Which part of the brain is responsible for coordination and balance?",
+                    options: ["Cerebrum", "Cerebellum", "Brainstem", "Spinal cord"],
+                    correct: 1,
+                    explanation: "The cerebellum is responsible for coordination, balance, and fine motor control."
+                }
+            ]
+        }
+    }
+};
+
+// Learning Functions
+function startLearning(contentType, subject, topic) {
+    if (!subject || !topic) {
+        showToast('Please select a subject and topic first', 'error');
+        return;
+    }
+
+    switch(contentType) {
+        case 'video':
+            openVideoModal(subject, topic);
+            break;
+        case 'article':
+            openArticleModal(subject, topic);
+            break;
+        case 'quiz':
+            openQuizModal(subject, topic);
+            break;
+        default:
+            showToast('Invalid content type', 'error');
+    }
+}
+
+function openVideoModal(subject, topic) {
+    const videoUrl = learningContent.videos[subject]?.[topic];
+    
+    if (!videoUrl) {
+        showToast('Video content not available for this topic', 'error');
+        return;
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'learning-modal';
+    modal.innerHTML = `
+        <div class="learning-modal-content video-modal">
+            <div class="learning-modal-header">
+                <h3>🎥 ${topic} - ${subject}</h3>
+                <button class="close-btn" onclick="closeLearningModal()">×</button>
+            </div>
+            <div class="learning-modal-body">
+                <div class="video-container">
+                    <iframe 
+                        src="${videoUrl}" 
+                        frameborder="0" 
+                        allowfullscreen
+                        title="${topic} Video">
+                    </iframe>
+                </div>
+                <div class="video-controls">
+                    <button class="btn-primary" onclick="markAsCompleted('video', '${subject}', '${topic}')">
+                        <i class="fas fa-check"></i> Mark as Completed
+                    </button>
+                    <button class="btn-secondary" onclick="openQuizModal('${subject}', '${topic}')">
+                        <i class="fas fa-question-circle"></i> Take Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    addLearningModalStyles();
+}
+
+function openArticleModal(subject, topic) {
+    const article = learningContent.articles[subject]?.[topic];
+    
+    if (!article) {
+        showToast('Article content not available for this topic', 'error');
+        return;
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'learning-modal';
+    modal.innerHTML = `
+        <div class="learning-modal-content article-modal">
+            <div class="learning-modal-header">
+                <h3>📖 ${article.title}</h3>
+                <button class="close-btn" onclick="closeLearningModal()">×</button>
+            </div>
+            <div class="learning-modal-body">
+                <div class="article-content">
+                    ${article.content}
+                </div>
+                <div class="article-controls">
+                    <button class="btn-primary" onclick="markAsCompleted('article', '${subject}', '${topic}')">
+                        <i class="fas fa-check"></i> Mark as Completed
+                    </button>
+                    <button class="btn-secondary" onclick="openQuizModal('${subject}', '${topic}')">
+                        <i class="fas fa-question-circle"></i> Take Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    addLearningModalStyles();
+}
+
+function openQuizModal(subject, topic) {
+    const quizQuestions = learningContent.quizzes[subject]?.[topic];
+    
+    if (!quizQuestions || quizQuestions.length === 0) {
+        showToast('Quiz not available for this topic', 'error');
+        return;
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'learning-modal';
+    modal.innerHTML = `
+        <div class="learning-modal-content quiz-modal">
+            <div class="learning-modal-header">
+                <h3>🧠 ${topic} Quiz - ${subject}</h3>
+                <button class="close-btn" onclick="closeLearningModal()">×</button>
+            </div>
+            <div class="learning-modal-body">
+                <div class="quiz-container">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quizProgress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">${quizQuestions.length}</span></span>
+                    </div>
+                    <div class="quiz-content">
+                        <div id="quizQuestionContainer">
+                            <!-- Quiz questions will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="quiz-controls">
+                        <button class="btn-secondary" id="prevQuestion" onclick="previousQuestion()" disabled>Previous</button>
+                        <button class="btn-primary" id="nextQuestion" onclick="nextQuestion()">Next Question</button>
+                        <button class="btn-success" id="submitQuiz" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    addLearningModalStyles();
+    
+    // Initialize quiz
+    initializeQuiz(subject, topic, quizQuestions);
+}
+
+let currentQuiz = {
+    subject: '',
+    topic: '',
+    questions: [],
+    currentQuestionIndex: 0,
+    answers: [],
+    score: 0
+};
+
+function initializeQuiz(subject, topic, questions) {
+    currentQuiz = {
+        subject: subject,
+        topic: topic,
+        questions: questions,
+        currentQuestionIndex: 0,
+        answers: [],
+        score: 0
+    };
+    
+    showQuizQuestion();
+}
+
+function showQuizQuestion() {
+    const question = currentQuiz.questions[currentQuiz.currentQuestionIndex];
+    const container = document.getElementById('quizQuestionContainer');
+    
+    container.innerHTML = `
+        <div class="question-card">
+            <h4 class="question-text">${question.question}</h4>
+            <div class="options-container">
+                ${question.options.map((option, index) => `
+                    <label class="option-label">
+                        <input type="radio" name="quizAnswer" value="${index}" onchange="selectAnswer(${index})">
+                        <span class="option-text">${option}</span>
+                    </label>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    // Update progress
+    const progress = ((currentQuiz.currentQuestionIndex + 1) / currentQuiz.questions.length) * 100;
+    document.getElementById('quizProgress').style.width = `${progress}%`;
+    document.getElementById('currentQuestion').textContent = currentQuiz.currentQuestionIndex + 1;
+    document.getElementById('totalQuestions').textContent = currentQuiz.questions.length;
+    
+    // Update navigation buttons
+    document.getElementById('prevQuestion').disabled = currentQuiz.currentQuestionIndex === 0;
+    
+    if (currentQuiz.currentQuestionIndex === currentQuiz.questions.length - 1) {
+        document.getElementById('nextQuestion').style.display = 'none';
+        document.getElementById('submitQuiz').style.display = 'inline-block';
+    } else {
+        document.getElementById('nextQuestion').style.display = 'inline-block';
+        document.getElementById('submitQuiz').style.display = 'none';
+    }
+}
+
+function selectAnswer(answerIndex) {
+    currentQuiz.answers[currentQuiz.currentQuestionIndex] = answerIndex;
+}
+
+function nextQuestion() {
+    if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length - 1) {
+        currentQuiz.currentQuestionIndex++;
+        showQuizQuestion();
+    }
+}
+
+function previousQuestion() {
+    if (currentQuiz.currentQuestionIndex > 0) {
+        currentQuiz.currentQuestionIndex--;
+        showQuizQuestion();
+    }
+}
+
+function submitQuiz() {
+    // Calculate score
+    let correctAnswers = 0;
+    currentQuiz.questions.forEach((question, index) => {
+        if (currentQuiz.answers[index] === question.correct) {
+            correctAnswers++;
+        }
+    });
+    
+    currentQuiz.score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+    
+    // Show results
+    showQuizResults();
+}
+
+function showQuizResults() {
+    const container = document.getElementById('quizQuestionContainer');
+    const correctAnswers = currentQuiz.questions.filter((question, index) => 
+        currentQuiz.answers[index] === question.correct
+    ).length;
+    
+    container.innerHTML = `
+        <div class="quiz-results">
+            <div class="results-header">
+                <h3>🎉 Quiz Complete!</h3>
+                <div class="score-display">
+                    <span class="score-number">${currentQuiz.score}%</span>
+                    <span class="score-label">Score</span>
+                </div>
+            </div>
+            
+            <div class="results-summary">
+                <p>You answered <strong>${correctAnswers}</strong> out of <strong>${currentQuiz.questions.length}</strong> questions correctly.</p>
+                <div class="performance-badge ${currentQuiz.score >= 80 ? 'excellent' : currentQuiz.score >= 60 ? 'good' : 'needs-improvement'}">
+                    ${currentQuiz.score >= 80 ? 'Excellent!' : currentQuiz.score >= 60 ? 'Good Job!' : 'Keep Studying!'}
+                </div>
+            </div>
+            
+            <div class="question-review">
+                <h4>Question Review:</h4>
+                ${currentQuiz.questions.map((question, index) => {
+                    const userAnswer = currentQuiz.answers[index];
+                    const isCorrect = userAnswer === question.correct;
+                    return `
+                        <div class="review-item ${isCorrect ? 'correct' : 'incorrect'}">
+                            <div class="review-question">
+                                <strong>Q${index + 1}:</strong> ${question.question}
+                            </div>
+                            <div class="review-answer">
+                                <strong>Your Answer:</strong> ${userAnswer !== undefined ? question.options[userAnswer] : 'Not answered'}
+                                ${!isCorrect ? `<br><strong>Correct Answer:</strong> ${question.options[question.correct]}` : ''}
+                            </div>
+                            <div class="review-explanation">
+                                <strong>Explanation:</strong> ${question.explanation}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+    
+    // Update controls
+    document.getElementById('prevQuestion').style.display = 'none';
+    document.getElementById('nextQuestion').style.display = 'none';
+    document.getElementById('submitQuiz').style.display = 'none';
+    
+    // Add retake button
+    const controls = document.querySelector('.quiz-controls');
+    controls.innerHTML = `
+        <button class="btn-primary" onclick="retakeQuiz()">Retake Quiz</button>
+        <button class="btn-secondary" onclick="markAsCompleted('quiz', '${currentQuiz.subject}', '${currentQuiz.topic}')">
+            <i class="fas fa-check"></i> Mark as Completed
+        </button>
+    `;
+    
+    // Track quiz completion
+    trackQuizCompletion(currentQuiz.subject, currentQuiz.topic, currentQuiz.score);
+}
+
+function retakeQuiz() {
+    currentQuiz.currentQuestionIndex = 0;
+    currentQuiz.answers = [];
+    currentQuiz.score = 0;
+    
+    // Reset controls
+    const controls = document.querySelector('.quiz-controls');
+    controls.innerHTML = `
+        <button class="btn-secondary" id="prevQuestion" onclick="previousQuestion()" disabled>Previous</button>
+        <button class="btn-primary" id="nextQuestion" onclick="nextQuestion()">Next Question</button>
+        <button class="btn-success" id="submitQuiz" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+    `;
+    
+    showQuizQuestion();
+}
+
+function markAsCompleted(contentType, subject, topic) {
+    // Save completion data
+    const completionData = {
+        contentType: contentType,
+        subject: subject,
+        topic: topic,
+        timestamp: new Date().toISOString(),
+        score: currentQuiz.score || null
+    };
+    
+    let completedItems = JSON.parse(localStorage.getItem('completedLearningItems') || '[]');
+    completedItems.push(completionData);
+    localStorage.setItem('completedLearningItems', JSON.stringify(completedItems));
+    
+    // Show success message
+    showToast(`Great job! You completed ${topic} in ${subject}`, 'success');
+    
+    // Close modal
+    closeLearningModal();
+    
+    // Update progress
+    updateLearningProgress();
+}
+
+function closeLearningModal() {
+    const modal = document.querySelector('.learning-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function addLearningModalStyles() {
+    // Check if styles already added
+    if (document.getElementById('learningModalStyles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'learningModalStyles';
+    style.textContent = `
+        .learning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease-in-out;
+            padding: 1rem;
+        }
+        
+        .learning-modal-content {
+            background: white;
+            border-radius: 1rem;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideInUp 0.3s ease-in-out;
+        }
+        
+        .learning-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .learning-modal-header h3 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 1.25rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        
+        .close-btn:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .learning-modal-body {
+            padding: 1.5rem;
+        }
+        
+        /* Video Modal Styles */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin-bottom: 1rem;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5rem;
+        }
+        
+        .video-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Article Modal Styles */
+        .article-content {
+            line-height: 1.7;
+            color: #374151;
+        }
+        
+        .article-content h2 {
+            color: #1f2937;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .article-content h3 {
+            color: #374151;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Quiz Modal Styles */
+        .quiz-progress {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-text {
+            display: block;
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .question-card {
+            background: #f9fafb;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.25rem;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-label:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        
+        .option-label input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+        
+        .option-label input[type="radio"]:checked + .option-text {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .option-text {
+            font-size: 1rem;
+            color: #374151;
+        }
+        
+        .quiz-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Quiz Results Styles */
+        .quiz-results {
+            text-align: center;
+        }
+        
+        .results-header h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .score-display {
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .score-number {
+            display: block;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2563eb;
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 1rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .performance-badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+        
+        .performance-badge.excellent {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .performance-badge.good {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .performance-badge.needs-improvement {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .question-review {
+            text-align: left;
+            margin-top: 2rem;
+        }
+        
+        .question-review h4 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .review-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+        
+        .review-item.correct {
+            background: #f0fdf4;
+            border-left-color: #22c55e;
+        }
+        
+        .review-item.incorrect {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+        }
+        
+        .review-question {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .review-answer {
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        
+        .review-explanation {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .learning-modal-content {
+                margin: 0.5rem;
+                max-height: 95vh;
+            }
+            
+            .learning-modal-header,
+            .learning-modal-body {
+                padding: 1rem;
+            }
+            
+            .question-card {
+                padding: 1rem;
+            }
+            
+            .video-controls,
+            .article-controls,
+            .quiz-controls {
+                flex-direction: column;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function updateLearningProgress() {
+    const completedItems = JSON.parse(localStorage.getItem('completedLearningItems') || '[]');
+    
+    // Update subject performance based on completed items
+    completedItems.forEach(item => {
+        if (item.score) {
+            // Update subject scores based on quiz performance
+            const subjectKey = item.subject.toLowerCase();
+            if (userData.marks[subjectKey] !== undefined) {
+                // Increase score based on quiz performance
+                const scoreIncrease = Math.round(item.score / 10);
+                userData.marks[subjectKey] = Math.min(100, userData.marks[subjectKey] + scoreIncrease);
+            }
+        }
+    });
+    
+    // Save updated user data
+    saveUserData();
+    
+    // Update UI
+    updateSubjectPerformance();
+    updateRecommendations();
+}
+
+function trackQuizCompletion(subject, topic, score) {
+    console.log(`Quiz completed: ${topic} in ${subject} with score ${score}%`);
+    // In a real app, this would send data to analytics service
+}
+
+// Subject Selector Functions
+function updateRecommendationsForSubject() {
+    const subject = document.getElementById('subjectSelector').value;
+    if (subject) {
+        showToast(`Selected ${subject} - Click "Get Recommendations" to see personalized content`, 'info');
+    }
+}
+
+function getRecommendationsForSelectedSubject() {
+    const subject = document.getElementById('subjectSelector').value;
+    if (!subject) {
+        showToast('Please select a subject first', 'error');
+        return;
+    }
+    
+    // Update recommendations based on selected subject
+    updateRecommendationsForSubject(subject);
+    showToast(`Loading personalized recommendations for ${subject}...`, 'success');
+}
+
+function updateRecommendationsForSubject(subject) {
+    // Get available topics for the subject
+    const availableTopics = getAvailableTopics(subject);
+    const recommendationsContainer = document.querySelector('.recommendations-grid');
+    
+    if (availableTopics.length === 0) {
+        recommendationsContainer.innerHTML = `
+            <div class="no-content">
+                <h3>No content available for ${subject}</h3>
+                <p>Please select a different subject or contact support.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Generate recommendation cards based on available content
+    let recommendationsHTML = '';
+    availableTopics.forEach((topic, index) => {
+        const contentTypes = getContentTypesForTopic(subject, topic);
+        
+        contentTypes.forEach(contentType => {
+            const priority = index === 0 ? 'high' : index === 1 ? 'medium' : 'low';
+            const priorityText = index === 0 ? 'HIGH PRIORITY' : index === 1 ? 'MEDIUM PRIORITY' : 'LOW PRIORITY';
+            const difficulty = topic.includes('Basics') || topic.includes('Anatomy') ? 'beginner' : 
+                             topic.includes('Advanced') ? 'advanced' : 'intermediate';
+            
+            const icon = contentType === 'video' ? 'fas fa-video' : 
+                        contentType === 'quiz' ? 'fas fa-quiz' : 'fas fa-file-alt';
+            const duration = contentType === 'video' ? '18 min' : 
+                           contentType === 'quiz' ? '15 min' : '25 min';
+            const actionText = contentType === 'video' ? 'Start Learning' : 
+                             contentType === 'quiz' ? 'Take Quiz' : 'Read Article';
+            
+            recommendationsHTML += `
+                <div class="recommendation-card priority-${priority}">
+                    <div class="recommendation-header">
+                        <span class="priority-badge ${priority}">${priorityText}</span>
+                        <span class="difficulty-badge ${difficulty}">${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</span>
+                    </div>
+                    <h3>${topic}</h3>
+                    <p>Your ${subject.toLowerCase()} score indicates you need focused study on ${topic.toLowerCase()}. This ${contentType} covers essential concepts.</p>
+                    <div class="recommendation-meta">
+                        <span><i class="${icon}"></i> ${contentType.charAt(0).toUpperCase() + contentType.slice(1)}</span>
+                        <span><i class="fas fa-clock"></i> ${duration}</span>
+                        <span><i class="fas fa-heart"></i> ${subject}</span>
+                    </div>
+                    <button class="btn-primary" onclick="startLearning('${contentType}', '${subject}', '${topic}')">${actionText}</button>
+                </div>
+            `;
+        });
+    });
+    
+    recommendationsContainer.innerHTML = recommendationsHTML;
+}
+
+function getAvailableTopics(subject) {
+    const topics = {
+        'Cardiology': ['Cardiac Anatomy', 'ECG Basics', 'Heart Murmurs'],
+        'Respiratory': ['Lung Anatomy', 'Breathing Mechanics', 'Gas Exchange'],
+        'Neurology': ['Neuroanatomy', 'Neuron Function', 'Synaptic Transmission'],
+        'Pharmacology': ['Drug Classifications', 'Dosage Calculations', 'Medication Safety'],
+        'Anatomy': ['Skeletal System', 'Muscular System', 'Nervous System'],
+        'Clinical': ['Vital Signs', 'Patient Communication', 'Infection Control']
+    };
+    
+    return topics[subject] || [];
+}
+
+function getContentTypesForTopic(subject, topic) {
+    // Return available content types for a topic
+    const contentTypes = ['video', 'article', 'quiz'];
+    return contentTypes.slice(0, Math.floor(Math.random() * 3) + 1); // Random 1-3 content types
+}
+
+// Update recommendation cards to make buttons functional
+function makeRecommendationButtonsFunctional() {
+    document.querySelectorAll('.recommendation-card .btn-primary').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get recommendation data from the card
+            const card = this.closest('.recommendation-card');
+            const title = card.querySelector('h3').textContent;
+            const meta = card.querySelector('.recommendation-meta');
+            
+            // Determine content type and subject from the card
+            let contentType = 'video';
+            let subject = 'Cardiology';
+            let topic = 'Cardiac Anatomy';
+            
+            // Extract subject and topic from title or meta
+            if (title.includes('Neuron') || title.includes('Neurology')) {
+                subject = 'Neurology';
+                topic = 'Neuroanatomy';
+            } else if (title.includes('Heart') || title.includes('Murmur') || title.includes('Cardiac')) {
+                subject = 'Cardiology';
+                topic = title.includes('Murmur') ? 'Heart Murmurs' : 'Cardiac Anatomy';
+            } else if (title.includes('Respiratory') || title.includes('Breathing')) {
+                subject = 'Respiratory';
+                topic = 'Lung Anatomy';
+            }
+            
+            // Determine content type from meta
+            const typeIcon = meta.querySelector('i');
+            if (typeIcon) {
+                if (typeIcon.classList.contains('fa-video')) {
+                    contentType = 'video';
+                } else if (typeIcon.classList.contains('fa-quiz')) {
+                    contentType = 'quiz';
+                } else if (typeIcon.classList.contains('fa-file-alt')) {
+                    contentType = 'article';
+                }
+            }
+            
+            // Start learning
+            startLearning(contentType, subject, topic);
+        });
+    });
+}
+
 // Export functions for global access
 window.MedAideAI = {
     switchSection,
@@ -2307,5 +2579,17 @@ window.MedAideAI = {
     editProfile,
     viewSettings,
     exportData,
-    resetApp
+    resetApp,
+    startLearning,
+    openVideoModal,
+    openArticleModal,
+    openQuizModal,
+    closeLearningModal,
+    makeRecommendationButtonsFunctional,
+    updateRecommendationsForSubject,
+    getRecommendationsForSelectedSubject,
+    getAvailableTopics,
+    getContentTypesForTopic,
+    showUpdateAvailable,
+    updateApp
 };

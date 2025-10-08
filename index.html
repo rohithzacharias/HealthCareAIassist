@@ -9,6 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MedAide AI">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#2563eb">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iNDAiIGZpbGw9IiMyNTYzZWIiLz4KPHN2ZyB4PSI0NSIgeT0iNDUiIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzI1NjNlYiIvPgo8c3ZnIHg9IjgiIHk9IjgiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+">
 </head>
 <body>
     <!-- Navigation -->
@@ -36,7 +48,7 @@
                  <div class="profile-avatar">
                      <img src="https://via.placeholder.com/40x40/2563eb/ffffff?text=A" alt="Profile" id="profileAvatar">
                  </div>
-                 <span class="profile-name" id="navUserName">Enter Your Name</span>
+                 <span class="profile-name" id="navUserName">Student</span>
                  <button class="profile-menu-btn" onclick="toggleProfileMenu()">
                      <i class="fas fa-chevron-down"></i>
                  </button>
@@ -49,8 +61,8 @@
                          <img src="https://via.placeholder.com/60x60/2563eb/ffffff?text=A" alt="Profile" id="profileAvatarLarge">
                      </div>
                      <div class="profile-details">
-                         <h3 id="profileName">Enter Your Name</h3>
-                         <p id="profileYear">Enter Your Year & Specialty</p>
+                         <h3 id="profileName">Student Name</h3>
+                         <p id="profileYear">Year & Specialty</p>
                      </div>
                  </div>
                  <div class="profile-menu-items">
@@ -209,7 +221,7 @@
         <section id="dashboard" class="section active">
             <div class="container">
                 <div class="welcome-header">
-                    <h1 id="welcomeMessage">Welcome back, <span id="userDisplayName">Enter Your Name</span>! 👋</h1>
+                    <h1 id="welcomeMessage">Welcome back, <span id="userDisplayName">Student</span>! 👋</h1>
                     <p id="welcomeSubtext">Ready to continue your healthcare journey?</p>
                 </div>
 
@@ -376,6 +388,23 @@
                     </div>
                 </div>
 
+                <!-- Subject Selector -->
+                <div class="subject-selector-section">
+                    <h2>📚 Choose Your Study Focus</h2>
+                    <div class="subject-selector">
+                        <select id="subjectSelector" onchange="updateRecommendationsForSubject()">
+                            <option value="">Select a subject to get personalized recommendations</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Respiratory">Respiratory Medicine</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Pharmacology">Pharmacology</option>
+                            <option value="Anatomy">Anatomy</option>
+                            <option value="Clinical">Clinical Skills</option>
+                        </select>
+                        <button class="btn-primary" onclick="getRecommendationsForSelectedSubject()">Get Recommendations</button>
+                    </div>
+                </div>
+
                 <!-- AI Recommendations -->
                 <div class="recommendations-section">
                     <h2>🎯 AI Recommendations</h2>
@@ -392,7 +421,7 @@
                                 <span><i class="fas fa-clock"></i> 18 min</span>
                                 <span><i class="fas fa-brain"></i> Neurology</span>
                             </div>
-                            <button class="btn-primary">Start Learning</button>
+                            <button class="btn-primary" onclick="startLearning('video', 'Cardiology', 'Cardiac Anatomy')">Start Learning</button>
                         </div>
                         <div class="recommendation-card priority-medium">
                             <div class="recommendation-header">
@@ -406,7 +435,7 @@
                                 <span><i class="fas fa-clock"></i> 15 min</span>
                                 <span><i class="fas fa-heart"></i> Cardiology</span>
                             </div>
-                            <button class="btn-primary">Take Quiz</button>
+                            <button class="btn-primary" onclick="startLearning('quiz', 'Cardiology', 'Heart Murmurs')">Take Quiz</button>
                         </div>
                         <div class="recommendation-card priority-medium">
                             <div class="recommendation-header">
@@ -420,7 +449,7 @@
                                 <span><i class="fas fa-clock"></i> 25 min</span>
                                 <span><i class="fas fa-lungs"></i> Respiratory</span>
                             </div>
-                            <button class="btn-primary">Read Article</button>
+                            <button class="btn-primary" onclick="startLearning('article', 'Respiratory', 'Lung Anatomy')">Read Article</button>
                         </div>
                     </div>
                 </div>

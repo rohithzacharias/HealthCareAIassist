@@ -1,11 +1,11 @@
 // MedAide AI Service Worker
 const CACHE_NAME = 'medaide-ai-v1.0.0';
 const STATIC_CACHE_URLS = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/manifest.json',
+  './',
+  './index.html',
+  './styles.css',
+  './script.js',
+  './manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
   'https://cdn.jsdelivr.net/npm/chart.js'
