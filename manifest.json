@@ -2,12 +2,12 @@
   "name": "MedAide AI - Healthcare Student Assistant",
   "short_name": "MedAide AI",
   "description": "AI-powered study assistant for healthcare students with personalized learning resources, study scheduling, and wellness tracking",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "./",
   "lang": "en",
   "categories": ["education", "health", "productivity"],
   "icons": [
@@ -47,19 +47,19 @@
       "name": "Start Study Session",
       "short_name": "Study",
       "description": "Quickly start a focused study session",
-      "url": "/?section=study"
+      "url": "./?section=study"
     },
     {
       "name": "Log Mood",
       "short_name": "Mood",
       "description": "Quickly log your current mood",
-      "url": "/?section=wellness"
+      "url": "./?section=wellness"
     },
     {
       "name": "View Progress",
       "short_name": "Progress",
       "description": "Check your learning progress",
-      "url": "/?section=progress"
+      "url": "./?section=progress"
     }
   ],
   "related_applications": [],

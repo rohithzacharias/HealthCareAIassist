@@ -3,6 +3,7 @@ const CACHE_NAME = 'medaide-ai-v1.0.0';
 const STATIC_CACHE_URLS = [
   './',
   './index.html',
+  './offline.html',
   './styles.css',
   './script.js',
   './manifest.json',
@@ -98,7 +99,9 @@ self.addEventListener('fetch', event => {
             
             // Return offline page for navigation requests
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              return caches.match('./index.html').catch(() => {
+                return caches.match('./offline.html');
+              });
             }
             
             throw error;
