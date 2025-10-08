@@ -9,9 +9,11 @@ let isTimerRunning = false;
 let currentMood = null;
 let studyStreak = 7;
 let totalStudyHours = 24.5;
+let currentUserId = 1; // Default user ID for demo
 
 // User Data
 let userData = {
+    id: 1,
     name: '',
     year: '',
     specialty: '',
@@ -31,12 +33,18 @@ let userData = {
     isOnboarded: false
 };
 
+// API Configuration
+const API_BASE_URL = 'http://localhost:5000/api';
+
 // Onboarding state
 let currentOnboardingStep = 1;
 const totalOnboardingSteps = 3;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
+    // Force clear any existing data to ensure fresh user input
+    clearAllData();
+    
     initializeApp();
     setupEventListeners();
     loadUserData();
@@ -44,17 +52,93 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCharts();
 });
 
+// Function to clear all stored data
+function clearAllData() {
+    localStorage.removeItem('medAideUserData');
+    localStorage.removeItem('moodHistory');
+    
+    // Reset user data to empty state
+    userData = {
+        id: 1,
+        name: '',
+        year: '',
+        specialty: '',
+        marks: {
+            cardiology: 0,
+            respiratory: 0,
+            neurology: 0,
+            pharmacology: 0,
+            anatomy: 0,
+            clinical: 0
+        },
+        preferences: {
+            sessionLength: 25,
+            contentType: ['video', 'article', 'quiz'],
+            stressLevel: 5
+        },
+        isOnboarded: false
+    };
+}
+
+// API Helper Functions
+async function apiRequest(endpoint, method = 'GET', data = null) {
+    try {
+        const options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        
+        if (data) {
+            options.body = JSON.stringify(data);
+        }
+        
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+        
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('API request error:', error);
+        // Fallback to local data for demo purposes
+        return null;
+    }
+}
+
+async function loadResources(topic = null) {
+    const endpoint = topic ? `/resources?topic=${topic}` : '/resources';
+    return await apiRequest(endpoint);
+}
+
+async function getRecommendations(topic) {
+    return await apiRequest('/recommendations', 'GET', null, { topic });
+}
+
+async function logStudySession(topic, struggleArea, duration, mood) {
+    return await apiRequest('/log-study', 'POST', {
+        user_id: currentUserId,
+        topic: topic,
+        struggle_area: struggleArea,
+        duration: duration,
+        mood: mood
+    });
+}
+
+async function getWellnessTips() {
+    return await apiRequest('/wellness');
+}
+
+async function getWellnessScore() {
+    return await apiRequest(`/wellness-score/${currentUserId}`);
+}
+
 // Initialize app components
 function initializeApp() {
     // Check if user is onboarded
     loadUserData();
-    
-    if (!userData.isOnboarded) {
-        showOnboarding();
-    } else {
-        hideOnboarding();
-        updateUserInterface();
-    }
     
     // Set initial timer display
     updateTimerDisplay();
@@ -246,7 +330,7 @@ function updateTimerDisplay() {
     document.getElementById('timerProgress').style.strokeDashoffset = 283 - progress;
 }
 
-function timerComplete() {
+async function timerComplete() {
     isTimerRunning = false;
     clearInterval(timer);
     
@@ -257,6 +341,24 @@ function timerComplete() {
     
     // Show completion notification
     showToast('🎉 Study session complete! Time for a well-deserved break.', 'success');
+    
+    // Log study session to backend
+    try {
+        const studyDuration = timerDuration / 60; // Convert to minutes
+        const moodValue = currentMood === 'excellent' ? 5 : 
+                         currentMood === 'good' ? 4 :
+                         currentMood === 'okay' ? 3 :
+                         currentMood === 'tired' ? 2 : 1;
+        
+        await logStudySession(
+            'General Study', // Topic
+            'Focus Session', // Struggle area
+            studyDuration,   // Duration in minutes
+            moodValue        // Mood (1-5)
+        );
+    } catch (error) {
+        console.error('Error logging study session:', error);
+    }
     
     // Update stats
     totalStudyHours += timerDuration / 3600;
@@ -280,7 +382,7 @@ function setTimer(minutes) {
 }
 
 // Mood tracking functions
-function logMood(mood) {
+async function logMood(mood) {
     currentMood = mood;
     
     // Update UI
@@ -289,8 +391,25 @@ function logMood(mood) {
     });
     document.querySelector(`[data-mood="${mood}"]`).classList.add('selected');
     
-    // Save mood data
+    // Save mood data locally
     saveMoodData(mood);
+    
+    // Log mood to backend
+    try {
+        const moodValue = mood === 'excellent' ? 5 : 
+                         mood === 'good' ? 4 :
+                         mood === 'okay' ? 3 :
+                         mood === 'tired' ? 2 : 1;
+        
+        await logStudySession(
+            'Mood Check', // Topic
+            'Wellness',   // Struggle area
+            0,            // Duration (0 for mood check)
+            moodValue     // Mood (1-5)
+        );
+    } catch (error) {
+        console.error('Error logging mood:', error);
+    }
     
     // Show personalized response
     const responses = {
@@ -697,11 +816,54 @@ function loadSavedData() {
     }
 }
 
-function loadUserData() {
-    // Simulate loading user data
-    setTimeout(() => {
+async function loadUserData() {
+    try {
+        // Always show onboarding for fresh start
+        showOnboarding();
         updateDashboard();
-    }, 1000);
+    } catch (error) {
+        console.error('Error loading user data:', error);
+        showOnboarding();
+    }
+}
+
+async function loadDemoData() {
+    try {
+        // Load student performance data
+        const response = await fetch('./student_performance_data.json');
+        const studentData = await response.json();
+        
+        if (studentData.length > 0) {
+            const demoStudent = studentData[0]; // Use first student as demo
+            userData.name = demoStudent.name;
+            userData.year = '3rd Year';
+            userData.specialty = demoStudent.current_subject;
+            
+            // Map performance data to our marks structure
+            const performanceMap = {
+                'Cardiac Anatomy': 'cardiology',
+                'Respiratory Anatomy': 'respiratory', 
+                'Neuroanatomy': 'neurology',
+                'Drug Classifications': 'pharmacology',
+                'Skeletal System': 'anatomy',
+                'Vital Signs Assessment': 'clinical'
+            };
+            
+            Object.entries(demoStudent.performance).forEach(([subject, score]) => {
+                const mappedSubject = performanceMap[subject];
+                if (mappedSubject) {
+                    userData.marks[mappedSubject] = score;
+                }
+            });
+            
+            // Set preferences from demo data
+            userData.preferences.sessionLength = demoStudent.study_preferences.preferred_session_length;
+            userData.preferences.contentType = demoStudent.study_preferences.preferred_content_types.map(type => type.toLowerCase());
+            userData.preferences.stressLevel = 5; // Default stress level
+        }
+    } catch (error) {
+        console.error('Error loading demo data:', error);
+    }
 }
 
 // Keyboard shortcuts
@@ -895,10 +1057,56 @@ function initializeStudySection() {
     animateProgressBars();
 }
 
-function initializeWellnessSection() {
+async function initializeWellnessSection() {
     // Initialize wellness-specific features
     updateWellnessAnalytics();
     loadMoodHistory();
+    await loadWellnessTips();
+}
+
+async function loadWellnessTips() {
+    try {
+        const response = await fetch('./wellness_tips.json');
+        const wellnessData = await response.json();
+        
+        if (wellnessData && wellnessData.length > 0) {
+            updateWellnessTipsCards(wellnessData);
+        }
+    } catch (error) {
+        console.error('Error loading wellness tips:', error);
+    }
+}
+
+function updateWellnessTipsCards(tips) {
+    const tipCards = document.querySelectorAll('.tip-card');
+    
+    tips.forEach((tip, index) => {
+        if (index < tipCards.length) {
+            const card = tipCards[index];
+            const title = card.querySelector('h3');
+            const description = card.querySelector('p');
+            const meta = card.querySelector('.tip-meta');
+            const button = card.querySelector('.btn-secondary');
+            
+            if (title && description && meta && button) {
+                title.textContent = tip.title;
+                description.textContent = tip.description;
+                
+                meta.innerHTML = `
+                    <span><i class="fas fa-clock"></i> ${tip.duration_minutes} min</span>
+                    <span><i class="fas fa-tag"></i> ${tip.category}</span>
+                `;
+                
+                button.textContent = 'Start Exercise';
+                button.onclick = () => startWellnessActivity(tip);
+            }
+        }
+    });
+}
+
+function startWellnessActivity(tip) {
+    showToast(`Starting ${tip.title}... Take your time!`, 'success');
+    console.log('Starting wellness activity:', tip);
 }
 
 function initializeProgressSection() {
@@ -1064,14 +1272,22 @@ function validateCurrentStep() {
     }
 }
 
-function completeOnboarding() {
+async function completeOnboarding() {
     if (!validateCurrentStep()) return;
     
     // Collect all user data
     collectUserData();
     
-    // Save user data
+    // Save user data locally
     saveUserData();
+    
+    // Register user with backend (optional for demo)
+    try {
+        await registerUser();
+    } catch (error) {
+        console.error('Error registering user:', error);
+        // Continue with local data if backend fails
+    }
     
     // Hide onboarding
     hideOnboarding();
@@ -1084,6 +1300,30 @@ function completeOnboarding() {
     
     // Analytics
     trackOnboardingComplete();
+}
+
+async function registerUser() {
+    try {
+        const response = await apiRequest('/register', 'POST', {
+            name: userData.name,
+            email: `${userData.name.toLowerCase().replace(' ', '.')}@example.com`,
+            password: 'demo123',
+            topics: Object.keys(userData.marks).filter(subject => userData.marks[subject] > 0),
+            difficulty: userData.preferences.sessionLength <= 25 ? 'beginner' : 'intermediate',
+            wellness_goals: ['stress management', 'focus improvement']
+        });
+        
+        if (response && response.user_id) {
+            currentUserId = response.user_id;
+            userData.id = response.user_id;
+            console.log('User registered with ID:', response.user_id);
+        }
+    } catch (error) {
+        console.error('Registration failed:', error);
+        // Use default user ID for demo
+        currentUserId = 1;
+        userData.id = 1;
+    }
 }
 
 function collectUserData() {
@@ -1121,15 +1361,16 @@ function collectUserData() {
 
 function updateUserInterface() {
     // Update navigation
-    document.getElementById('navUserName').textContent = userData.name;
-    document.getElementById('profileName').textContent = userData.name;
-    document.getElementById('profileYear').textContent = `${userData.year} • ${userData.specialty}`;
+    document.getElementById('navUserName').textContent = userData.name || 'Student';
+    document.getElementById('profileName').textContent = userData.name || 'Student Name';
+    document.getElementById('profileYear').textContent = `${userData.year || 'Year'} • ${userData.specialty || 'Specialty'}`;
     
     // Update welcome message
-    document.getElementById('userDisplayName').textContent = userData.name;
+    document.getElementById('userDisplayName').textContent = userData.name || 'Student';
     
     // Update profile avatars with initials
-    const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+    const name = userData.name || 'Student';
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
     const avatarUrl = `https://via.placeholder.com/40x40/2563eb/ffffff?text=${initials}`;
     document.getElementById('profileAvatar').src = avatarUrl;
     document.getElementById('profileAvatarLarge').src = avatarUrl.replace('40x40', '60x60');
@@ -1202,41 +1443,743 @@ function generateTopicTags(subject, score) {
     }));
 }
 
-function updateRecommendations() {
-    // Find subjects with low scores
-    const lowScoreSubjects = Object.entries(userData.marks)
-        .filter(([subject, score]) => score < 60 && score > 0)
-        .sort((a, b) => a[1] - b[1]); // Sort by lowest score first
-    
-    // Update recommendation cards based on low scores
-    const recommendationCards = document.querySelectorAll('.recommendation-card');
-    
-    lowScoreSubjects.forEach(([subject, score], index) => {
-        if (index < recommendationCards.length) {
-            const card = recommendationCards[index];
-            const title = card.querySelector('h3');
-            const description = card.querySelector('p');
-            const meta = card.querySelector('.recommendation-meta');
-            
-            if (title && description && meta) {
-                const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
-                title.textContent = `${subjectName} Fundamentals`;
-                description.textContent = `Your ${subjectName.toLowerCase()} score (${score}%) indicates you need foundational review. This resource covers essential concepts.`;
-                
-                // Update meta based on content type preference
-                const preferredType = userData.preferences.contentType[0] || 'video';
-                const typeIcon = preferredType === 'video' ? 'fas fa-video' : 
-                               preferredType === 'article' ? 'fas fa-file-alt' : 'fas fa-quiz';
-                const typeText = preferredType.charAt(0).toUpperCase() + preferredType.slice(1);
-                
-                meta.innerHTML = `
-                    <span><i class="${typeIcon}"></i> ${typeText}</span>
-                    <span><i class="fas fa-clock"></i> ${userData.preferences.sessionLength} min</span>
-                    <span><i class="fas fa-heart"></i> ${subjectName}</span>
-                `;
-            }
+async function updateRecommendations() {
+    try {
+        // Load learning resources
+        const resourcesResponse = await fetch('./learning_resources.json');
+        const resourcesData = await resourcesResponse.json();
+        
+        if (!resourcesData.learning_resources) {
+            console.error('No learning resources found');
+            return;
         }
-    });
+        
+        // Find subjects with low scores
+        const lowScoreSubjects = Object.entries(userData.marks)
+            .filter(([subject, score]) => score < 60 && score > 0)
+            .sort((a, b) => a[1] - b[1]); // Sort by lowest score first
+        
+        // Update recommendation cards based on low scores
+        const recommendationCards = document.querySelectorAll('.recommendation-card');
+        
+        lowScoreSubjects.forEach(([subject, score], index) => {
+            if (index < recommendationCards.length) {
+                const card = recommendationCards[index];
+                const title = card.querySelector('h3');
+                const description = card.querySelector('p');
+                const meta = card.querySelector('.recommendation-meta');
+                
+                if (title && description && meta) {
+                    // Find matching resource from learning_resources.json
+                    const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
+                    const matchingResource = resourcesData.learning_resources.find(resource => 
+                        resource.topic.toLowerCase().includes(subject.toLowerCase()) ||
+                        resource.tags.some(tag => tag.toLowerCase().includes(subject.toLowerCase()))
+                    );
+                    
+                    if (matchingResource) {
+                        title.textContent = matchingResource.title;
+                        description.textContent = matchingResource.description;
+                        
+                        // Update meta based on resource type
+                        const typeIcon = matchingResource.type === 'Video' ? 'fas fa-video' : 
+                                       matchingResource.type === 'Article' ? 'fas fa-file-alt' : 'fas fa-quiz';
+                        
+                        meta.innerHTML = `
+                            <span><i class="${typeIcon}"></i> ${matchingResource.type}</span>
+                            <span><i class="fas fa-clock"></i> ${matchingResource.duration_minutes} min</span>
+                            <span><i class="fas fa-tag"></i> ${matchingResource.tags[0]}</span>
+                        `;
+                        
+                        // Add click handler based on resource type
+                        const button = card.querySelector('.btn-primary');
+                        if (button) {
+                            if (matchingResource.type === 'Video') {
+                                button.textContent = 'Start Learning';
+                                button.onclick = () => startLearning(matchingResource);
+                            } else if (matchingResource.type === 'Quiz') {
+                                button.textContent = 'Take Quiz';
+                                button.onclick = () => startQuiz(matchingResource);
+                            } else if (matchingResource.type === 'Article') {
+                                button.textContent = 'Read Article';
+                                button.onclick = () => readArticle(matchingResource);
+                            } else {
+                                button.onclick = () => openResource(matchingResource);
+                            }
+                        }
+                    } else {
+                        // Fallback to generic recommendation
+                        title.textContent = `${subjectName} Fundamentals`;
+                        description.textContent = `Your ${subjectName.toLowerCase()} score (${score}%) indicates you need foundational review. This resource covers essential concepts.`;
+                        
+                        const preferredType = userData.preferences.contentType[0] || 'video';
+                        const typeIcon = preferredType === 'video' ? 'fas fa-video' : 
+                                       preferredType === 'article' ? 'fas fa-file-alt' : 'fas fa-quiz';
+                        const typeText = preferredType.charAt(0).toUpperCase() + preferredType.slice(1);
+                        
+                        meta.innerHTML = `
+                            <span><i class="${typeIcon}"></i> ${typeText}</span>
+                            <span><i class="fas fa-clock"></i> ${userData.preferences.sessionLength} min</span>
+                            <span><i class="fas fa-heart"></i> ${subjectName}</span>
+                        `;
+                    }
+                }
+            }
+        });
+        
+        // If no low scores, show general recommendations
+        if (lowScoreSubjects.length === 0) {
+            const generalResources = resourcesData.learning_resources.slice(0, 3);
+            const recommendationCards = document.querySelectorAll('.recommendation-card');
+            
+            generalResources.forEach((resource, index) => {
+                if (index < recommendationCards.length) {
+                    const card = recommendationCards[index];
+                    const title = card.querySelector('h3');
+                    const description = card.querySelector('p');
+                    const meta = card.querySelector('.recommendation-meta');
+                    
+                    if (title && description && meta) {
+                        title.textContent = resource.title;
+                        description.textContent = resource.description;
+                        
+                        const typeIcon = resource.type === 'Video' ? 'fas fa-video' : 
+                                       resource.type === 'Article' ? 'fas fa-file-alt' : 'fas fa-quiz';
+                        
+                        meta.innerHTML = `
+                            <span><i class="${typeIcon}"></i> ${resource.type}</span>
+                            <span><i class="fas fa-clock"></i> ${resource.duration_minutes} min</span>
+                            <span><i class="fas fa-tag"></i> ${resource.tags[0]}</span>
+                        `;
+                        
+                        const button = card.querySelector('.btn-primary');
+                        if (button) {
+                            if (resource.type === 'Video') {
+                                button.textContent = 'Start Learning';
+                                button.onclick = () => startLearning(resource);
+                            } else if (resource.type === 'Quiz') {
+                                button.textContent = 'Take Quiz';
+                                button.onclick = () => startQuiz(resource);
+                            } else if (resource.type === 'Article') {
+                                button.textContent = 'Read Article';
+                                button.onclick = () => readArticle(resource);
+                            } else {
+                                button.onclick = () => openResource(resource);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error updating recommendations:', error);
+    }
+}
+
+// Learning Functions
+function startLearning(resource) {
+    showToast(`Starting learning session: ${resource.title}`, 'success');
+    
+    // Create learning modal
+    const modal = createLearningModal(resource);
+    document.body.appendChild(modal);
+    
+    // Start timer for learning session
+    const duration = resource.duration_minutes || 25;
+    setTimer(duration);
+    
+    // Track learning session
+    trackLearningSession(resource, 'video');
+}
+
+function startQuiz(resource) {
+    showToast(`Starting quiz: ${resource.title}`, 'success');
+    
+    // Create quiz modal
+    const modal = createQuizModal(resource);
+    document.body.appendChild(modal);
+    
+    // Track quiz session
+    trackLearningSession(resource, 'quiz');
+}
+
+function readArticle(resource) {
+    showToast(`Opening article: ${resource.title}`, 'success');
+    
+    // Create article modal
+    const modal = createArticleModal(resource);
+    document.body.appendChild(modal);
+    
+    // Track reading session
+    trackLearningSession(resource, 'article');
+}
+
+function openResource(resource) {
+    // In a real app, this would open the resource URL
+    showToast(`Opening ${resource.title}...`, 'info');
+    console.log('Opening resource:', resource);
+}
+
+// Modal Creation Functions
+function createLearningModal(resource) {
+    const modal = document.createElement('div');
+    modal.className = 'learning-modal';
+    modal.innerHTML = `
+        <div class="learning-modal-content">
+            <div class="learning-modal-header">
+                <h3>🎥 ${resource.title}</h3>
+                <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+            </div>
+            <div class="learning-modal-body">
+                <div class="video-placeholder">
+                    <div class="video-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <p>Video Player Placeholder</p>
+                    <p class="video-info">Duration: ${resource.duration_minutes} minutes</p>
+                </div>
+                <div class="learning-content">
+                    <h4>Description</h4>
+                    <p>${resource.description}</p>
+                    <div class="learning-meta">
+                        <span><i class="fas fa-tag"></i> ${resource.tags.join(', ')}</span>
+                        <span><i class="fas fa-clock"></i> ${resource.duration_minutes} min</span>
+                        <span><i class="fas fa-signal"></i> ${resource.difficulty}</span>
+                    </div>
+                </div>
+                <div class="learning-actions">
+                    <button class="btn-primary" onclick="completeLearning('${resource.title}')">Mark as Complete</button>
+                    <button class="btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    addModalStyles();
+    return modal;
+}
+
+function createQuizModal(resource) {
+    const quizQuestions = generateQuizQuestions(resource);
+    const modal = document.createElement('div');
+    modal.className = 'quiz-modal';
+    modal.innerHTML = `
+        <div class="quiz-modal-content">
+            <div class="quiz-modal-header">
+                <h3>📝 ${resource.title} - Quiz</h3>
+                <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+            </div>
+            <div class="quiz-modal-body">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quizProgress" style="width: 0%"></div>
+                    </div>
+                    <span id="quizCounter">Question 1 of 5</span>
+                </div>
+                <div class="quiz-content" id="quizContent">
+                    ${generateQuizHTML(quizQuestions, 0)}
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn-primary" id="nextQuestion" onclick="nextQuizQuestion()" style="display: none;">Next Question</button>
+                    <button class="btn-primary" id="submitQuiz" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    addModalStyles();
+    return modal;
+}
+
+function createArticleModal(resource) {
+    const modal = document.createElement('div');
+    modal.className = 'article-modal';
+    modal.innerHTML = `
+        <div class="article-modal-content">
+            <div class="article-modal-header">
+                <h3>📖 ${resource.title}</h3>
+                <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+            </div>
+            <div class="article-modal-body">
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span><i class="fas fa-clock"></i> ${resource.duration_minutes} min read</span>
+                        <span><i class="fas fa-signal"></i> ${resource.difficulty}</span>
+                        <span><i class="fas fa-tag"></i> ${resource.tags.join(', ')}</span>
+                    </div>
+                    <div class="article-text">
+                        <h4>Introduction</h4>
+                        <p>${resource.description}</p>
+                        
+                        <h4>Key Concepts</h4>
+                        <p>This article covers essential concepts in ${resource.tags[0]}. You'll learn about fundamental principles, practical applications, and clinical relevance.</p>
+                        
+                        <h4>Learning Objectives</h4>
+                        <ul>
+                            <li>Understand the basic principles</li>
+                            <li>Identify key components and functions</li>
+                            <li>Apply knowledge to clinical scenarios</li>
+                            <li>Recognize common patterns and variations</li>
+                        </ul>
+                        
+                        <h4>Detailed Content</h4>
+                        <p>This comprehensive article provides in-depth coverage of ${resource.title.toLowerCase()}. The content is structured to build your understanding progressively, starting with foundational concepts and advancing to more complex applications.</p>
+                        
+                        <p>Key topics covered include:</p>
+                        <ul>
+                            <li>Anatomical structures and their relationships</li>
+                            <li>Physiological processes and mechanisms</li>
+                            <li>Clinical correlations and applications</li>
+                            <li>Common variations and abnormalities</li>
+                        </ul>
+                        
+                        <h4>Summary</h4>
+                        <p>This article has provided a comprehensive overview of ${resource.title.toLowerCase()}. Understanding these concepts is crucial for your healthcare education and future clinical practice.</p>
+                    </div>
+                </div>
+                <div class="article-actions">
+                    <button class="btn-primary" onclick="completeReading('${resource.title}')">Mark as Read</button>
+                    <button class="btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    addModalStyles();
+    return modal;
+}
+
+// Quiz Functions
+let currentQuizData = {
+    questions: [],
+    currentQuestion: 0,
+    answers: [],
+    score: 0
+};
+
+function generateQuizQuestions(resource) {
+    const topic = resource.topic.toLowerCase();
+    const questions = [];
+    
+    // Generate 5 questions based on the topic
+    const questionTemplates = {
+        'cardiac anatomy': [
+            {
+                question: "What is the main function of the heart?",
+                options: ["Pump blood throughout the body", "Filter toxins", "Produce hormones", "Store nutrients"],
+                correct: 0
+            },
+            {
+                question: "How many chambers does the human heart have?",
+                options: ["2", "3", "4", "5"],
+                correct: 2
+            },
+            {
+                question: "Which valve separates the left atrium from the left ventricle?",
+                options: ["Tricuspid", "Mitral", "Pulmonary", "Aortic"],
+                correct: 1
+            },
+            {
+                question: "What is the largest artery in the body?",
+                options: ["Pulmonary artery", "Aorta", "Carotid artery", "Femoral artery"],
+                correct: 1
+            },
+            {
+                question: "Which side of the heart pumps oxygenated blood?",
+                options: ["Right side", "Left side", "Both sides", "Neither side"],
+                correct: 1
+            }
+        ],
+        'respiratory': [
+            {
+                question: "What is the primary function of the respiratory system?",
+                options: ["Digestion", "Gas exchange", "Circulation", "Excretion"],
+                correct: 1
+            },
+            {
+                question: "Where does gas exchange occur in the lungs?",
+                options: ["Bronchi", "Alveoli", "Trachea", "Pharynx"],
+                correct: 1
+            },
+            {
+                question: "What muscle is primarily responsible for breathing?",
+                options: ["Biceps", "Diaphragm", "Quadriceps", "Hamstrings"],
+                correct: 1
+            },
+            {
+                question: "How many lobes does the right lung have?",
+                options: ["2", "3", "4", "5"],
+                correct: 1
+            },
+            {
+                question: "What is the normal respiratory rate for adults?",
+                options: ["8-12 breaths/min", "12-20 breaths/min", "20-30 breaths/min", "30-40 breaths/min"],
+                correct: 1
+            }
+        ],
+        'neurology': [
+            {
+                question: "What is the basic unit of the nervous system?",
+                options: ["Synapse", "Neuron", "Dendrite", "Axon"],
+                correct: 1
+            },
+            {
+                question: "Which part of the brain controls balance and coordination?",
+                options: ["Cerebrum", "Cerebellum", "Brainstem", "Hypothalamus"],
+                correct: 1
+            },
+            {
+                question: "What is the function of myelin sheath?",
+                options: ["Protection", "Speed up nerve impulses", "Store nutrients", "Produce hormones"],
+                correct: 1
+            },
+            {
+                question: "Which neurotransmitter is associated with pleasure and reward?",
+                options: ["Serotonin", "Dopamine", "Acetylcholine", "GABA"],
+                correct: 1
+            },
+            {
+                question: "What is the largest part of the brain?",
+                options: ["Cerebellum", "Cerebrum", "Brainstem", "Thalamus"],
+                correct: 1
+            }
+        ]
+    };
+    
+    // Find matching topic or use default
+    let selectedQuestions = questionTemplates['cardiac anatomy']; // Default
+    for (const [key, questions] of Object.entries(questionTemplates)) {
+        if (topic.includes(key) || resource.tags.some(tag => tag.toLowerCase().includes(key))) {
+            selectedQuestions = questions;
+            break;
+        }
+    }
+    
+    return selectedQuestions;
+}
+
+function generateQuizHTML(questions, questionIndex) {
+    const question = questions[questionIndex];
+    return `
+        <div class="question-container">
+            <h4>Question ${questionIndex + 1}</h4>
+            <p class="question-text">${question.question}</p>
+            <div class="options-container">
+                ${question.options.map((option, index) => `
+                    <label class="option-label">
+                        <input type="radio" name="quizAnswer" value="${index}" onchange="selectAnswer(${index})">
+                        <span class="option-text">${option}</span>
+                    </label>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function selectAnswer(answerIndex) {
+    currentQuizData.answers[currentQuizData.currentQuestion] = answerIndex;
+    const nextBtn = document.getElementById('nextQuestion');
+    const submitBtn = document.getElementById('submitQuiz');
+    
+    if (nextBtn) nextBtn.style.display = 'block';
+    if (currentQuizData.currentQuestion === 4) {
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (submitBtn) submitBtn.style.display = 'block';
+    }
+}
+
+function nextQuizQuestion() {
+    if (currentQuizData.currentQuestion < 4) {
+        currentQuizData.currentQuestion++;
+        updateQuizDisplay();
+    }
+}
+
+function updateQuizDisplay() {
+    const progress = ((currentQuizData.currentQuestion + 1) / 5) * 100;
+    document.getElementById('quizProgress').style.width = `${progress}%`;
+    document.getElementById('quizCounter').textContent = `Question ${currentQuizData.currentQuestion + 1} of 5`;
+    
+    const questions = generateQuizQuestions({ topic: 'cardiac anatomy' }); // Default for now
+    document.getElementById('quizContent').innerHTML = generateQuizHTML(questions, currentQuizData.currentQuestion);
+    
+    const nextBtn = document.getElementById('nextQuestion');
+    const submitBtn = document.getElementById('submitQuiz');
+    
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (submitBtn) submitBtn.style.display = 'none';
+}
+
+function submitQuiz() {
+    // Calculate score
+    const questions = generateQuizQuestions({ topic: 'cardiac anatomy' }); // Default for now
+    let score = 0;
+    
+    for (let i = 0; i < 5; i++) {
+        if (currentQuizData.answers[i] === questions[i].correct) {
+            score++;
+        }
+    }
+    
+    const percentage = (score / 5) * 100;
+    
+    // Show results
+    const modal = document.querySelector('.quiz-modal');
+    if (modal) {
+        modal.innerHTML = `
+            <div class="quiz-modal-content">
+                <div class="quiz-modal-header">
+                    <h3>📊 Quiz Results</h3>
+                    <button class="close-btn" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+                </div>
+                <div class="quiz-modal-body">
+                    <div class="quiz-results">
+                        <div class="score-circle">
+                            <span class="score-number">${score}/5</span>
+                            <span class="score-percentage">${percentage}%</span>
+                        </div>
+                        <h4>${percentage >= 80 ? 'Excellent!' : percentage >= 60 ? 'Good job!' : 'Keep studying!'}</h4>
+                        <p>You answered ${score} out of 5 questions correctly.</p>
+                        <div class="quiz-actions">
+                            <button class="btn-primary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    showToast(`Quiz completed! Score: ${score}/5 (${percentage}%)`, 'success');
+}
+
+// Completion Functions
+function completeLearning(title) {
+    showToast(`🎉 Learning completed: ${title}`, 'success');
+    const modal = document.querySelector('.learning-modal');
+    if (modal) modal.remove();
+    
+    // Update user progress
+    updateUserProgress(title, 'video');
+}
+
+function completeReading(title) {
+    showToast(`📖 Reading completed: ${title}`, 'success');
+    const modal = document.querySelector('.article-modal');
+    if (modal) modal.remove();
+    
+    // Update user progress
+    updateUserProgress(title, 'article');
+}
+
+function updateUserProgress(title, type) {
+    console.log(`Progress updated: ${type} - ${title}`);
+    // In a real app, this would update the user's progress in the database
+}
+
+// Modal Styles
+function addModalStyles() {
+    if (document.getElementById('modal-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'modal-styles';
+    style.textContent = `
+        .learning-modal, .quiz-modal, .article-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .learning-modal-content, .quiz-modal-content, .article-modal-content {
+            background: white;
+            border-radius: 1rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.3s ease-in-out;
+        }
+        
+        .learning-modal-header, .quiz-modal-header, .article-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .close-btn:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .learning-modal-body, .quiz-modal-body, .article-modal-body {
+            padding: 1.5rem;
+        }
+        
+        .video-placeholder {
+            background: #f3f4f6;
+            border-radius: 0.75rem;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .video-icon {
+            font-size: 4rem;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+        
+        .learning-meta, .article-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .learning-meta span, .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .learning-actions, .quiz-actions, .article-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        
+        .quiz-progress {
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            border-radius: 0.375rem;
+            transition: width 0.3s ease-in-out;
+        }
+        
+        .question-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .option-label:hover {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        
+        .option-label input[type="radio"]:checked + .option-text {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .option-label:has(input[type="radio"]:checked) {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        
+        .quiz-results {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+        
+        .score-number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .score-percentage {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .article-text {
+            line-height: 1.7;
+            color: #374151;
+        }
+        
+        .article-text h4 {
+            color: #1f2937;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-text ul {
+            margin: 0.75rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .article-text li {
+            margin-bottom: 0.5rem;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // Profile Management Functions
@@ -1298,6 +2241,7 @@ function resetApp() {
         
         // Reset user data
         userData = {
+            id: 1,
             name: '',
             year: '',
             specialty: '',
