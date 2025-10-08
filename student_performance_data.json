@@ -2,6 +2,7 @@
   {
     "student_id": "S001",
     "name": "Alex Chen",
+    "learning_style": "Visual Learner",
     "performance": {
       "Cardiac Anatomy": 45,
       "ECG Interpretation": 52,
@@ -16,12 +17,27 @@
     "study_preferences": {
       "preferred_session_length": 25,
       "preferred_content_types": ["Video", "Quiz"],
-      "difficulty_preference": "Beginner"
+      "difficulty_preference": "Beginner",
+      "best_study_time": "morning",
+      "break_activity_preference": "Physical"
+    },
+    "individual_needs": {
+      "learning_challenges": ["Complex terminology", "Abstract concepts"],
+      "motivation_style": "Achievement-focused",
+      "stress_triggers": ["Long study sessions", "Difficult material"],
+      "success_indicators": ["Visual demonstrations", "Step-by-step guides"],
+      "wellness_requirements": ["Regular movement breaks", "Stress management techniques"]
+    },
+    "ai_assistant_personality": {
+      "communication_style": "Encouraging and supportive",
+      "explanation_preference": "Visual examples with simple language",
+      "motivation_approach": "Achievement milestones and progress tracking"
     }
   },
   {
     "student_id": "S002", 
     "name": "Maria Rodriguez",
+    "learning_style": "Reading/Writing Learner",
     "performance": {
       "Cardiac Anatomy": 72,
       "ECG Interpretation": 48,
@@ -36,12 +52,27 @@
     "study_preferences": {
       "preferred_session_length": 45,
       "preferred_content_types": ["Article", "Video"],
-      "difficulty_preference": "Intermediate"
+      "difficulty_preference": "Intermediate",
+      "best_study_time": "evening",
+      "break_activity_preference": "Mindfulness"
+    },
+    "individual_needs": {
+      "learning_challenges": ["Time management", "Information retention"],
+      "motivation_style": "Process-focused",
+      "stress_triggers": ["Rushed studying", "Unclear instructions"],
+      "success_indicators": ["Detailed explanations", "Written summaries"],
+      "wellness_requirements": ["Mental breaks", "Relaxation techniques"]
+    },
+    "ai_assistant_personality": {
+      "communication_style": "Detailed and methodical",
+      "explanation_preference": "Comprehensive articles with clear structure",
+      "motivation_approach": "Process improvement and understanding depth"
     }
   },
   {
     "student_id": "S003",
     "name": "David Kim",
+    "learning_style": "Kinesthetic Learner",
     "performance": {
       "Cardiac Anatomy": 58,
       "ECG Interpretation": 61,
@@ -55,8 +86,22 @@
     },
     "study_preferences": {
       "preferred_session_length": 30,
-      "preferred_content_types": ["Quiz", "Article"],
-      "difficulty_preference": "Intermediate"
+      "preferred_content_types": ["Quiz", "Interactive"],
+      "difficulty_preference": "Intermediate",
+      "best_study_time": "afternoon",
+      "break_activity_preference": "Physical"
+    },
+    "individual_needs": {
+      "learning_challenges": ["Sitting still", "Theory without practice"],
+      "motivation_style": "Hands-on focused",
+      "stress_triggers": ["Passive learning", "Long lectures"],
+      "success_indicators": ["Interactive exercises", "Practical applications"],
+      "wellness_requirements": ["Movement breaks", "Physical activities"]
+    },
+    "ai_assistant_personality": {
+      "communication_style": "Direct and action-oriented",
+      "explanation_preference": "Interactive quizzes and hands-on examples",
+      "motivation_approach": "Practical application and immediate feedback"
     }
   }
 ]

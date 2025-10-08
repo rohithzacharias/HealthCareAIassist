@@ -1,10 +1,11 @@
 {
   "metadata": {
-    "version": "1.0",
-    "last_updated": "2025-10-07",
+    "version": "2.0", 
+    "last_updated": "2025-10-08",
     "total_resources": 25,
     "categories": ["Anatomy", "Physiology", "Pathology", "Pharmacology", "Clinical Skills"],
-    "difficulty_levels": ["Beginner", "Intermediate", "Advanced"]
+    "difficulty_levels": ["Beginner", "Intermediate", "Advanced"],
+    "ai_assistant_features": ["Personal guidance", "Success prediction", "Learning path optimization", "Individual adaptation"]
   },
   "learning_resources": [
     {
@@ -18,7 +19,15 @@
       "duration_minutes": 12,
       "tags": ["Cardiology", "Anatomy", "Heart"],
       "recommendation_threshold": 60,
-      "reasoning_template": "Your cardiac anatomy score indicates you need foundational review. This video covers essential heart structure concepts."
+      "reasoning_template": "Your cardiac anatomy score indicates you need foundational review. This video covers essential heart structure concepts.",
+      "personal_assistant_message": "Hi! I've analyzed your performance and found that heart anatomy needs attention. Let me guide you through this foundational video that's perfect for your current level.",
+      "success_prediction": "Based on your learning style, this video should improve your cardiac anatomy score by 15-20%.",
+      "individual_adaptations": {
+        "for_visual_learners": "This video includes detailed 3D heart models perfect for visual understanding",
+        "for_beginner_level": "Starts with basic concepts and builds complexity gradually", 
+        "for_time_constraints": "Can be completed in just 12 minutes during a study break"
+      },
+      "learning_path_integration": "After mastering this, I'll recommend ECG Interpretation to build on your heart knowledge."
     },
     {
       "id": 2,
@@ -332,5 +341,26 @@
       "recommendation_threshold": 45,
       "reasoning_template": "Evidence-based practice is the gold standard. Your research literacy score indicates this comprehensive guide is essential."
     }
-  ]
+  ],
+  "student_id": "S001",
+  "name": "Alex Chen",
+  "learning_style": "Visual Learner",
+  "performance": {
+    "Cardiac Anatomy": 45,
+    "ECG Interpretation": 52,
+    "Heart Murmurs": 38
+  },
+  "study_preferences": {
+    "preferred_session_length": 25,
+    "preferred_content_types": ["Video", "Quiz"],
+    "difficulty_preference": "Beginner",
+    "best_study_time": "morning",
+    "break_activity_preference": "Physical"
+  },
+  "individual_needs": {
+    "learning_challenges": ["Complex terminology", "Abstract concepts"],
+    "motivation_style": "Achievement-focused",
+    "stress_triggers": ["Long study sessions", "Difficult material"],
+    "success_indicators": ["Visual demonstrations", "Step-by-step guides"]
+  }
 }
