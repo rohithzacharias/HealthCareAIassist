@@ -3,16 +3,17 @@
     "student_id": "S001",
     "name": "Alex Chen",
     "learning_style": "Visual Learner",
+    "current_subject": "Computer Science",
     "performance": {
-      "Cardiac Anatomy": 45,
-      "ECG Interpretation": 52,
-      "Heart Murmurs": 38,
-      "Respiratory Anatomy": 67,
-      "Breathing Mechanics": 41,
-      "Neuroanatomy": 55,
-      "Neuron Physiology": 49,
-      "Drug Classifications": 62,
-      "Dosage Calculations": 74
+      "Physics Mechanics": 45,
+      "Algebra Fundamentals": 52,
+      "Programming Basics": 38,
+      "Data Structures": 35,
+      "Statistics Basics": 67,
+      "Calculus Fundamentals": 41,
+      "Study Techniques": 72,
+      "Time Management": 59,
+      "Critical Thinking": 49
     },
     "study_preferences": {
       "preferred_session_length": 25,
@@ -28,26 +29,27 @@
       "success_indicators": ["Visual demonstrations", "Step-by-step guides"],
       "wellness_requirements": ["Regular movement breaks", "Stress management techniques"]
     },
-    "ai_assistant_personality": {
-      "communication_style": "Encouraging and supportive",
-      "explanation_preference": "Visual examples with simple language",
-      "motivation_approach": "Achievement milestones and progress tracking"
+    "mark_entry_history": {
+      "last_updated": "2025-10-08",
+      "subjects_entered": ["Programming Basics", "Data Structures", "Physics Mechanics"],
+      "entry_method": "Student self-reported"
     }
   },
   {
     "student_id": "S002", 
     "name": "Maria Rodriguez",
     "learning_style": "Reading/Writing Learner",
+    "current_subject": "Psychology",
     "performance": {
-      "Cardiac Anatomy": 72,
-      "ECG Interpretation": 48,
-      "Heart Murmurs": 56,
-      "Respiratory Anatomy": 65,
-      "Breathing Mechanics": 59,
-      "Neuroanatomy": 43,
-      "Neuron Physiology": 51,
-      "Drug Classifications": 58,
-      "Dosage Calculations": 69
+      "Psychology Basics": 72,
+      "Statistics Basics": 48,
+      "Research Methods": 56,
+      "Essay Writing": 65,
+      "Literature Analysis": 43,
+      "Sociology Concepts": 51,
+      "Critical Thinking": 58,
+      "Public Speaking": 42,
+      "Study Techniques": 69
     },
     "study_preferences": {
       "preferred_session_length": 45,
@@ -63,26 +65,27 @@
       "success_indicators": ["Detailed explanations", "Written summaries"],
       "wellness_requirements": ["Mental breaks", "Relaxation techniques"]
     },
-    "ai_assistant_personality": {
-      "communication_style": "Detailed and methodical",
-      "explanation_preference": "Comprehensive articles with clear structure",
-      "motivation_approach": "Process improvement and understanding depth"
+    "mark_entry_history": {
+      "last_updated": "2025-10-08",
+      "subjects_entered": ["Statistics Basics", "Literature Analysis", "Public Speaking"],
+      "entry_method": "Student self-reported"
     }
   },
   {
     "student_id": "S003",
     "name": "David Kim",
     "learning_style": "Kinesthetic Learner",
+    "current_subject": "General Studies",
     "performance": {
-      "Cardiac Anatomy": 58,
-      "ECG Interpretation": 61,
-      "Heart Murmurs": 44,
-      "Respiratory Anatomy": 52,
-      "Breathing Mechanics": 66,
-      "Neuroanatomy": 39,
-      "Neuron Physiology": 47,
-      "Drug Classifications": 53,
-      "Dosage Calculations": 71
+      "Physics Mechanics": 58,
+      "Chemistry Bonding": 44,
+      "Biology Cells": 52,
+      "Algebra Fundamentals": 61,
+      "Geometry Theorems": 39,
+      "World History": 47,
+      "Essay Writing": 53,
+      "Study Techniques": 71,
+      "Note Taking": 64
     },
     "study_preferences": {
       "preferred_session_length": 30,
@@ -98,10 +101,10 @@
       "success_indicators": ["Interactive exercises", "Practical applications"],
       "wellness_requirements": ["Movement breaks", "Physical activities"]
     },
-    "ai_assistant_personality": {
-      "communication_style": "Direct and action-oriented",
-      "explanation_preference": "Interactive quizzes and hands-on examples",
-      "motivation_approach": "Practical application and immediate feedback"
+    "mark_entry_history": {
+      "last_updated": "2025-10-08",
+      "subjects_entered": ["Chemistry Bonding", "Geometry Theorems", "World History"],
+      "entry_method": "Student self-reported"
     }
   }
 ]
