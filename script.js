@@ -9,6 +9,7 @@ let isTimerRunning = false;
 let currentMood = null;
 let studyStreak = 7;
 let totalStudyHours = 24.5;
+let loadedWellnessTips = [];
 
 // User Data
 let userData = {
@@ -69,6 +70,9 @@ function initializeApp() {
     
     // Setup PWA features
     setupPWA();
+
+    // Preload wellness tips for quick access
+    loadWellnessTips();
 }
 
 // Setup event listeners
@@ -338,34 +342,21 @@ function saveMoodData(mood) {
 
 // Wellness functions
 function suggestBreak() {
-    const breakTips = [
-        {
-            title: "5-Minute Box Breathing",
-            description: "Calm your mind with guided breathing exercises.",
-            duration: 5,
-            category: "Mindfulness"
-        },
-        {
-            title: "Desk Stretches",
-            description: "Simple stretches to relieve tension.",
-            duration: 3,
-            category: "Physical"
-        },
-        {
-            title: "Hydration Break",
-            description: "Drink water and step away from your desk.",
-            duration: 2,
-            category: "Physical"
-        },
-        {
-            title: "Quick Walk",
-            description: "Take a short walk to refresh your mind.",
-            duration: 5,
-            category: "Physical"
-        }
-    ];
+    const dynamicTips = (loadedWellnessTips && loadedWellnessTips.length > 0)
+        ? loadedWellnessTips.map(t => ({
+            title: t.title,
+            description: t.description,
+            duration: t.duration_minutes,
+            category: t.category
+        }))
+        : [
+            { title: "5-Minute Box Breathing", description: "Calm your mind with guided breathing exercises.", duration: 5, category: "Mindfulness" },
+            { title: "Desk Stretches", description: "Simple stretches to relieve tension.", duration: 3, category: "Physical" },
+            { title: "Hydration Break", description: "Drink water and step away from your desk.", duration: 2, category: "Physical" },
+            { title: "Quick Walk", description: "Take a short walk to refresh your mind.", duration: 5, category: "Physical" }
+        ];
     
-    const randomTip = breakTips[Math.floor(Math.random() * breakTips.length)];
+    const randomTip = dynamicTips[Math.floor(Math.random() * dynamicTips.length)];
     
     showBreakSuggestion(randomTip);
 }
@@ -469,6 +460,9 @@ function startBreakActivity(activityName) {
     
     // Track break activity
     trackBreakActivity(activityName);
+
+    // Track wellness progress
+    markWellnessActivityCompleted(activityName);
 }
 
 // Quick action functions
@@ -678,6 +672,76 @@ function updateWellnessAnalytics() {
         else if (stressValue > 40) stressLevel.textContent = 'Moderate';
         else stressLevel.textContent = 'Low';
     }
+}
+
+// Wellness tips loading and progress tracking
+function loadWellnessTips() {
+    // Already loaded
+    if (loadedWellnessTips && loadedWellnessTips.length > 0) return;
+    
+    fetch('wellness_tips.json')
+        .then(resp => resp.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                loadedWellnessTips = data;
+                renderWellnessTips();
+            }
+        })
+        .catch(() => {
+            // Fail silently; fallback tips are used in suggestBreak
+        });
+}
+
+function renderWellnessTips() {
+    const tipsGrid = document.querySelector('.wellness-tips .tips-grid');
+    if (!tipsGrid || !loadedWellnessTips || loadedWellnessTips.length === 0) return;
+    
+    const iconByCategory = {
+        'Mindfulness': 'fas fa-brain',
+        'Physical': 'fas fa-dumbbell',
+        'Study Technique': 'fas fa-lightbulb'
+    };
+    
+    tipsGrid.innerHTML = loadedWellnessTips.map(tip => `
+        <div class="tip-card">
+            <div class="tip-icon">
+                <i class="${iconByCategory[tip.category] || 'fas fa-heart'}"></i>
+            </div>
+            <div class="tip-content">
+                <h3>${tip.title}</h3>
+                <p>${tip.description}</p>
+                <div class="tip-meta">
+                    <span><i class="fas fa-clock"></i> ${tip.duration_minutes} min</span>
+                    <span><i class="fas fa-tag"></i> ${tip.category}</span>
+                </div>
+                <button class="btn-secondary" onclick="startWellnessActivity('${encodeURIComponent(tip.title)}')">Start</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function startWellnessActivity(encodedTitle) {
+    const title = decodeURIComponent(encodedTitle);
+    showToast(`Starting ${title}...`, 'success');
+    markWellnessActivityCompleted(title);
+}
+
+function markWellnessActivityCompleted(title) {
+    const entry = {
+        title,
+        timestamp: new Date().toISOString(),
+        day: new Date().toDateString()
+    };
+    const list = JSON.parse(localStorage.getItem('completedWellnessActivities') || '[]');
+    list.push(entry);
+    localStorage.setItem('completedWellnessActivities', JSON.stringify(list));
+    updateWellnessProgressOverview();
+    updateAchievements();
+}
+
+function updateWellnessProgressOverview() {
+    // Optionally update any counters or charts in Progress section in the future
+    // For now, keep it minimal to avoid layout edits
 }
 
 // Data persistence functions
@@ -1042,12 +1106,14 @@ function initializeWellnessSection() {
     // Initialize wellness-specific features
     updateWellnessAnalytics();
     loadMoodHistory();
+    loadWellnessTips();
 }
 
 function initializeProgressSection() {
     // Initialize progress-specific features
     updateAchievements();
     updateLearningPath();
+    updateWellnessProgressOverview();
 }
 
 function updateRecommendations() {
@@ -1061,8 +1127,29 @@ function loadMoodHistory() {
 }
 
 function updateAchievements() {
-    // Update achievement badges
-    console.log('Updating achievements...');
+    // Update achievement badges with wellness completions
+    try {
+        const wellnessCompletions = JSON.parse(localStorage.getItem('completedWellnessActivities') || '[]');
+        const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+        const badges = document.querySelectorAll('.achievements .badge');
+
+        // Example: mark "Wellness Warrior" as earned after 5 wellness activities or 5 mood logs
+        const wellnessCount = wellnessCompletions.length;
+        const moodDays = new Set(moodHistory.map(m => m.day)).size;
+        const wellnessEarned = wellnessCount >= 5 || moodDays >= 5;
+
+        badges.forEach(badge => {
+            const title = badge.querySelector('h3')?.textContent?.trim();
+            if (title === 'Wellness Warrior') {
+                if (wellnessEarned) {
+                    badge.classList.add('earned');
+                    badge.classList.remove('locked');
+                }
+            }
+        });
+    } catch (e) {
+        console.log('Updating achievements...');
+    }
 }
 
 function updateLearningPath() {
