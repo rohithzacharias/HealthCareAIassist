@@ -1,0 +1,68 @@
+    [
+      {
+        "id": 1,
+        "category": "Mindfulness",
+        "title": "5-Minute Deep Breathing",
+        "duration_minutes": 5,
+        "description": "Practice box breathing to reduce stress and improve focus during study sessions.",
+        "tags": ["stress relief", "focus", "breathing"],
+        
+        "study_break_integration": {
+          "optimal_timing": "Between 25-minute study blocks",
+          "purpose": "Mental reset for continued learning focus",
+          "effectiveness": "Improves concentration for next study session by 35%"
+        },
+        
+        "individual_personalization": {
+          "for_stressed_students": "Especially beneficial when tackling difficult subjects",
+          "for_visual_learners": "Can include guided breathing visualization",
+          "for_achievement_focused": "Track breathing consistency as measurable wellness goal"
+        },
+        
+        "ai_assistant_messaging": "Time for a mental reset! This breathing exercise will help you refocus for your next study block on ECG interpretation."
+      },
+      {
+        "id": 2,
+        "category": "Physical", 
+        "title": "Desk Stretches",
+        "duration_minutes": 3,
+        "description": "Simple stretches to relieve neck, shoulder, and back tension from studying.",
+        "tags": ["physical health", "stretching", "posture"],
+        
+        "study_break_integration": {
+          "optimal_timing": "After completion of video or reading sessions",
+          "purpose": "Physical wellness maintenance during extended study",
+          "effectiveness": "Reduces study-related physical discomfort by 70%"
+        },
+        
+        "individual_personalization": {
+          "for_kinesthetic_learners": "Movement helps activate learning and memory processes",
+          "for_long_session_preferences": "Essential for students who prefer 45+ minute sessions",
+          "for_physical_wellness_focus": "Addresses most common study-related tension areas"
+        },
+        
+        "ai_assistant_messaging": "I notice you've been studying for 25 minutes. Let's do some quick stretches to keep your body comfortable for the next session!"
+      },
+      {
+        "id": 3,
+        "category": "Study Technique",
+        "title": "Active Recall Check",
+        "duration_minutes": 5,
+        "description": "Quick self-test on material just studied without looking at notes.",
+        "tags": ["memory", "learning technique", "retention"],
+        
+        "study_break_integration": {
+          "optimal_timing": "Immediately after completing a learning resource",
+          "purpose": "Reinforce learning before moving to next topic",
+          "effectiveness": "Improves retention by 50% compared to passive review"
+        },
+        
+        "individual_personalization": {
+          "for_achievement_focused": "Provides immediate feedback on learning progress",
+          "for_visual_learners": "Can include drawing or visualizing concepts",
+          "for_process_focused": "Emphasizes understanding quality over speed"
+        },
+        
+        "ai_assistant_messaging": "Great job completing that cardiac anatomy video! Let's quickly test what you learned before moving to ECG interpretation."
+      }
+    ]

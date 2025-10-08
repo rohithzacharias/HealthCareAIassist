@@ -1,0 +1,110 @@
+[
+  {
+    "student_id": "S001",
+    "name": "Alex Chen",
+    "learning_style": "Visual Learner",
+    "current_subject": "Computer Science",
+    "performance": {
+      "Physics Mechanics": 45,
+      "Algebra Fundamentals": 52,
+      "Programming Basics": 38,
+      "Data Structures": 35,
+      "Statistics Basics": 67,
+      "Calculus Fundamentals": 41,
+      "Study Techniques": 72,
+      "Time Management": 59,
+      "Critical Thinking": 49
+    },
+    "study_preferences": {
+      "preferred_session_length": 25,
+      "preferred_content_types": ["Video", "Quiz"],
+      "difficulty_preference": "Beginner",
+      "best_study_time": "morning",
+      "break_activity_preference": "Physical"
+    },
+    "individual_needs": {
+      "learning_challenges": ["Complex terminology", "Abstract concepts"],
+      "motivation_style": "Achievement-focused",
+      "stress_triggers": ["Long study sessions", "Difficult material"],
+      "success_indicators": ["Visual demonstrations", "Step-by-step guides"],
+      "wellness_requirements": ["Regular movement breaks", "Stress management techniques"]
+    },
+    "mark_entry_history": {
+      "last_updated": "2025-10-08",
+      "subjects_entered": ["Programming Basics", "Data Structures", "Physics Mechanics"],
+      "entry_method": "Student self-reported"
+    }
+  },
+  {
+    "student_id": "S002", 
+    "name": "Maria Rodriguez",
+    "learning_style": "Reading/Writing Learner",
+    "current_subject": "Psychology",
+    "performance": {
+      "Psychology Basics": 72,
+      "Statistics Basics": 48,
+      "Research Methods": 56,
+      "Essay Writing": 65,
+      "Literature Analysis": 43,
+      "Sociology Concepts": 51,
+      "Critical Thinking": 58,
+      "Public Speaking": 42,
+      "Study Techniques": 69
+    },
+    "study_preferences": {
+      "preferred_session_length": 45,
+      "preferred_content_types": ["Article", "Video"],
+      "difficulty_preference": "Intermediate",
+      "best_study_time": "evening",
+      "break_activity_preference": "Mindfulness"
+    },
+    "individual_needs": {
+      "learning_challenges": ["Time management", "Information retention"],
+      "motivation_style": "Process-focused",
+      "stress_triggers": ["Rushed studying", "Unclear instructions"],
+      "success_indicators": ["Detailed explanations", "Written summaries"],
+      "wellness_requirements": ["Mental breaks", "Relaxation techniques"]
+    },
+    "mark_entry_history": {
+      "last_updated": "2025-10-08",
+      "subjects_entered": ["Statistics Basics", "Literature Analysis", "Public Speaking"],
+      "entry_method": "Student self-reported"
+    }
+  },
+  {
+    "student_id": "S003",
+    "name": "David Kim",
+    "learning_style": "Kinesthetic Learner",
+    "current_subject": "General Studies",
+    "performance": {
+      "Physics Mechanics": 58,
+      "Chemistry Bonding": 44,
+      "Biology Cells": 52,
+      "Algebra Fundamentals": 61,
+      "Geometry Theorems": 39,
+      "World History": 47,
+      "Essay Writing": 53,
+      "Study Techniques": 71,
+      "Note Taking": 64
+    },
+    "study_preferences": {
+      "preferred_session_length": 30,
+      "preferred_content_types": ["Quiz", "Interactive"],
+      "difficulty_preference": "Intermediate",
+      "best_study_time": "afternoon",
+      "break_activity_preference": "Physical"
+    },
+    "individual_needs": {
+      "learning_challenges": ["Sitting still", "Theory without practice"],
+      "motivation_style": "Hands-on focused",
+      "stress_triggers": ["Passive learning", "Long lectures"],
+      "success_indicators": ["Interactive exercises", "Practical applications"],
+      "wellness_requirements": ["Movement breaks", "Physical activities"]
+    },
+    "mark_entry_history": {
+      "last_updated": "2025-10-08",
+      "subjects_entered": ["Chemistry Bonding", "Geometry Theorems", "World History"],
+      "entry_method": "Student self-reported"
+    }
+  }
+]

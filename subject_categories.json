@@ -1,0 +1,42 @@
+{
+  "available_subjects": {
+    "Science": [
+      "Physics Mechanics",
+      "Chemistry Bonding", 
+      "Biology Cells",
+      "Environmental Science"
+    ],
+    "Mathematics": [
+      "Algebra Fundamentals",
+      "Geometry Theorems",
+      "Statistics Basics", 
+      "Calculus Fundamentals"
+    ],
+    "Technology": [
+      "Programming Basics",
+      "Data Structures",
+      "Web Development",
+      "Database Systems"
+    ],
+    "Languages": [
+      "Essay Writing",
+      "Literature Analysis",
+      "Creative Writing",
+      "Public Speaking"
+    ],
+    "Social Studies": [
+      "World History",
+      "Psychology Basics",
+      "Sociology Concepts",
+      "Economics Principles"
+    ],
+    "Study Skills": [
+      "Study Techniques",
+      "Time Management", 
+      "Research Methods",
+      "Critical Thinking",
+      "Note Taking",
+      "Test Preparation"
+    ]
+  }
+}

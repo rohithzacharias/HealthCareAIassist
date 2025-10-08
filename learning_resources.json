@@ -1,0 +1,392 @@
+{
+  "metadata": {
+    "project": "AI-Powered Study Assistant",
+    "purpose": "Personal digital assistant that recommends learning resources, schedules study breaks, and supports overall student wellness",
+    "version": "3.0",
+    "last_updated": "2025-10-08",
+    "total_resources": 25,
+    "categories": ["Anatomy", "Physiology", "Pathology", "Pharmacology", "Clinical Skills"],
+    "difficulty_levels": ["Beginner", "Intermediate", "Advanced"],
+    "ai_features": ["Resource recommendation", "Study break integration", "Wellness support", "Individual personalization"]
+  },
+  "learning_resources": [
+    {
+      "id": 1,
+      "topic": "Cardiac Anatomy",
+      "difficulty": "Beginner",
+      "type": "Video",
+      "title": "Understanding Heart Structure for Healthcare Students",
+      "description": "Comprehensive introduction to cardiac anatomy, chambers, valves, and blood flow patterns.",
+      "url": "https://example.com/cardiology/cardiac-anatomy",
+      "duration_minutes": 12,
+      "tags": ["Cardiology", "Anatomy", "Heart"],
+      
+      "ai_recommendation_logic": {
+        "threshold": 60,
+        "reasoning": "Your cardiac anatomy score indicates foundational review needed. This video covers essential heart structure concepts.",
+        "individual_adaptation": "Selected for visual learners with 3D heart models and step-by-step explanations"
+      },
+      
+      "study_break_integration": {
+        "recommended_session_length": 25,
+        "break_after_completion": "5-minute physical break to process visual information",
+        "wellness_support": "Eye rest recommended after video content"
+      },
+      
+      "personalized_learning_path": {
+        "prerequisite": "None - foundational topic",
+        "next_recommended": "ECG Interpretation",
+        "path_reasoning": "Cardiac anatomy provides foundation for ECG understanding"
+      }
+    },
+    {
+      "id": 2,
+      "topic": "ECG Interpretation",
+      "difficulty": "Intermediate", 
+      "type": "Article",
+      "title": "ECG Basics: Reading and Interpreting Electrocardiograms",
+      "description": "Step-by-step guide to ECG interpretation, normal rhythms, and common abnormalities.",
+      "url": "https://example.com/cardiology/ecg-basics",
+      "duration_minutes": 20,
+      "tags": ["Cardiology", "ECG", "Interpretation"],
+      
+      "ai_recommendation_logic": {
+        "threshold": 55,
+        "reasoning": "Your ECG interpretation skills need improvement. This comprehensive guide builds on your cardiac anatomy knowledge.",
+        "individual_adaptation": "Detailed article format perfect for reading/writing learners who prefer structured information"
+      },
+      
+      "study_break_integration": {
+        "recommended_session_length": 25,
+        "break_during_reading": "10-minute mindfulness break for complex material processing",
+        "wellness_support": "Active recall exercise after completion"
+      },
+      
+      "personalized_learning_path": {
+        "prerequisite": "Cardiac Anatomy understanding",
+        "next_recommended": "Heart Murmurs",
+        "path_reasoning": "ECG skills prepare you for advanced cardiac assessment including murmur identification"
+      }
+    },
+    {
+      "id": 3,
+      "topic": "Heart Murmurs",
+      "difficulty": "Intermediate",
+      "type": "Quiz",
+      "title": "Heart Murmur Classification and Assessment",
+      "description": "Interactive quiz on systolic and diastolic murmurs, their characteristics and clinical significance.",
+      "url": "https://example.com/cardiology/heart-murmurs-quiz",
+      "duration_minutes": 15,
+      "tags": ["Cardiology", "Murmurs", "Assessment"],
+      "recommendation_threshold": 50,
+      "reasoning_template": "Your murmur identification accuracy is low. This targeted quiz will strengthen your diagnostic skills."
+    },
+    {
+      "id": 4,
+      "topic": "Respiratory Anatomy",
+      "difficulty": "Beginner",
+      "type": "Video",
+      "title": "Lung Structure and Respiratory System Overview",
+      "description": "Visual exploration of lung anatomy, bronchial tree, alveoli, and gas exchange mechanisms.",
+      "url": "https://example.com/respiratory/lung-anatomy",
+      "duration_minutes": 18,
+      "tags": ["Respiratory", "Anatomy", "Lungs"],
+      "recommendation_threshold": 65,
+      "reasoning_template": "Your respiratory anatomy understanding needs reinforcement. This video clarifies lung structure and function."
+    },
+    {
+      "id": 5,
+      "topic": "Breathing Mechanics",
+      "difficulty": "Intermediate",
+      "type": "Article",
+      "title": "Physiology of Breathing and Ventilation Control",
+      "description": "Detailed analysis of inspiration, expiration, muscle involvement, and respiratory regulation.",
+      "url": "https://example.com/respiratory/breathing-mechanics",
+      "duration_minutes": 25,
+      "tags": ["Respiratory", "Physiology", "Breathing"],
+      "recommendation_threshold": 45,
+      "reasoning_template": "Your breathing mechanics score is critically low. This comprehensive article will strengthen your foundation."
+    },
+    {
+      "id": 6,
+      "topic": "Neuroanatomy",
+      "difficulty": "Beginner",
+      "type": "Video",
+      "title": "Central Nervous System Structure and Function",
+      "description": "Introduction to brain and spinal cord anatomy, major regions, and their functions.",
+      "url": "https://example.com/neurology/neuroanatomy-basics",
+      "duration_minutes": 22,
+      "tags": ["Neurology", "Anatomy", "CNS"],
+      "recommendation_threshold": 60,
+      "reasoning_template": "Your neuroanatomy score indicates confusion about brain structure. This overview clarifies key concepts."
+    },
+    {
+      "id": 7,
+      "topic": "Neuron Physiology",
+      "difficulty": "Intermediate",
+      "type": "Quiz",
+      "title": "Action Potentials and Synaptic Transmission",
+      "description": "Test your understanding of neuron function, action potentials, and neurotransmitter mechanisms.",
+      "url": "https://example.com/neurology/neuron-function-quiz",
+      "duration_minutes": 20,
+      "tags": ["Neurology", "Physiology", "Neurons"],
+      "recommendation_threshold": 55,
+      "reasoning_template": "Your neuron physiology performance suggests practice needed. This quiz targets your weak areas."
+    },
+    {
+      "id": 8,
+      "topic": "Drug Classifications",
+      "difficulty": "Intermediate",
+      "type": "Article",
+      "title": "Major Pharmaceutical Categories and Mechanisms",
+      "description": "Comprehensive guide to drug classes, mechanisms of action, and therapeutic applications.",
+      "url": "https://example.com/pharmacology/drug-classifications",
+      "duration_minutes": 30,
+      "tags": ["Pharmacology", "Drugs", "Mechanisms"],
+      "recommendation_threshold": 65,
+      "reasoning_template": "Your pharmacology classification knowledge needs improvement. This guide covers essential drug categories."
+    },
+    {
+      "id": 9,
+      "topic": "Dosage Calculations",
+      "difficulty": "Beginner",
+      "type": "Video",
+      "title": "Safe Medication Dosage Calculations",
+      "description": "Step-by-step approach to calculating medication dosages, unit conversions, and safety checks.",
+      "url": "https://example.com/pharmacology/dosage-calculations",
+      "duration_minutes": 16,
+      "tags": ["Pharmacology", "Dosage", "Safety"],
+      "recommendation_threshold": 70,
+      "reasoning_template": "Dosage calculation accuracy is critical. Your score suggests this foundational video is essential."
+    },
+    {
+      "id": 10,
+      "topic": "Skeletal System",
+      "difficulty": "Beginner",
+      "type": "Article",
+      "title": "Human Skeletal System Fundamentals",
+      "description": "Complete overview of bone structure, types, and musculoskeletal system for healthcare students.",
+      "url": "https://example.com/anatomy/skeletal-system",
+      "duration_minutes": 24,
+      "tags": ["Anatomy", "Skeletal", "Bones"],
+      "recommendation_threshold": 60,
+      "reasoning_template": "Your skeletal system knowledge has gaps. This comprehensive article builds your foundation."
+    },
+    {
+      "id": 11,
+      "topic": "Muscle Physiology",
+      "difficulty": "Intermediate",
+      "type": "Video",
+      "title": "Muscle Contraction Mechanisms and Types",
+      "description": "Detailed explanation of skeletal, cardiac, and smooth muscle structure and function.",
+      "url": "https://example.com/anatomy/muscular-system",
+      "duration_minutes": 28,
+      "tags": ["Anatomy", "Muscles", "Physiology"],
+      "recommendation_threshold": 55,
+      "reasoning_template": "Your muscle physiology score indicates confusion about contraction mechanisms. This video clarifies key concepts."
+    },
+    {
+      "id": 12,
+      "topic": "Digestive System",
+      "difficulty": "Beginner",
+      "type": "Quiz",
+      "title": "Digestive Process and Organ Functions",
+      "description": "Interactive assessment covering digestion, absorption, and GI tract anatomy and physiology.",
+      "url": "https://example.com/physiology/digestive-quiz",
+      "duration_minutes": 18,
+      "tags": ["Physiology", "Digestive", "GI"],
+      "recommendation_threshold": 60,
+      "reasoning_template": "Your digestive system understanding needs strengthening. This quiz targets your knowledge gaps."
+    },
+    {
+      "id": 13,
+      "topic": "Endocrine System",
+      "difficulty": "Intermediate",
+      "type": "Article",
+      "title": "Hormones and Endocrine Regulation",
+      "description": "Comprehensive study of hormonal systems, feedback loops, and endocrine disorders.",
+      "url": "https://example.com/physiology/endocrine-system",
+      "duration_minutes": 35,
+      "tags": ["Physiology", "Endocrine", "Hormones"],
+      "recommendation_threshold": 50,
+      "reasoning_template": "Endocrine system complexity requires focused study. Your low score indicates this comprehensive resource is essential."
+    },
+    {
+      "id": 14,
+      "topic": "Inflammation",
+      "difficulty": "Intermediate",
+      "type": "Video",
+      "title": "Inflammatory Response and Pathophysiology",
+      "description": "Understanding acute and chronic inflammation, cellular responses, and healing processes.",
+      "url": "https://example.com/pathology/inflammation",
+      "duration_minutes": 26,
+      "tags": ["Pathology", "Inflammation", "Disease"],
+      "recommendation_threshold": 55,
+      "reasoning_template": "Your pathology score suggests difficulty with inflammatory processes. This video breaks down complex mechanisms."
+    },
+    {
+      "id": 15,
+      "topic": "Cancer Biology",
+      "difficulty": "Advanced",
+      "type": "Article",
+      "title": "Cellular Basis of Cancer Development",
+      "description": "Advanced study of oncogenes, tumor suppressors, and cancer progression mechanisms.",
+      "url": "https://example.com/pathology/cancer-biology",
+      "duration_minutes": 40,
+      "tags": ["Pathology", "Cancer", "Oncology"],
+      "recommendation_threshold": 45,
+      "reasoning_template": "Cancer biology is highly complex. Your score indicates need for this detailed foundational resource."
+    },
+    {
+      "id": 16,
+      "topic": "Bacterial Infections",
+      "difficulty": "Intermediate",
+      "type": "Quiz",
+      "title": "Common Bacterial Pathogens and Treatment",
+      "description": "Test knowledge of bacterial infections, antibiotic resistance, and treatment protocols.",
+      "url": "https://example.com/microbiology/bacterial-infections-quiz",
+      "duration_minutes": 22,
+      "tags": ["Microbiology", "Bacteria", "Infections"],
+      "recommendation_threshold": 60,
+      "reasoning_template": "Your bacterial infection knowledge needs reinforcement. This targeted quiz improves your understanding."
+    },
+    {
+      "id": 17,
+      "topic": "Viral Diseases",
+      "difficulty": "Beginner",
+      "type": "Video",
+      "title": "Introduction to Viral Pathogens",
+      "description": "Basic concepts of viral structure, replication, and common viral diseases in healthcare settings.",
+      "url": "https://example.com/microbiology/viral-diseases",
+      "duration_minutes": 19,
+      "tags": ["Microbiology", "Viruses", "Disease"],
+      "recommendation_threshold": 65,
+      "reasoning_template": "Your virology foundation needs strengthening. This introductory video covers essential concepts."
+    },
+    {
+      "id": 18,
+      "topic": "Vital Signs Assessment",
+      "difficulty": "Beginner",
+      "type": "Article",
+      "title": "Accurate Vital Sign Measurement Techniques",
+      "description": "Proper techniques for measuring blood pressure, pulse, respiratory rate, and temperature.",
+      "url": "https://example.com/clinical/vital-signs",
+      "duration_minutes": 14,
+      "tags": ["Clinical", "Vital Signs", "Assessment"],
+      "recommendation_threshold": 70,
+      "reasoning_template": "Vital sign accuracy is fundamental. Your assessment score suggests review of basic techniques is needed."
+    },
+    {
+      "id": 19,
+      "topic": "Patient Communication",
+      "difficulty": "Intermediate",
+      "type": "Video",
+      "title": "Effective Patient Communication Strategies",
+      "description": "Developing therapeutic communication skills, active listening, and empathetic patient care.",
+      "url": "https://example.com/clinical/patient-communication",
+      "duration_minutes": 32,
+      "tags": ["Clinical", "Communication", "Patient Care"],
+      "recommendation_threshold": 50,
+      "reasoning_template": "Communication skills need development. Your interpersonal score indicates this training is essential."
+    },
+    {
+      "id": 20,
+      "topic": "Medical Ethics",
+      "difficulty": "Advanced",
+      "type": "Quiz",
+      "title": "Healthcare Ethics and Professional Conduct",
+      "description": "Assessment of ethical principles, patient rights, and professional responsibilities in healthcare.",
+      "url": "https://example.com/ethics/healthcare-principles-quiz",
+      "duration_minutes": 25,
+      "tags": ["Ethics", "Professional", "Healthcare"],
+      "recommendation_threshold": 40,
+      "reasoning_template": "Ethical reasoning is complex but crucial. Your score suggests intensive study of fundamental principles is needed."
+    },
+    {
+      "id": 21,
+      "topic": "Infection Control",
+      "difficulty": "Beginner",
+      "type": "Video",
+      "title": "Healthcare Infection Prevention Protocols",
+      "description": "Essential infection control procedures, PPE usage, and prevention strategies for healthcare workers.",
+      "url": "https://example.com/clinical/infection-control",
+      "duration_minutes": 18,
+      "tags": ["Clinical", "Safety", "Infection Control"],
+      "recommendation_threshold": 75,
+      "reasoning_template": "Infection control is critical for patient safety. Your score indicates immediate review of protocols is needed."
+    },
+    {
+      "id": 22,
+      "topic": "Medical Terminology",
+      "difficulty": "Beginner",
+      "type": "Article",
+      "title": "Essential Medical Vocabulary and Word Construction",
+      "description": "Comprehensive medical terminology with root words, prefixes, suffixes, and pronunciation guides.",
+      "url": "https://example.com/clinical/medical-terminology",
+      "duration_minutes": 21,
+      "tags": ["Clinical", "Terminology", "Vocabulary"],
+      "recommendation_threshold": 65,
+      "reasoning_template": "Strong medical vocabulary is essential. Your terminology score suggests focused study of word construction."
+    },
+    {
+      "id": 23,
+      "topic": "Emergency Procedures",
+      "difficulty": "Intermediate",
+      "type": "Quiz",
+      "title": "Basic Life Support and Emergency Response",
+      "description": "Test knowledge of CPR, emergency protocols, and life-saving procedures for healthcare providers.",
+      "url": "https://example.com/clinical/emergency-procedures-quiz",
+      "duration_minutes": 27,
+      "tags": ["Clinical", "Emergency", "BLS"],
+      "recommendation_threshold": 55,
+      "reasoning_template": "Emergency response skills are vital. Your score indicates practice with life-saving procedures is needed."
+    },
+    {
+      "id": 24,
+      "topic": "Mental Health Awareness",
+      "difficulty": "Intermediate",
+      "type": "Video",
+      "title": "Mental Health in Healthcare Settings",
+      "description": "Recognizing mental health signs, providing support, and maintaining professional boundaries.",
+      "url": "https://example.com/clinical/mental-health-awareness",
+      "duration_minutes": 23,
+      "tags": ["Clinical", "Mental Health", "Patient Care"],
+      "recommendation_threshold": 50,
+      "reasoning_template": "Mental health awareness is increasingly important. Your score suggests this training will enhance your patient care skills."
+    },
+    {
+      "id": 25,
+      "topic": "Evidence-Based Practice",
+      "difficulty": "Advanced",
+      "type": "Article",
+      "title": "Research Methods and Evidence Application",
+      "description": "Introduction to research methodology, critical appraisal, and applying evidence to clinical practice.",
+      "url": "https://example.com/clinical/evidence-based-practice",
+      "duration_minutes": 38,
+      "tags": ["Clinical", "Research", "Evidence"],
+      "recommendation_threshold": 45,
+      "reasoning_template": "Evidence-based practice is the gold standard. Your research literacy score indicates this comprehensive guide is essential."
+    }
+  ],
+  "student_id": "S001",
+  "name": "Alex Chen",
+  "learning_style": "Visual Learner",
+  "performance": {
+    "Cardiac Anatomy": 45,
+    "ECG Interpretation": 52,
+    "Heart Murmurs": 38
+  },
+  "study_preferences": {
+    "preferred_session_length": 25,
+    "preferred_content_types": ["Video", "Quiz"],
+    "difficulty_preference": "Beginner",
+    "best_study_time": "morning",
+    "break_activity_preference": "Physical"
+  },
+  "individual_needs": {
+    "learning_challenges": ["Complex terminology", "Abstract concepts"],
+    "motivation_style": "Achievement-focused",
+    "stress_triggers": ["Long study sessions", "Difficult material"],
+    "success_indicators": ["Visual demonstrations", "Step-by-step guides"]
+  }
+}

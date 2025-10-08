@@ -1,0 +1,22 @@
+{
+  "mark_entry_templates": {
+    "Computer Science": [
+      {"topic": "Programming Basics", "placeholder": "Enter marks out of 100"},
+      {"topic": "Data Structures", "placeholder": "Enter marks out of 100"},
+      {"topic": "Algorithms", "placeholder": "Enter marks out of 100"},
+      {"topic": "Database Systems", "placeholder": "Enter marks out of 100"},
+      {"topic": "Web Development", "placeholder": "Enter marks out of 100"}
+    ],
+    "Mathematics": [
+      {"topic": "Algebra Fundamentals", "placeholder": "Enter marks out of 100"},
+      {"topic": "Geometry Theorems", "placeholder": "Enter marks out of 100"},
+      {"topic": "Statistics Basics", "placeholder": "Enter marks out of 100"},
+      {"topic": "Calculus Fundamentals", "placeholder": "Enter marks out of 100"}
+    ],
+    "Physics": [
+      {"topic": "Physics Mechanics", "placeholder": "Enter marks out of 100"},
+      {"topic": "Thermodynamics", "placeholder": "Enter marks out of 100"},
+      {"topic": "Electricity & Magnetism", "placeholder": "Enter marks out of 100"}
+    ]
+  }
+}
