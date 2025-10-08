@@ -1,11 +1,13 @@
 {
   "metadata": {
-    "version": "2.0", 
+    "project": "AI-Powered Study Assistant",
+    "purpose": "Personal digital assistant that recommends learning resources, schedules study breaks, and supports overall student wellness",
+    "version": "3.0",
     "last_updated": "2025-10-08",
     "total_resources": 25,
     "categories": ["Anatomy", "Physiology", "Pathology", "Pharmacology", "Clinical Skills"],
     "difficulty_levels": ["Beginner", "Intermediate", "Advanced"],
-    "ai_assistant_features": ["Personal guidance", "Success prediction", "Learning path optimization", "Individual adaptation"]
+    "ai_features": ["Resource recommendation", "Study break integration", "Wellness support", "Individual personalization"]
   },
   "learning_resources": [
     {
@@ -18,29 +20,53 @@
       "url": "https://example.com/cardiology/cardiac-anatomy",
       "duration_minutes": 12,
       "tags": ["Cardiology", "Anatomy", "Heart"],
-      "recommendation_threshold": 60,
-      "reasoning_template": "Your cardiac anatomy score indicates you need foundational review. This video covers essential heart structure concepts.",
-      "personal_assistant_message": "Hi! I've analyzed your performance and found that heart anatomy needs attention. Let me guide you through this foundational video that's perfect for your current level.",
-      "success_prediction": "Based on your learning style, this video should improve your cardiac anatomy score by 15-20%.",
-      "individual_adaptations": {
-        "for_visual_learners": "This video includes detailed 3D heart models perfect for visual understanding",
-        "for_beginner_level": "Starts with basic concepts and builds complexity gradually", 
-        "for_time_constraints": "Can be completed in just 12 minutes during a study break"
+      
+      "ai_recommendation_logic": {
+        "threshold": 60,
+        "reasoning": "Your cardiac anatomy score indicates foundational review needed. This video covers essential heart structure concepts.",
+        "individual_adaptation": "Selected for visual learners with 3D heart models and step-by-step explanations"
       },
-      "learning_path_integration": "After mastering this, I'll recommend ECG Interpretation to build on your heart knowledge."
+      
+      "study_break_integration": {
+        "recommended_session_length": 25,
+        "break_after_completion": "5-minute physical break to process visual information",
+        "wellness_support": "Eye rest recommended after video content"
+      },
+      
+      "personalized_learning_path": {
+        "prerequisite": "None - foundational topic",
+        "next_recommended": "ECG Interpretation",
+        "path_reasoning": "Cardiac anatomy provides foundation for ECG understanding"
+      }
     },
     {
       "id": 2,
       "topic": "ECG Interpretation",
-      "difficulty": "Intermediate",
+      "difficulty": "Intermediate", 
       "type": "Article",
       "title": "ECG Basics: Reading and Interpreting Electrocardiograms",
       "description": "Step-by-step guide to ECG interpretation, normal rhythms, and common abnormalities.",
       "url": "https://example.com/cardiology/ecg-basics",
       "duration_minutes": 20,
       "tags": ["Cardiology", "ECG", "Interpretation"],
-      "recommendation_threshold": 55,
-      "reasoning_template": "Your ECG interpretation skills need improvement. This comprehensive guide addresses your weak areas."
+      
+      "ai_recommendation_logic": {
+        "threshold": 55,
+        "reasoning": "Your ECG interpretation skills need improvement. This comprehensive guide builds on your cardiac anatomy knowledge.",
+        "individual_adaptation": "Detailed article format perfect for reading/writing learners who prefer structured information"
+      },
+      
+      "study_break_integration": {
+        "recommended_session_length": 25,
+        "break_during_reading": "10-minute mindfulness break for complex material processing",
+        "wellness_support": "Active recall exercise after completion"
+      },
+      
+      "personalized_learning_path": {
+        "prerequisite": "Cardiac Anatomy understanding",
+        "next_recommended": "Heart Murmurs",
+        "path_reasoning": "ECG skills prepare you for advanced cardiac assessment including murmur identification"
+      }
     },
     {
       "id": 3,

@@ -6,157 +6,63 @@
     "duration_minutes": 5,
     "description": "Practice box breathing to reduce stress and improve focus during study sessions.",
     "tags": ["stress relief", "focus", "breathing"],
-    "assistant_message": "Time for a quick mental reset! I've prepared a 5-minute breathing exercise to help you refocus for your next study block.",
-    "personalization": {
-      "for_visual_learners": "Follow the breathing animation and visual timer on screen",
-      "for_stressed_students": "This will help calm your mind and reduce study anxiety",
-      "for_tired_students": "Deep breathing will re-energize you for better concentration"
+    
+    "study_break_integration": {
+      "optimal_timing": "Between 25-minute study blocks",
+      "purpose": "Mental reset for continued learning focus",
+      "effectiveness": "Improves concentration for next study session by 35%"
     },
-    "integration_with_study": "Perfect for your 5-minute break before tackling that ECG interpretation material.",
-    "success_tracking": "Students report 80% better focus after breathing exercises"
+    
+    "individual_personalization": {
+      "for_stressed_students": "Especially beneficial when tackling difficult subjects",
+      "for_visual_learners": "Can include guided breathing visualization",
+      "for_achievement_focused": "Track breathing consistency as measurable wellness goal"
+    },
+    
+    "ai_assistant_messaging": "Time for a mental reset! This breathing exercise will help you refocus for your next study block on ECG interpretation."
   },
   {
     "id": 2,
-    "category": "Physical",
+    "category": "Physical", 
     "title": "Desk Stretches",
     "duration_minutes": 3,
     "description": "Simple stretches to relieve neck, shoulder, and back tension from studying.",
     "tags": ["physical health", "stretching", "posture"],
-    "assistant_message": "I notice you've been studying for 25 minutes. Let's do some quick stretches to keep your body comfortable!",
-    "personalization": {
-      "for_physical_learners": "Movement helps activate your learning and memory processes",
-      "for_long_sessions": "Essential for maintaining good posture during extended study",
-      "for_tension_relief": "Targets the most common study-related muscle tension areas"
+    
+    "study_break_integration": {
+      "optimal_timing": "After completion of video or reading sessions",
+      "purpose": "Physical wellness maintenance during extended study",
+      "effectiveness": "Reduces study-related physical discomfort by 70%"
     },
-    "integration_with_study": "Stretching now will help you stay comfortable during your next 25-minute study block.",
-    "success_tracking": "Reduces study-related physical discomfort by 70%"
+    
+    "individual_personalization": {
+      "for_kinesthetic_learners": "Movement helps activate learning and memory processes",
+      "for_long_session_preferences": "Essential for students who prefer 45+ minute sessions",
+      "for_physical_wellness_focus": "Addresses most common study-related tension areas"
+    },
+    
+    "ai_assistant_messaging": "I notice you've been studying for 25 minutes. Let's do some quick stretches to keep your body comfortable for the next session!"
   },
   {
     "id": 3,
-    "category": "Study Tip",
-    "title": "Pomodoro Check-in",
-    "duration_minutes": 2,
-    "description": "Quick reflection on your study session progress and focus level.",
-    "tags": ["productivity", "self-assessment", "focus"],
-    "assistant_message": "Great job completing that study block! Let's quickly assess how it went and adjust if needed.",
-    "personalization": {
-      "for_achievement_focused": "Track your progress milestones and celebrate wins",
-      "for_process_focused": "Reflect on learning quality and comprehension",
-      "for_improvement_focused": "Identify what's working and what needs adjustment"
-    },
-    "integration_with_study": "This helps me recommend better resources for your next session based on how this one went.",
-    "success_tracking": "Self-reflection improves study efficiency by 40%"
-  },
-  {
-    "id": 4,
-    "category": "Mindfulness",
-    "title": "Progressive Muscle Relaxation",
-    "duration_minutes": 10,
-    "description": "Systematically tense and relax muscle groups to reduce physical stress and mental tension.",
-    "tags": ["relaxation", "stress relief", "muscle tension"],
-    "assistant_message": "I can see you're feeling overwhelmed with this challenging material. Let's take 10 minutes for deep relaxation.",
-    "personalization": {
-      "for_high_stress": "Especially effective when tackling difficult subjects like neuroanatomy",
-      "for_physical_tension": "Addresses both mental and physical study stress",
-      "for_longer_breaks": "Perfect for your extended 15-minute break periods"
-    },
-    "integration_with_study": "After this relaxation, you'll return to studying with a clearer, calmer mind.",
-    "success_tracking": "Reduces study anxiety by 65% and improves retention"
-  },
-  {
-    "id": 5,
-    "category": "Physical",
-    "title": "Hydration & Nutrition Check",
-    "duration_minutes": 2,
-    "description": "Reminder to drink water and have a healthy snack to maintain cognitive function.",
-    "tags": ["hydration", "nutrition", "cognitive function"],
-    "assistant_message": "Your brain needs fuel! Let's make sure you're properly hydrated and nourished for optimal learning.",
-    "personalization": {
-      "for_long_sessions": "Critical for maintaining focus during extended study periods",
-      "for_cognitive_function": "Proper hydration improves memory and concentration by 25%",
-      "for_health_focused": "Supports overall wellness while studying"
-    },
-    "integration_with_study": "Good nutrition now will help you better absorb that pharmacology material coming up.",
-    "success_tracking": "Proper hydration improves test performance by 20%"
-  },
-  {
-    "id": 6,
-    "category": "Study Tip",
-    "title": "Active Recall Practice",
+    "category": "Study Technique",
+    "title": "Active Recall Check",
     "duration_minutes": 5,
-    "description": "Quick self-test on the material you just studied without looking at notes.",
+    "description": "Quick self-test on material just studied without looking at notes.",
     "tags": ["memory", "learning technique", "retention"],
-    "assistant_message": "Time to test what you've learned! This active recall will strengthen your memory of the cardiac anatomy concepts.",
-    "personalization": {
-      "for_visual_learners": "Try drawing or visualizing the concepts you just studied",
-      "for_achievement_focused": "Challenge yourself to recall key points accurately",
-      "for_retention_improvement": "Active recall is proven to improve long-term memory"
+    
+    "study_break_integration": {
+      "optimal_timing": "Immediately after completing a learning resource",
+      "purpose": "Reinforce learning before moving to next topic",
+      "effectiveness": "Improves retention by 50% compared to passive review"
     },
-    "integration_with_study": "Based on how this goes, I'll know whether to recommend review or move to new material.",
-    "success_tracking": "Active recall improves retention by 50% compared to passive review"
-  },
-  {
-    "id": 7,
-    "category": "Physical",
-    "title": "Eye Rest Exercise (20-20-20 Rule)",
-    "duration_minutes": 2,
-    "description": "Look at something 20 feet away for 20 seconds to reduce eye strain from screen time.",
-    "tags": ["eye health", "screen time", "vision"],
-    "assistant_message": "I notice you've been looking at screens intensively. Let's give your eyes a much-needed break!",
-    "personalization": {
-      "for_screen_heavy_study": "Essential when studying from digital resources",
-      "for_eye_strain_prevention": "Prevents headaches and maintains visual focus",
-      "for_digital_learners": "Balances technology use with eye health"
+    
+    "individual_personalization": {
+      "for_achievement_focused": "Provides immediate feedback on learning progress",
+      "for_visual_learners": "Can include drawing or visualizing concepts",
+      "for_process_focused": "Emphasizes understanding quality over speed"
     },
-    "integration_with_study": "Rested eyes will help you better focus on those detailed anatomical diagrams.",
-    "success_tracking": "Reduces eye strain and study headaches by 80%"
-  },
-  {
-    "id": 8,
-    "category": "Mindfulness",
-    "title": "Gratitude & Motivation Moment",
-    "duration_minutes": 3,
-    "description": "Reflect on your learning progress and motivations for studying healthcare.",
-    "tags": ["positivity", "motivation", "mental health"],
-    "assistant_message": "Let's take a moment to appreciate your hard work and reconnect with why you're pursuing healthcare education.",
-    "personalization": {
-      "for_motivation_boost": "Especially helpful when studying feels overwhelming",
-      "for_purpose_connection": "Reminds you of the bigger picture beyond test scores",
-      "for_positive_mindset": "Builds resilience for challenging study sessions"
-    },
-    "integration_with_study": "Renewed motivation will energize your approach to the next study block.",
-    "success_tracking": "Increases study motivation and persistence by 60%"
-  },
-  {
-    "id": 9,
-    "category": "Study Tip",
-    "title": "Environment Optimization",
-    "duration_minutes": 3,
-    "description": "Quick assessment and adjustment of lighting, temperature, and distractions in your study space.",
-    "tags": ["environment", "productivity", "concentration"],
-    "assistant_message": "Let's optimize your study environment for maximum focus and comfort during your next session.",
-    "personalization": {
-      "for_focus_improvement": "Small environmental changes can boost concentration significantly",
-      "for_comfort": "Ensures physical comfort supports learning",
-      "for_productivity": "Eliminates distractions that interrupt flow state"
-    },
-    "integration_with_study": "A better study environment will help you tackle those challenging neurology concepts more effectively.",
-    "success_tracking": "Optimized environment improves focus and retention by 35%"
-  },
-  {
-    "id": 10,
-    "category": "Physical",
-    "title": "Energizing Movement Break",
-    "duration_minutes": 10,
-    "description": "Light physical activity to boost circulation, energy, and mental clarity.",
-    "tags": ["exercise", "energy", "circulation"],
-    "assistant_message": "Time for some movement! This will boost your energy and help information process better in your brain.",
-    "personalization": {
-      "for_kinesthetic_learners": "Movement enhances your learning and memory formation",
-      "for_energy_boost": "Physical activity increases alertness and cognitive function",
-      "for_longer_breaks": "Perfect for your 15-minute extended break periods"
-    },
-    "integration_with_study": "Increased circulation will help you stay alert during your upcoming pharmacology study session.",
-    "success_tracking": "Movement breaks improve cognitive performance by 45%"
+    
+    "ai_assistant_messaging": "Great job completing that cardiac anatomy video! Let's quickly test what you learned before moving to ECG interpretation."
   }
 ]
